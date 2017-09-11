@@ -45,6 +45,34 @@ pixelIterator pIt;
 bool Trace(const Ray &ray, HitInfo &hitinfo);
 bool TraceNode(const Node &node, const Ray &ray, HitInfo &hitinfo);
 
+bool Trace(const Ray &ray, HitInfo &hitinfo){
+    return TraceNode(rootNode, ray, hitinfo);
+}
+
+bool TraceNode(const Node &node,const Ray &ray, HitInfo &hitinfo){
+    //world space to model space
+    Ray r = node.ToNodeCoords(ray);
+    const Object *obj = node.GetNodeObj();
+    bool hit = false;
+    
+    if(obj){
+        if(obj->IntersectRay(r,hitinfo)){
+            hit = true;
+            hitinfo.node = &node;
+            node.FromNodeCoords(hitinfo);
+        }
+    }
+    
+    for(int i=0;i<node.GetNumChild();i++){
+        const Node &child = *node.GetChild(i);
+        if(TraceNode(child,r,hitinfo)){
+            node.FromNodeCoords(hitinfo);
+            hit = true;
+        }
+    }
+    return hit;
+}
+
 void setPixelColor(int index, float z, Color shade){
     Color24* color_pixel = renderImage.GetPixels();
     color_pixel[index]=(Color24)shade;
@@ -100,6 +128,61 @@ void RenderPixel(pixelIterator &it){
     }
 }
 
+float GenLight::Shadow(Ray ray, float t_max){
+    //bias
+    float bias = 1e-14f;
+    //shift vector
+    //Point3 pre = ray.dir;
+    //ray.dir.Normalize();
+    //float ratio = pre.Length();
+    //ray.p +=bias*ray.dir;
+    
+    HitInfo hitInfo;
+    /*/
+     if(Trace(ray,hitInfo))
+     {
+         if(hitInfo.z>0){ //always negative?
+             if(hitInfo.z>bias && hitInfo.z < t_max){
+                
+                return 0.0;
+            }
+            //0.0*intensity = black;
+        }
+     }
+     return 1.0;
+     //*/
+     /*
+    for(int i=0; i < rootNode.GetNumChild(); i++){
+        const Node &curnode = *rootNode.GetChild(i);
+        
+        hitInfo.Init();
+        hitInfo.node = &curnode;
+        if(TraceNode(curnode,ray,hitInfo))
+        {
+            if(hitInfo.z>bias && hitInfo.z < t_max){
+                
+                return 0.0;
+            }
+            
+        }
+    }
+    //*/
+        hitInfo.Init();
+        //hitInfo.node = &curnode;
+        if(TraceNode(rootNode,ray,hitInfo))
+        {
+            if(hitInfo.z>bias && hitInfo.z < t_max){
+                
+                return 0.0;
+            }
+            
+        }
+    //*/
+    
+    //it is not shadow, intensity would not change.
+    return 1.0;
+}
+
 Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lights) const{
     //Color shade_color(255.0);
     Color ambient_color(0.0);
@@ -152,8 +235,10 @@ bool Sphere::IntersectRay( const Ray &ray, HitInfo &hitinfo, int hitSide ) const
 		float prez = hitinfo.z;
         
         hitinfo.z = min(t1,t2);
-        if(hitinfo.z<0)
+        if(hitinfo.z<0){
+            hitinfo.z = prez;
         	return false;
+        }
         else if(hitinfo.z>=prez){
             hitinfo.z = prez;
             return false;
@@ -169,32 +254,7 @@ bool Sphere::IntersectRay( const Ray &ray, HitInfo &hitinfo, int hitSide ) const
 	return behitted;
 }
 
-bool Trace(const Ray &ray, HitInfo &hitinfo){
-    return TraceNode(rootNode, ray, hitinfo);
-}
 
-bool TraceNode(const Node &node,const Ray &ray, HitInfo &hitinfo){
-	//world space to model space
-	Ray r = node.ToNodeCoords(ray);
-	const Object *obj = node.GetNodeObj();
-	bool hit = false;
-
-	if(obj){
-		if(obj->IntersectRay(r,hitinfo)){
-			hit = true;
-			hitinfo.node = &node;
-            node.FromNodeCoords(hitinfo);
-		}
-	}
-    
-	for(int i=0;i<node.GetNumChild();i++){
-		const Node &child = *node.GetChild(i);
-		if(TraceNode(child,r,hitinfo)){
-			hit = true;
-		}
-	}
-    return hit;
-}
 
 
 void BeginRender()
@@ -202,7 +262,7 @@ void BeginRender()
 	cout<<"call by GlutKeyboard() in viewport.cpp\n";
 	//renderImage.SaveImage("/Users/hsuanlee/Documents/Cpp/RayTracingP02/RayTracingP02/prj2input.png");
     
-    unsigned num_thread = thread::hardware_concurrency();
+    unsigned num_thread = 1; //thread::hardware_concurrency();
     vector<thread> thr;
     for(int j=0;j<num_thread;j++){
         thread th(RenderPixel,ref(pIt));
@@ -229,7 +289,7 @@ void StopRender(){
 int main(int argc, const char * argv[]) {
     pIt.Init();
     //const char *file = "simplescene.xml"; //can't load the file
-    const char *file = "/Users/hsuanlee/Documents/Cpp/RayTracingP03/RayTracingP03/input.xml";
+    const char *file = "/Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj3/RayTracingProj3/input2.xml";
     LoadScene(file);
     ShowViewport();
     
