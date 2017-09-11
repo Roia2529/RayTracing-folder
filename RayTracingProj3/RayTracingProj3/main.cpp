@@ -131,51 +131,17 @@ void RenderPixel(pixelIterator &it){
 float GenLight::Shadow(Ray ray, float t_max){
     //bias
     float bias = 1e-14f;
-    //shift vector
-    //Point3 pre = ray.dir;
-    //ray.dir.Normalize();
-    //float ratio = pre.Length();
-    //ray.p +=bias*ray.dir;
     
     HitInfo hitInfo;
-    /*/
-     if(Trace(ray,hitInfo))
-     {
-         if(hitInfo.z>0){ //always negative?
-             if(hitInfo.z>bias && hitInfo.z < t_max){
-                
-                return 0.0;
-            }
-            //0.0*intensity = black;
-        }
-     }
-     return 1.0;
-     //*/
-     /*
-    for(int i=0; i < rootNode.GetNumChild(); i++){
-        const Node &curnode = *rootNode.GetChild(i);
-        
-        hitInfo.Init();
-        hitInfo.node = &curnode;
-        if(TraceNode(curnode,ray,hitInfo))
-        {
-            if(hitInfo.z>bias && hitInfo.z < t_max){
-                
-                return 0.0;
-            }
-            
-        }
-    }
+
     //*/
         hitInfo.Init();
         //hitInfo.node = &curnode;
         if(TraceNode(rootNode,ray,hitInfo))
         {
             if(hitInfo.z>bias && hitInfo.z < t_max){
-                
                 return 0.0;
             }
-            
         }
     //*/
     
@@ -262,7 +228,7 @@ void BeginRender()
 	cout<<"call by GlutKeyboard() in viewport.cpp\n";
 	//renderImage.SaveImage("/Users/hsuanlee/Documents/Cpp/RayTracingP02/RayTracingP02/prj2input.png");
     
-    unsigned num_thread = 1; //thread::hardware_concurrency();
+    unsigned num_thread = thread::hardware_concurrency();
     vector<thread> thr;
     for(int j=0;j<num_thread;j++){
         thread th(RenderPixel,ref(pIt));
@@ -276,8 +242,8 @@ void BeginRender()
     
     cout << "Saving z-buffer image...\n";
     renderImage.ComputeZBufferImage();
-    //renderImage.SaveZImage("/Users/hsuanlee/Documents/Cpp/RayTracingP02/RayTracingP02/prj2.png");
-    //renderImage.SaveImage("/Users/hsuanlee/Documents/Cpp/RayTracingP02/RayTracingP02/prj2img.png");
+    //renderImage.SaveZImage("/Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj3/prj3.png");
+    //renderImage.SaveImage("/Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj3/prj3largebias.png");
 }
 
 void StopRender(){
