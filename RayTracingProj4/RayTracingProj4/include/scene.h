@@ -3,8 +3,8 @@
 ///
 /// \file       scene.h
 /// \author     Cem Yuksel (www.cemyuksel.com)
-/// \version    2.1
-/// \date       August 29, 2017
+/// \version    4.0
+/// \date       September 1, 2017
 ///
 /// \brief Example source for CS 6620 - University of Utah.
 ///
@@ -77,13 +77,12 @@ struct HitInfo
 {
     float z;            // the distance from the ray center to the hit point
     Point3 p;           // position of the hit point
-    Point3 N;           // surface normal at the hit point //model space
+    Point3 N;           // surface normal at the hit point
     const Node *node;   // the object node that was hit
     bool front;         // true if the ray hits the front side, false if the ray hits the back side
-    int mtlID;          // sub-material index
     
     HitInfo() { Init(); }
-    void Init() { z=BIGFLOAT; node=NULL; front=true; mtlID=0; }
+    void Init() { z=BIGFLOAT; node=NULL; front=true; }
 };
 
 //-------------------------------------------------------------------------------
@@ -205,7 +204,7 @@ class Light : public ItemBase
 public:
     virtual Color   Illuminate(const Point3 &p, const Point3 &N) const=0;
     virtual Point3  Direction (const Point3 &p) const=0;
-    virtual bool    IsAmbient () const { return false; }  //is light ambiant?
+    virtual bool    IsAmbient () const { return false; }
     virtual void    SetViewportLight(int lightID) const {}  // used for OpenGL display
 };
 
@@ -219,8 +218,7 @@ public:
     // The main method that handles the shading by calling all the lights in the list.
     // ray: incoming ray,
     // hInfo: hit information for the point that is being shaded, lights: the light list,
-    //implement Shade
-    virtual Color Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lights) const=0;
+    virtual Color Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lights, int bounceCount) const=0;
     
     virtual void SetViewportMaterial(int subMtlID=0) const {}   // used for OpenGL display
 };
@@ -286,7 +284,7 @@ public:
         r.dir = TransformTo(ray.p + ray.dir) - r.p;
         return r;
     }
-    void FromNodeCoords( HitInfo &hInfo ) const //from model space to world space
+    void FromNodeCoords( HitInfo &hInfo ) const
     {
         hInfo.p = TransformFrom(hInfo.p);
         hInfo.N = VectorTransformFrom(hInfo.N).GetNormalized();
