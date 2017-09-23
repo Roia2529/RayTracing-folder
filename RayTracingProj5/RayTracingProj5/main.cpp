@@ -1,8 +1,8 @@
 //
 //  main.cpp
-//  RayTracingP04
+//  RayTracingP05
 //
-//  Created by Hsuan Lee on 9/11/17.
+//  Created by Hsuan Lee on 9/21/17.
 //  Copyright © 2017 Hsuan Lee. All rights reserved.
 //
 
@@ -20,8 +20,10 @@ Node rootNode;
 Camera camera;
 RenderImage renderImage;
 Sphere theSphere;
+Plane thePlane;
 MaterialList materials;
 LightList lights;
+ObjFileList objList;
 
 //if not hit
 Color black(0.0);
@@ -148,7 +150,6 @@ float GenLight::Shadow(Ray ray, float t_max){
 
     //*/
         hitInfo.Init();
-        //hitInfo.node = &curnode;
         if(TraceNode(rootNode,ray,hitInfo))
         {
             if(hitInfo.z>bias && hitInfo.z < t_max){
@@ -222,11 +223,11 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
         hitinfo_rf.Init();
         if(TraceNode(rootNode,Ray_rf,hitinfo_rf))
         {
-            re_color =  reflection*hitinfo_rf.node->GetMaterial()->Shade(Ray_rf, hitinfo_rf, lights, bounceCount - 1);
+            re_color = hitinfo_rf.node->GetMaterial()->Shade(Ray_rf, hitinfo_rf, lights, bounceCount - 1);
         }
     }
 
-    all+=re_color;
+    all+=re_color*reflection;
     /**
      ** refraction calculation
     **/
@@ -299,11 +300,14 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
 
             HitInfo hitinfo_rf;
             hitinfo_rf.Init();
+            re_ra_color = re_color;
+            /*
             if(TraceNode(rootNode,Ray_rf,hitinfo_rf))
             {
                 //don't need to multiply with reflection
                 re_ra_color =  hitinfo_rf.node->GetMaterial()->Shade(Ray_rf, hitinfo_rf, lights, bounceCount - 1);
             }
+             */
         }
          
         all += refraction * (ra_ratio * ra_color + re_ratio * re_ra_color);
@@ -367,8 +371,8 @@ bool Sphere::IntersectRay( const Ray &ray, HitInfo &hitinfo, int hitSide ) const
 void BeginRender()
 {	
 	
-    //unsigned num_thread = thread::hardware_concurrency();
-    unsigned num_thread = 1;
+    unsigned num_thread = thread::hardware_concurrency();
+    //unsigned num_thread = 1;
     
     cout<<"number of threads: "<<num_thread<<"\n";
     vector<thread> thr;
@@ -385,7 +389,7 @@ void BeginRender()
     cout << "Saving z-buffer image...\n";
     renderImage.ComputeZBufferImage();
     //renderImage.SaveZImage("/Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj4/prj4_zbuff.png");
-    renderImage.SaveImage("/Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj4/prj4.png");
+    //renderImage.SaveImage("prj4.png");
 }
 
 void StopRender(){
@@ -398,7 +402,7 @@ void StopRender(){
 int main(int argc, const char * argv[]) {
     pIt.Init();
     //const char *file = "simplescene.xml"; //can't load the file
-    const char *file = "/Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj4/RayTracingProj4/box.xml";
+    const char *file = "scene.xml";
     LoadScene(file);
     ShowViewport();
     
