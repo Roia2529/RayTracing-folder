@@ -56,6 +56,16 @@ bool Trace(const Ray &ray, HitInfo &hitinfo){
     return TraceNode(rootNode, ray, hitinfo);
 }
 
+float clamp( float v, const float lo, const float hi)
+{
+    if(v<lo)
+        return lo;
+    else if(v>hi)
+        return hi;
+    else
+        return v;
+}
+
 bool TraceNode(const Node &node,const Ray &ray, HitInfo &hitinfo){
     //world space to model space
     Ray r = node.ToNodeCoords(ray);
@@ -110,7 +120,7 @@ void RenderPixel(pixelIterator &it){
     x_new.Normalize();
     Matrix3 m(x_new,camera.up, z_new);
 
-    int bouncelimit = 10;
+    int bouncelimit = 5;
     
     while(it.GetPixel(x,y)){
         //debug
@@ -192,17 +202,17 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
         else{
             Color I_i = lights[i]->Illuminate(P,N);
             Point3 L = -1*(lights[i]->Direction(P));
-            Point3 V = camera.pos - hInfo.p;
+            Point3 V = -ray.dir;//camera.pos - hInfo.p; this will effect reflection calculation
             V.Normalize();
             Point3 LpV = L+V;
-            Point3 H = LpV/LpV.Length();
+            Point3 H = LpV;///LpV.Length();
             H.Normalize();
 
             Color kse = Ks*pow(N.Dot(H),alpha)+Kd;
             //cout<<"L.length: "<<L.Length()<<", N.l: "<<N.Length()<<endl;
             float theta = N.Dot(L);
             //
-            diffuse_color += I_i*(theta>0?theta:0)*kse;
+            diffuse_color += I_i*(theta>0.0?theta:0.0)*kse;
         }
     }
 
@@ -215,8 +225,9 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
     Color re = reflection;
     if(re.Gray()>0 && bounceCount >0){
         
-        Point3 R = 2*N.Dot(V)*N - V; //reflection vector
-
+        float costheta = clamp(N.Dot(V),-1.0,1.0);
+        Point3 R = 2*costheta*N - V; //reflection vector
+        R.Normalize();
         Ray Ray_rf = Ray(P+bias*R, R);
 
         HitInfo hitinfo_rf;
@@ -228,19 +239,20 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
     }
 
     all+=re_color*reflection;
+    
     /**
      ** refraction calculation
     **/
     
-     if(refraction.Gray()>0 && bounceCount>0){
+     if( refraction.Gray()>0 && bounceCount>0){
         //Color reflShade = Color(0,0,0);
-        float R0, re_ratio = 0.0f, ra_ratio = 0.0f;
+        float R0 = 0.0f, re_ratio = 0.0f, ra_ratio = 0.0f;
         
         V.Normalize();//unit vector
         
          //costheta1 may be negative
         float costheta1 = fabsf(V.Dot(N));
-        float sintheta1 = sqrtf(1 - (costheta1 * costheta1));
+        float sintheta1 = sqrtf(max(0.0f,1 - (costheta1 * costheta1)));
         
         float n1 = 1.0, n2 = 1.0;
         if(hInfo.front){ // out -> in
@@ -255,31 +267,34 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
          
          HitInfo hitinfo_ra;
          hitinfo_ra.Init();
-
+         
+         float absorb = 0.0;
         if(sintheta2 <= 1.0){
 
-            float costheta2 = sqrtf(1 - (sintheta2 * sintheta2));
+            float costheta2 = sqrtf(max(0.0f,1 - (sintheta2 * sintheta2)));
             Point3 S = N ^ (N ^ V);
+            N.Normalize();
             S.Normalize();
             Point3 T = -N * costheta2 + S * sintheta2;
 
             Ray Ray_rfa = Ray(P+bias*T, T);
 
             if(TraceNode(rootNode,Ray_rfa,hitinfo_ra)){
-                //cout<<"A temp front: "<< temp.front<<endl;
                 ra_color  =  hitinfo_ra.node->GetMaterial()->Shade(Ray_rfa,hitinfo_ra,lights,bounceCount-1);
-                
+                /*
                 if(!hitinfo_ra.front){
                     ra_color.r *= exp(-absorption.r * hitinfo_ra.z);
                     ra_color.g *= exp(-absorption.g * hitinfo_ra.z);
                     ra_color.b *= exp(-absorption.b * hitinfo_ra.z);
                 }
+                 */
+                absorb = exp(-absorption.r * hitinfo_ra.z);
                 //
                 //Shlick's approximation 
                 R0 = (n1 - n2)/(n1 + n2);
                 R0 = R0*R0;
                 double  tmp = 1.0 - costheta1;
-                re_ratio = R0 + (1.0 - R0) *  tmp * tmp * tmp * tmp * tmp;
+                re_ratio = R0 + (1.0 - R0) * pow(tmp,5.0);
                 ra_ratio = 1.0 - re_ratio;
             }
         }
@@ -291,10 +306,15 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
         /*** 
         **   Reflection because of refraction
         ***/
+        //already calculated
+        re_ra_color = re_color;
+         
         if(re.Gray()>0 && bounceCount >0) re_ra_color = re_color;
+        // not yet calculated
         else if(re_ratio >0.0 && bounceCount >0){
-
-            Point3 R = 2*N.Dot(V)*N - V; //reflection vector
+            
+            float costheta = clamp(N.Dot(V),-1.0,1.0);
+            Point3 R = 2*costheta*N - V; //reflection vector
 
             Ray Ray_rf = Ray(P+bias*R, R);
 
@@ -309,67 +329,127 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
             }
             
         }
+          
          
-        all += refraction * (ra_ratio * ra_color + re_ratio * re_ra_color);
+        all += refraction * (ra_ratio * absorb*ra_color + re_ratio * re_ra_color);
         
-    } 
+    }
+
      
     return all;
 }
 
-bool Sphere::IntersectRay( const Ray &ray, HitInfo &hitinfo, int hitSide ) const{
+bool Sphere::IntersectRay( const Ray &ray, HitInfo &hitinfo,/*&hInfo,*/int hitSide ) const{
+    
+    
 	bool behitted = false;
 	float a = ray.dir.Dot(ray.dir);
 	float c = ray.p.Dot(ray.p)-1;
 	float b = 2*ray.p.Dot(ray.dir);
 	float insqrt = b*b-(4*a*c);
     float zero = 0.001f;
-	if(insqrt>=0){
+	if(insqrt>=zero){
 		float t1 = (-b+sqrtf(insqrt))/(a*2);
 		float t2 = (-b-sqrtf(insqrt))/(a*2);
 		float prez = hitinfo.z;
         
-        float min_t = min(t1,t2);
-        if(min_t>=prez) return false;
+        float min_t = t2;
+        if(min_t>=prez ) return false;
 
-        if((t1>zero && t2<zero) || (t2>zero && t1<zero)) //one is negative
+        if(t1>zero && t2<zero && t1<prez) //one is negative
         {
-            float max_t = max(t1,t2);
+            float max_t = t1;
             hitinfo.z = max_t;
             hitinfo.front = false;
             behitted = true;
+            hitinfo.p = hitinfo.z*ray.dir+ray.p;
+            hitinfo.N = hitinfo.p;
+            hitinfo.N.Normalize();
         }
-        else{
-            if(min_t<zero){
+        else if(t1>zero && t2>zero && t2<prez){
+            //if(min_t<zero){
                 //hitinfo.z = prez;
-            	return false;
-            }
-            /*
-            else if(min_t>=prez){
-                hitinfo.z = prez;
-                return false;
-            }
-            */
-            else{
+            //	return false;
+            //}
+            //else{
              	behitted = true;
                 hitinfo.z = min_t;
                 //do not forget to assign front=true
                 hitinfo.front = true;
-            }
+            //}
+            hitinfo.p = hitinfo.z*ray.dir+ray.p;
+            hitinfo.N = hitinfo.p;
+            hitinfo.N.Normalize();
         }
-        hitinfo.p = hitinfo.z*ray.dir+ray.p;
-        hitinfo.N = hitinfo.p;
+     
+        //hitinfo.p = hitinfo.z*ray.dir+ray.p;
+        //hitinfo.N = hitinfo.p;
         //hitinfo.N.Normalize();
+     
 	}
-
+     
 	return behitted;
+     
+    /*
+    bool hit = false;
+    //        float bias = 0.05;
+    float bias = 0.001;
+    
+    // node center and radius
+    Point3 worldcenter;
+    worldcenter.Set(0.0f, 0.0f, 0.0f);
+    
+    float radius = 1.0f;
+    
+    const float a = ray.dir.Dot(ray.dir);
+    const float b = 2.0f * ray.p.Dot(ray.dir);
+    const float c = ray.p.Dot(ray.p) - radius * radius;
+    
+    const float radical = b * b - 4 * a * c;
+    
+    if(radical < 0.0f) hit = false;
+    
+    const float srad = sqrtf(radical);
+    
+    const float t_in = ((-1) * b - srad) / (2.0f * a);
+    const float t_out = ((-1) * b + srad) / (2.0f * a);
+    
+    float t;
+    
+    // if radical == 0 just have one hit point
+    if(t_in == t_out && t_in > bias && hInfo.z > t_in){
+        t = t_in;
+        hit = true;
+        hInfo.z = t;
+        hInfo.p = ray.p + t * ray.dir;
+        hInfo.N = hInfo.p;
+        hInfo.front = true;
+    }else if(t_in >= bias && t_in < t_out && t_in > bias && hInfo.z > t_in){
+        t = t_in;
+        hit = true;
+        hInfo.z = t;
+        hInfo.p = ray.p + t * ray.dir;
+        hInfo.N = hInfo.p;
+        hInfo.front = true;
+    }else if(t_in < bias && t_out >= bias && t_out > bias && hInfo.z > t_out){
+        // hit back face
+        t = t_out;
+        hit = true;
+        hInfo.z = t;
+        hInfo.p = ray.p + t * ray.dir;
+        hInfo.N = hInfo.p;
+        hInfo.front = false;
+    }
+    return hit;
+    */
+
 }
 
 
 
 
 void BeginRender()
-{	
+{
 	
     unsigned num_thread = thread::hardware_concurrency();
     //unsigned num_thread = 1;
@@ -388,7 +468,7 @@ void BeginRender()
     
     cout << "Saving z-buffer image...\n";
     renderImage.ComputeZBufferImage();
-    //renderImage.SaveZImage("/Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj4/prj4_zbuff.png");
+    //renderImage.SaveZImage("prj5_zbuff.png");
     //renderImage.SaveImage("prj5.png");
 }
 
@@ -401,8 +481,8 @@ void StopRender(){
 
 int main(int argc, const char * argv[]) {
     pIt.Init();
-    const char *file = "box.xml";
-    //const char *file = "scene.xml";
+    //const char *file = "box.xml";
+    const char *file = "scene.xml";
     LoadScene(file);
     ShowViewport();
     

@@ -51,6 +51,7 @@ typedef unsigned char uchar;
 
 #define BIGFLOAT 1.0e30f
 
+
 //-------------------------------------------------------------------------------
 
 class Ray
