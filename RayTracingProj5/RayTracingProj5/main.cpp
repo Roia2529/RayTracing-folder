@@ -110,11 +110,11 @@ void RenderPixel(pixelIterator &it){
     x_new.Normalize();
     Matrix3 m(x_new,camera.up, z_new);
 
-    int bouncelimit = 20;
+    int bouncelimit = 10;
     
     while(it.GetPixel(x,y)){
         //debug
-        if (x==447 && y == 477) {
+        if (x==437 && y == 353) {
             std::cout << "xx" << std::endl;
         }
         
@@ -291,8 +291,8 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
         /*** 
         **   Reflection because of refraction
         ***/
-        
-        if(re_ratio >0.0 && bounceCount >0){
+        if(re.Gray()>0 && bounceCount >0) re_ra_color = re_color;
+        else if(re_ratio >0.0 && bounceCount >0){
 
             Point3 R = 2*N.Dot(V)*N - V; //reflection vector
 
@@ -300,14 +300,14 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
 
             HitInfo hitinfo_rf;
             hitinfo_rf.Init();
-            re_ra_color = re_color;
-            /*
+            //re_ra_color = re_color;
+            
             if(TraceNode(rootNode,Ray_rf,hitinfo_rf))
             {
                 //don't need to multiply with reflection
                 re_ra_color =  hitinfo_rf.node->GetMaterial()->Shade(Ray_rf, hitinfo_rf, lights, bounceCount - 1);
             }
-             */
+            
         }
          
         all += refraction * (ra_ratio * ra_color + re_ratio * re_ra_color);
@@ -389,7 +389,7 @@ void BeginRender()
     cout << "Saving z-buffer image...\n";
     renderImage.ComputeZBufferImage();
     //renderImage.SaveZImage("/Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj4/prj4_zbuff.png");
-    //renderImage.SaveImage("prj4.png");
+    //renderImage.SaveImage("prj5.png");
 }
 
 void StopRender(){
@@ -401,8 +401,8 @@ void StopRender(){
 
 int main(int argc, const char * argv[]) {
     pIt.Init();
-    //const char *file = "simplescene.xml"; //can't load the file
-    const char *file = "scene.xml";
+    const char *file = "box.xml";
+    //const char *file = "scene.xml";
     LoadScene(file);
     ShowViewport();
     

@@ -120,15 +120,19 @@ public:
     
     // Returns true if the ray intersects with the box for any parameter that is smaller than t_max; otherwise, returns false.
     bool IntersectRay(const Ray &r, float t_max) const{
+        
+        if (IsInside(r.p)) return true;//
+        
         Point3 corner0 = Corner(0);
         Point3 corner7 = Corner(7);
         float tenter = -t_max;
         float texit = t_max;
+        
         //check x axis boundary
         float bound_low = corner0.x;
         float bound_hi = corner7.x;
         
-        if(r.dir.x!=0.0){
+        if(r.dir.x!=0.0f){
             float tx0 = (bound_low-r.p.x)/r.dir.x;
             float tx1 = (bound_hi-r.p.x)/r.dir.x;
             //swap
@@ -140,7 +144,7 @@ public:
             tenter = max(tx0,tenter);
             texit = min(tx1,texit);
         }
-        if(r.dir.y!=0.0){
+        if(r.dir.y!=0.0f){
             bound_low = corner0.y;
             bound_hi  = corner7.y;
             float ty0 = (bound_low-r.p.y)/r.dir.y;
@@ -154,7 +158,7 @@ public:
             tenter = max(ty0,tenter);
             texit = min(ty1,texit);
         }
-        if(r.dir.z!=0.0){
+        if(r.dir.z!=0.0f){
             bound_low = corner0.z;
             bound_hi  = corner7.z;
             float tz0 = (bound_low-r.p.z)/r.dir.z;

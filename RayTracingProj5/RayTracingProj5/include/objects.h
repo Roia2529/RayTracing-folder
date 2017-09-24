@@ -72,11 +72,12 @@ public:
         float t_max = BIGFLOAT; //Should be BIGFLOAT!
         //get box
         Box box_tri = GetBoundBox();
-        if(box_tri.IsInside(ray.p)) return true;
+        //if(box_tri.IsInside(ray.p)) return true;
         if(!box_tri.IntersectRay(ray,t_max)) return false;
         
         bool hit = false;
         //for each triangle face
+        //std::cout<<"NF(): "<<NF()<<std::endl;
         for(int i=0;i<NF();i++){
             hit |=IntersectTriangle(ray,hInfo,hitSide,i);
         }
@@ -95,7 +96,7 @@ public:
     
 private:
     bool IntersectTriangle( const Ray &ray, HitInfo &hInfo, int hitSide, unsigned int faceID ) const{
-        float bias = 0.001f;
+        float bias = 1e-7f;//0.001f;
         TriFace triface = F(faceID);
         Point3 A = V(triface.v[0]);
         Point3 B = V(triface.v[1]);
@@ -109,36 +110,36 @@ private:
         if(t<bias || t>=hInfo.z || t>=BIGFLOAT) return false;
         
         //find plane to project to
-        int maxN = max(fabs(tNormal.x),fabs(tNormal.y));
+        float maxN = max(fabs(tNormal.x),fabs(tNormal.y));
         maxN = max(fabs(tNormal.z),maxN);
         
         Point3 P = ray.p + t * ray.dir;
         
-        Point2 p1,p2,p3,pp;
+        Point2 pa,pb,pc,pp;
         if(maxN==fabs(tNormal.x)){
-            p1 = Point2(A.y, A.z);
-            p2 = Point2(B.y, B.z);
-            p3 = Point2(C.y, C.z);
+            pa = Point2(A.y, A.z);
+            pb = Point2(B.y, B.z);
+            pc = Point2(C.y, C.z);
             pp = Point2(P.y, P.z);
         }
         else if(maxN==fabs(tNormal.y)){
-            p1 = Point2(A.x, A.z);
-            p2 = Point2(B.x, B.z);
-            p3 = Point2(C.x, C.z);
+            pa = Point2(A.x, A.z);
+            pb = Point2(B.x, B.z);
+            pc = Point2(C.x, C.z);
             pp = Point2(P.x, P.z);
         }
         else{
-            p1 = Point2(A.x, A.y);
-            p2 = Point2(B.x, B.y);
-            p3 = Point2(C.x, C.y);
+            pa = Point2(A.x, A.y);
+            pb = Point2(B.x, B.y);
+            pc = Point2(C.x, C.y);
             pp = Point2(P.x, P.y);
         }
         
-        float area_tri = (p2 - p1).Cross(p3 - p1);
-        float area_23p = (p3 - pp).Cross(p2 - pp);
-        float area_13p = (pp - p1).Cross(p3 - p1);
-        float alpha = area_23p/area_tri;
-        float beta = area_13p/area_tri;
+        float area_tri = (pa - pc).Cross(pb - pc);
+        float area_bcp = (pp - pc).Cross(pb - pc);
+        float area_acp = (pa - pc).Cross(pp - pc);
+        float alpha = area_bcp/area_tri;
+        float beta = area_acp/area_tri;
         float gamma = 1.0-alpha-beta;
         
         if(alpha<-bias || beta<-bias || gamma<-bias || alpha>1.0 || beta>1.0 || gamma>1.0 ) return false;
@@ -147,6 +148,7 @@ private:
         hInfo.front = true;
         hInfo.p = P;
         hInfo.N = P_Normal;
+        hInfo.N.Normalize();
         hInfo.z = t;
         
         return true;
