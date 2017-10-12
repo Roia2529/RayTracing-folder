@@ -3,8 +3,8 @@
 ///
 /// \file       objects.h
 /// \author     Cem Yuksel (www.cemyuksel.com)
-/// \version    5.0
-/// \date       September 24, 2015
+/// \version    6.0
+/// \date       September 30, 2015
 ///
 /// \brief Example source for CS 6620 - University of Utah.
 ///
@@ -15,6 +15,7 @@
 
 #include "scene.h"
 #include "cyTriMesh.h"
+#include "cyBVH.h"
 
 //-------------------------------------------------------------------------------
 
@@ -33,8 +34,7 @@ extern Sphere theSphere;
 class Plane : public Object
 {
 public:
-    bool IntersectRay( const Ray &ray, HitInfo &hInfo, int hitSide=HIT_FRONT ) const
-    {
+    bool IntersectRay( const Ray &ray, HitInfo &hInfo, int hitSide=HIT_FRONT ) const{
         float zero = 0.001f;
         Point3 P = ray.p;
         Point3 d = ray.dir;
@@ -57,6 +57,7 @@ public:
         }
         return false;
     }
+
     virtual Box GetBoundBox() const { return Box(-1,-1,0,1,1,0); }
     virtual void ViewportDisplay(const Material *mtl) const;
 };
@@ -69,32 +70,28 @@ class TriObj : public Object, public cyTriMesh
 {
 public:
     bool IntersectRay( const Ray &ray, HitInfo &hInfo, int hitSide=HIT_FRONT ) const{
-        float t_max = BIGFLOAT; //Should be BIGFLOAT!
-        //get box
-        Box box_tri = GetBoundBox();
-        //if(box_tri.IsInside(ray.p)) return true;
-        if(!box_tri.IntersectRay(ray,t_max)) return false;
         
-        bool hit = false;
-        //for each triangle face
-        //std::cout<<"NF(): "<<NF()<<std::endl;
-        for(int i=0;i<NF();i++){
-            hit |=IntersectTriangle(ray,hInfo,hitSide,i);
+        if(TraceBVHNode(ray, hInfo, hitSide, bvh.GetRootNodeID())){
+            return true;
         }
-        return hit;
+        return false;
     }
     virtual Box GetBoundBox() const { return Box(GetBoundMin(),GetBoundMax()); }
     virtual void ViewportDisplay(const Material *mtl) const;
     
     bool Load(const char *filename)
     {
+        bvh.Clear();
         if ( ! LoadFromFileObj( filename ) ) return false;
         if ( ! HasNormals() ) ComputeNormals();
         ComputeBoundingBox();
+        bvh.SetMesh(this,4);
         return true;
     }
     
 private:
+    cyBVHTriMesh bvh;
+           
     bool IntersectTriangle( const Ray &ray, HitInfo &hInfo, int hitSide, unsigned int faceID ) const{
         float bias = 1e-7f;//0.001f;
         TriFace triface = F(faceID);
@@ -152,6 +149,40 @@ private:
         hInfo.z = t;
         
         return true;
+    }
+           
+           
+    bool TraceBVHNode( const Ray &ray, HitInfo &hInfo, int hitSide, unsigned int nodeID ) const{
+        
+        Box nodebox = Box(bvh.GetNodeBounds(nodeID));
+        bool Hitted = false;
+        
+        if(!nodebox.IntersectRay(ray, BIGFLOAT)){
+            return false;
+        }
+        else{
+            if(bvh.IsLeafNode(nodeID)){
+                
+                unsigned int* elements = (unsigned int*)bvh.GetNodeElements(nodeID);
+                for(int i = 0; i < bvh.GetNodeElementCount(nodeID); i++){
+                    if(IntersectTriangle(ray, hInfo, hitSide, elements[i])){
+                        Hitted = true;
+                    }
+                }
+                return Hitted;
+            }
+            
+            else{
+                if(TraceBVHNode(ray, hInfo, hitSide, bvh.GetFirstChildNode(nodeID))){
+                    Hitted = true;
+                }
+                if(TraceBVHNode(ray, hInfo, hitSide, bvh.GetSecondChildNode(nodeID))){
+                    Hitted = true;
+                }
+            }
+            
+        }
+        return Hitted;
     }
 };
 

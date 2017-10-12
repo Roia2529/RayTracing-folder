@@ -1,8 +1,8 @@
 //
 //  main.cpp
-//  RayTracingP05
+//  RayTracingP06
 //
-//  Created by Hsuan Lee on 9/21/17.
+//  Created by Hsuan Lee on 9/27/17.
 //  Copyright © 2017 Hsuan Lee. All rights reserved.
 //
 
@@ -467,9 +467,9 @@ void BeginRender()
     }
     
     cout << "Saving z-buffer image...\n";
-    renderImage.ComputeZBufferImage();
-    //renderImage.SaveZImage("prj5_zbuff.png");
-    //renderImage.SaveImage("prj5.png");
+    //renderImage.ComputeZBufferImage();
+    //renderImage.SaveZImage("prj6_zbuff.png");
+    renderImage.SaveImage("prj6.png");
 }
 
 void StopRender(){

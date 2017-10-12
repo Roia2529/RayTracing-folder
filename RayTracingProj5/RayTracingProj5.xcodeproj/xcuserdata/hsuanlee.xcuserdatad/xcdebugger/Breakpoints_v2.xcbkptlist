@@ -383,6 +383,38 @@
             endingLineNumber = "472"
             landmarkName = "BeginRender()"
             landmarkType = "9">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BeginRender()"
+                  moduleName = "RayTracingProj5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj5/RayTracingProj5/main.cpp"
+                  timestampString = "527997846.946108"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "473"
+                  endingLineNumber = "473"
+                  offsetFromSymbolStart = "942">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BeginRender()"
+                  moduleName = "RayTracingProj5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj5/RayTracingProj5/main.cpp"
+                  timestampString = "527997846.947383"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "473"
+                  endingLineNumber = "473"
+                  offsetFromSymbolStart = "1150">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -399,6 +431,38 @@
             endingLineNumber = "471"
             landmarkName = "BeginRender()"
             landmarkType = "9">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BeginRender()"
+                  moduleName = "RayTracingProj5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj5/RayTracingProj5/main.cpp"
+                  timestampString = "527997846.952164"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "473"
+                  endingLineNumber = "473"
+                  offsetFromSymbolStart = "942">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BeginRender()"
+                  moduleName = "RayTracingProj5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj5/RayTracingProj5/main.cpp"
+                  timestampString = "527997846.954692"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "473"
+                  endingLineNumber = "473"
+                  offsetFromSymbolStart = "1150">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
