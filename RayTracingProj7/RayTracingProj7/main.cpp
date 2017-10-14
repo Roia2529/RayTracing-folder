@@ -113,8 +113,10 @@ void RenderPixel(pixelIterator &it){
     b.Set(-w/2,h/2,-l);
     float u = w/camera.imgWidth;
     float v = -h/camera.imgHeight;
-    b.x+=u/2;
-    b.y+=v/2;
+    float du = u/2, dv = v/2;
+    
+    b.x+=du;
+    b.y+=dv;
     
     Point3 z_new = -1*(camera.dir);
     Point3 x_new = camera.up ^ z_new;
@@ -127,7 +129,7 @@ void RenderPixel(pixelIterator &it){
     
     while(it.GetPixel(x,y)){
         //debug
-        if (x==437 && y == 353) {
+        if (x==216 && y == 369) {
             std::cout << "xx" << std::endl;
         }
         
@@ -136,15 +138,19 @@ void RenderPixel(pixelIterator &it){
         Ray ray_pixel(camera.pos,tmp);
         ray_pixel.dir=m*(ray_pixel.dir);
         ray_pixel.dir.Normalize();
+        ray_pixel.yangle = tan(fabs(dv));
+        ray_pixel.xangle = tan(fabs(du));
         
         HitInfo hitinfo;
         hitinfo.Init();
+        bool hit = false;
         
+        int index = y*camera.imgWidth+x;
         if(rootNode.GetNumChild()>0){
             
-            int index = y*camera.imgWidth+x;
             if(Trace(ray_pixel,hitinfo)){
                 //set color
+                hit = true;
                 setPixelColor(index,hitinfo.z,hitinfo.node->GetMaterial()->Shade(ray_pixel, hitinfo, lights,bouncelimit));
             }
             else{
@@ -153,6 +159,13 @@ void RenderPixel(pixelIterator &it){
             }
             renderImage.IncrementNumRenderPixel(1);
         }
+        /*
+         if(!hit){
+            Point3 uvw = Point3((float)x*u/camera.imgWidth,(float)y*v/camera.imgHeight,0);
+            setPixelColor(index,BIGFLOAT,background.Sample(uvw));
+        }
+         */
+        
     }
 }
 
@@ -288,22 +301,18 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
 
             if(TraceNode(rootNode,Ray_rfa,hitinfo_ra)){
                 ra_color  =  hitinfo_ra.node->GetMaterial()->Shade(Ray_rfa,hitinfo_ra,lights,bounceCount-1);
-                /*
-                if(!hitinfo_ra.front){
-                    ra_color.r *= exp(-absorption.r * hitinfo_ra.z);
-                    ra_color.g *= exp(-absorption.g * hitinfo_ra.z);
-                    ra_color.b *= exp(-absorption.b * hitinfo_ra.z);
-                }
-                 */
-                absorb = exp(-absorption.r * hitinfo_ra.z);
-                //
-                //Shlick's approximation 
-                R0 = (n1 - n2)/(n1 + n2);
-                R0 = R0*R0;
-                double  tmp = 1.0 - costheta1;
-                re_ratio = R0 + (1.0 - R0) * pow(tmp,5.0);
-                ra_ratio = 1.0 - re_ratio;
             }
+            else{
+                ra_color = environment.SampleEnvironment(Ray_rfa.dir);
+            }
+            absorb = exp(-absorption.r * hitinfo_ra.z);
+            //
+            //Shlick's approximation
+            R0 = (n1 - n2)/(n1 + n2);
+            R0 = R0*R0;
+            double  tmp = 1.0 - costheta1;
+            re_ratio = R0 + (1.0 - R0) * pow(tmp,5.0);
+            ra_ratio = 1.0 - re_ratio;
         }
         else {
             // complete reflection
@@ -315,32 +324,8 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
         ***/
         //already calculated
         re_ra_color = re_color;
-        
-        /*
-        if(re.Gray()>0 && bounceCount >0) re_ra_color = re_color;
-        // not yet calculated
-        else if(re_ratio >0.0 && bounceCount >0){
-            
-            float costheta = clamp(N.Dot(V),-1.0,1.0);
-            Point3 R = 2*costheta*N - V; //reflection vector
-
-            Ray Ray_rf = Ray(P+bias*R, R);
-
-            HitInfo hitinfo_rf;
-            hitinfo_rf.Init();
-            //re_ra_color = re_color;
-            
-            if(TraceNode(rootNode,Ray_rf,hitinfo_rf))
-            {
-                //don't need to multiply with reflection
-            re_ra_color =  hitinfo_rf.node->GetMaterial()->Shade(Ray_rf, hitinfo_rf, lights, bounceCount - 1);
-            }
-            
-        }
-         */
-          
          
-        all += refraction.GetColor() * (ra_ratio * absorb*ra_color + re_ratio * re_ra_color);
+        all += refraction.GetColor() * (ra_ratio * absorb * ra_color + re_ratio * re_ra_color);
         
     }
 
@@ -406,9 +391,9 @@ bool Sphere::IntersectRay( const Ray &ray, HitInfo &hitinfo,/*&hInfo,*/int hitSi
 void BeginRender()
 {
 	
-    unsigned num_thread = thread::hardware_concurrency()*2;
-    //unsigned num_thread = 1;
-    renderImage.SaveImage("prj7input.png");
+    //unsigned num_thread = thread::hardware_concurrency()*2;
+    unsigned num_thread = 1;
+    //renderImage.SaveImage("prj7input.png");
     
     cout<<"number of threads: "<<num_thread<<"\n";
     vector<thread> thr;

@@ -33,6 +33,14 @@ extern Sphere theSphere;
 class Plane : public Object
 {
 public:
+    void calculateduvw(const Ray &ray, HitInfo &hinfo)const{
+        Point3 d = ray.dir.GetNormalized();
+        Point3 newy = (d^hinfo.N).GetNormalized();
+        hinfo.duvw[0] = hinfo.z*ray.yangle*newy*ray.dir.Length();
+        
+        hinfo.duvw[1] = hinfo.z*ray.xangle*(newy^hinfo.N).GetNormalized()*ray.dir.Length();
+    }
+    
     bool IntersectRay( const Ray &ray, HitInfo &hInfo, int hitSide=HIT_FRONT ) const{
         float zero = 0.001f;
         Point3 P = ray.p;
@@ -53,8 +61,9 @@ public:
                 else hInfo.front = true;
                 
                 hInfo.uvw = Point3((hInfo.p.x+1)/2,(hInfo.p.y+1)/2,0);
-                //hInfo.duvw[0] = ray;
-                //hInfo.duvw[1] = Point3();
+                //calculateduvw(ray,hInfo);
+                //hInfo.duvw[0] = Point3(0.001, 0, 0);
+                //hInfo.duvw[1] = Point3(0,   0.001,0);
                 return true;
             }
         }

@@ -61,7 +61,7 @@ class Ray
 {
 public:
     Point3 p, dir;
-    
+    float yangle, xangle;
     Ray() {}
     Ray(const Point3 &_p, const Point3 &_dir) : p(_p), dir(_dir) {}
     Ray(const Ray &r) : p(r.p), dir(r.dir) {}
