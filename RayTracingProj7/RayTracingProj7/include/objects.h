@@ -21,7 +21,53 @@
 class Sphere : public Object
 {
 public:
-    virtual bool IntersectRay( const Ray &ray, HitInfo &hInfo, int hitSide=HIT_FRONT ) const;
+    bool IntersectRay( const Ray &ray, HitInfo &hitinfo, int hitSide=HIT_FRONT ) const{
+            
+            bool behitted = false;
+            float a = ray.dir.Dot(ray.dir);
+            float c = ray.p.Dot(ray.p)-1;
+            float b = 2*ray.p.Dot(ray.dir);
+            float insqrt = b*b-(4*a*c);
+            float zero = 0.001f;
+            if(insqrt>=zero){
+                float t1 = (-b+sqrtf(insqrt))/(a*2);
+                float t2 = (-b-sqrtf(insqrt))/(a*2);
+                float prez = hitinfo.z;
+                
+                float min_t = t2;
+                if(min_t>=prez ) return false;
+                
+                if(t1>zero && t2<zero && t1<prez) //one is negative
+                {
+                    float max_t = t1;
+                    hitinfo.z = max_t;
+                    hitinfo.front = false;
+                    behitted = true;
+                    hitinfo.p = hitinfo.z*ray.dir+ray.p;
+                    hitinfo.N = hitinfo.p;
+                    hitinfo.N.Normalize();
+                    float u = 0.5 - atan2(hitinfo.p.x,hitinfo.p.y)/ (2 * M_PI);
+                    float v = 0.5 + asin(hitinfo.p.z)/M_PI;
+                    hitinfo.uvw = Point3(u,v,0);
+                }
+                else if(t1>zero && t2>zero && t2<prez){
+                    
+                    behitted = true;
+                    hitinfo.z = min_t;
+                    //do not forget to assign front=true
+                    hitinfo.front = true;
+                    //}
+                    hitinfo.p = hitinfo.z*ray.dir+ray.p;
+                    hitinfo.N = hitinfo.p;
+                    hitinfo.N.Normalize();
+                    float u = 0.5 - atan2(hitinfo.p.x,hitinfo.p.y)/ (2 * M_PI);
+                    float temp = asin(hitinfo.p.z);
+                    float v = 0.5 + asin(hitinfo.p.z)/M_PI;
+                    hitinfo.uvw = Point3(u,v,0);
+                }
+            }
+            return behitted;
+        }
     virtual Box GetBoundBox() const { return Box(-1,-1,-1,1,1,1); }
     virtual void ViewportDisplay(const Material *mtl) const;
 };
@@ -36,9 +82,9 @@ public:
     void calculateduvw(const Ray &ray, HitInfo &hinfo)const{
         Point3 d = ray.dir.GetNormalized();
         Point3 newy = (d^hinfo.N).GetNormalized();
-        hinfo.duvw[0] = hinfo.z*ray.yangle*newy*ray.dir.Length();
+        hinfo.duvw[0] = hinfo.z*ray.yangle*newy*ray.dir.Length()*2;
         
-        hinfo.duvw[1] = hinfo.z*ray.xangle*(newy^hinfo.N).GetNormalized()*ray.dir.Length();
+        hinfo.duvw[1] = hinfo.z*ray.xangle*(newy^hinfo.N).GetNormalized()*ray.dir.Length()*2;
     }
     
     bool IntersectRay( const Ray &ray, HitInfo &hInfo, int hitSide=HIT_FRONT ) const{
@@ -103,6 +149,13 @@ public:
     
 private:
     cyBVHTriMesh bvh;
+    void calculateduvw(const Ray &ray, HitInfo &hinfo)const{
+        Point3 d = ray.dir.GetNormalized();
+        Point3 newy = (d^hinfo.N).GetNormalized();
+        hinfo.duvw[0] = hinfo.z*ray.yangle*newy*ray.dir.Length();
+        
+        hinfo.duvw[1] = hinfo.z*ray.xangle*(newy^hinfo.N).GetNormalized()*ray.dir.Length();
+    }
            
     bool IntersectTriangle( const Ray &ray, HitInfo &hInfo, int hitSide, unsigned int faceID ) const{
         float bias = 1e-7f;//0.001f;
@@ -160,6 +213,7 @@ private:
         hInfo.N.Normalize();
         hInfo.z = t;
         hInfo.uvw = GetTexCoord(faceID, Point3(alpha,beta,gamma));
+        //calculateduvw(ray,hInfo);
         return true;
     }
            

@@ -333,66 +333,11 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
     return all;
 }
 
-bool Sphere::IntersectRay( const Ray &ray, HitInfo &hitinfo,/*&hInfo,*/int hitSide ) const{
-    
-    
-	bool behitted = false;
-	float a = ray.dir.Dot(ray.dir);
-	float c = ray.p.Dot(ray.p)-1;
-	float b = 2*ray.p.Dot(ray.dir);
-	float insqrt = b*b-(4*a*c);
-    float zero = 0.001f;
-	if(insqrt>=zero){
-		float t1 = (-b+sqrtf(insqrt))/(a*2);
-		float t2 = (-b-sqrtf(insqrt))/(a*2);
-		float prez = hitinfo.z;
-        
-        float min_t = t2;
-        if(min_t>=prez ) return false;
-
-        if(t1>zero && t2<zero && t1<prez) //one is negative
-        {
-            float max_t = t1;
-            hitinfo.z = max_t;
-            hitinfo.front = false;
-            behitted = true;
-            hitinfo.p = hitinfo.z*ray.dir+ray.p;
-            hitinfo.N = hitinfo.p;
-            hitinfo.N.Normalize();
-            float u = 0.5 - atan2(hitinfo.p.y,hitinfo.p.x)/ (2 * M_PI);
-            float v = 0.5 - asin(hitinfo.p.z)/M_PI;
-            hitinfo.uvw = Point3(u,v,0);
-        }
-        else if(t1>zero && t2>zero && t2<prez){
-
-             	behitted = true;
-                hitinfo.z = min_t;
-                //do not forget to assign front=true
-                hitinfo.front = true;
-            //}
-            hitinfo.p = hitinfo.z*ray.dir+ray.p;
-            hitinfo.N = hitinfo.p;
-            hitinfo.N.Normalize();
-            float u = 0.5 - atan2(hitinfo.p.y,hitinfo.p.x)/ (2 * M_PI);
-            float v = 0.5 - asin(hitinfo.p.z)/M_PI;
-            hitinfo.uvw = Point3(u,v,0);
-        }
-        
-     
-	}
-    
-	return behitted;
-
-}
-
-
-
-
 void BeginRender()
 {
 	
-    //unsigned num_thread = thread::hardware_concurrency()*2;
-    unsigned num_thread = 1;
+    unsigned num_thread = thread::hardware_concurrency()*2;
+    //unsigned num_thread = 1;
     //renderImage.SaveImage("prj7input.png");
     
     cout<<"number of threads: "<<num_thread<<"\n";
