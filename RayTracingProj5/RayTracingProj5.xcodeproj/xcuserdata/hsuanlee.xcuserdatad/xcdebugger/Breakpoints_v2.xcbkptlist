@@ -372,7 +372,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RayTracingProj5/main.cpp"
@@ -385,34 +385,34 @@
             landmarkType = "9">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "BeginRender()"
                   moduleName = "RayTracingProj5"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj5/RayTracingProj5/main.cpp"
-                  timestampString = "527997846.946108"
+                  timestampString = "529740276.706463"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "473"
                   endingLineNumber = "473"
-                  offsetFromSymbolStart = "942">
+                  offsetFromSymbolStart = "965">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "BeginRender()"
                   moduleName = "RayTracingProj5"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj5/RayTracingProj5/main.cpp"
-                  timestampString = "527997846.947383"
+                  timestampString = "529740276.712651"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "473"
                   endingLineNumber = "473"
-                  offsetFromSymbolStart = "1150">
+                  offsetFromSymbolStart = "1173">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -420,7 +420,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RayTracingProj5/main.cpp"
@@ -433,34 +433,34 @@
             landmarkType = "9">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "BeginRender()"
                   moduleName = "RayTracingProj5"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj5/RayTracingProj5/main.cpp"
-                  timestampString = "527997846.952164"
+                  timestampString = "529740276.727223"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "473"
                   endingLineNumber = "473"
-                  offsetFromSymbolStart = "942">
+                  offsetFromSymbolStart = "965">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "BeginRender()"
                   moduleName = "RayTracingProj5"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj5/RayTracingProj5/main.cpp"
-                  timestampString = "527997846.954692"
+                  timestampString = "529740276.784244"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "473"
                   endingLineNumber = "473"
-                  offsetFromSymbolStart = "1150">
+                  offsetFromSymbolStart = "1173">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -495,6 +495,86 @@
             endingLineNumber = "317"
             landmarkName = "MtlBlinn::Shade(const Ray &amp;ray, const HitInfo &amp;hInfo, const LightList &amp;lights, int bounceCount)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RayTracingProj5/main.cpp"
+            timestampString = "529740239.454421"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "458"
+            endingLineNumber = "458"
+            landmarkName = "BeginRender()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RayTracingProj5/main.cpp"
+            timestampString = "529740334.308982"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "457"
+            endingLineNumber = "457"
+            landmarkName = "BeginRender()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RayTracingProj5/main.cpp"
+            timestampString = "529740375.828535"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "455"
+            endingLineNumber = "455"
+            landmarkName = "BeginRender()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RayTracingProj5/main.cpp"
+            timestampString = "529740376.963356"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "454"
+            endingLineNumber = "454"
+            landmarkName = "BeginRender()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RayTracingProj5/main.cpp"
+            timestampString = "529740400.894661"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "456"
+            endingLineNumber = "456"
+            landmarkName = "BeginRender()"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

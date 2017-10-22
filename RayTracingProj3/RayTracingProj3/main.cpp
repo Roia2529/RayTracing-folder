@@ -226,7 +226,7 @@ bool Sphere::IntersectRay( const Ray &ray, HitInfo &hitinfo, int hitSide ) const
 void BeginRender()
 {	
 	cout<<"call by GlutKeyboard() in viewport.cpp\n";
-	//renderImage.SaveImage("/Users/hsuanlee/Documents/Cpp/RayTracingP02/RayTracingP02/prj2input.png");
+	renderImage.SaveImage("prj3input.png");
     
     unsigned num_thread = thread::hardware_concurrency();
     vector<thread> thr;

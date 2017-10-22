@@ -191,7 +191,7 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
         else{
             Color I_i = lights[i]->Illuminate(P,N);
             Point3 L = -1*(lights[i]->Direction(P));
-            Point3 V = camera.pos - hInfo.p;
+            Point3 V = -ray.dir;
             V.Normalize();
             Point3 LpV = L+V;
             Point3 H = LpV/LpV.Length();
@@ -369,7 +369,7 @@ void BeginRender()
 	
     //unsigned num_thread = thread::hardware_concurrency();
     unsigned num_thread = 1;
-    
+    renderImage.SaveImage("/Users/hsuanlee/Documents/Cpp/RayTracing/RayTracingProj4/prj4input.png");
     cout<<"number of threads: "<<num_thread<<"\n";
     vector<thread> thr;
     for(int j=0;j<num_thread;j++){
