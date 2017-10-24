@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		F29347A71F993BAE007678D0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F29347A61F993BAE007678D0 /* main.cpp */; };
+		F29347AF1F993BC1007678D0 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F29347AE1F993BC1007678D0 /* GLUT.framework */; };
+		F29347B11F993BC8007678D0 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F29347B01F993BC8007678D0 /* OpenGL.framework */; };
+		F29347DE1F995228007678D0 /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F29347C11F995228007678D0 /* lodepng.cpp */; };
+		F29347E01F995228007678D0 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = F29347CF1F995228007678D0 /* Makefile */; };
+		F29347E11F995228007678D0 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F29347D11F995228007678D0 /* tinystr.cpp */; };
+		F29347E21F995228007678D0 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F29347D31F995228007678D0 /* tinyxml.cpp */; };
+		F29347E31F995228007678D0 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F29347D61F995228007678D0 /* tinyxmlerror.cpp */; };
+		F29347E41F995228007678D0 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F29347D71F995228007678D0 /* tinyxmlparser.cpp */; };
+		F2E2F3D31F99671100839632 /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F29347CC1F995228007678D0 /* texture.cpp */; };
+		F2E2F3D61F99682400839632 /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2E2F3D41F99682400839632 /* scene.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +35,50 @@
 /* Begin PBXFileReference section */
 		F29347A31F993BAE007678D0 /* RayTracingProj8 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RayTracingProj8; sourceTree = BUILT_PRODUCTS_DIR; };
 		F29347A61F993BAE007678D0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		F29347AE1F993BC1007678D0 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		F29347B01F993BC8007678D0 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		F29347B21F995228007678D0 /* box.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = box.xml; sourceTree = "<group>"; };
+		F29347B31F995228007678D0 /* bricks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bricks.png; sourceTree = "<group>"; };
+		F29347B41F995228007678D0 /* clouds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clouds.png; sourceTree = "<group>"; };
+		F29347B61F995228007678D0 /* cmake_install.cmake */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cmake_install.cmake; sourceTree = "<group>"; };
+		F29347B81F995228007678D0 /* CMakeDirectoryInformation.cmake */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeDirectoryInformation.cmake; sourceTree = "<group>"; };
+		F29347B91F995228007678D0 /* progress.marks */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = progress.marks; sourceTree = "<group>"; };
+		F29347BA1F995228007678D0 /* cyBVH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyBVH.h; sourceTree = "<group>"; };
+		F29347BB1F995228007678D0 /* cyColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyColor.h; sourceTree = "<group>"; };
+		F29347BC1F995228007678D0 /* cyCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyCore.h; sourceTree = "<group>"; };
+		F29347BD1F995228007678D0 /* cyMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyMatrix.h; sourceTree = "<group>"; };
+		F29347BE1F995228007678D0 /* cyPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyPoint.h; sourceTree = "<group>"; };
+		F29347BF1F995228007678D0 /* cyTriMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyTriMesh.h; sourceTree = "<group>"; };
+		F29347C01F995228007678D0 /* lights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lights.h; sourceTree = "<group>"; };
+		F29347C11F995228007678D0 /* lodepng.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lodepng.cpp; sourceTree = "<group>"; };
+		F29347C21F995228007678D0 /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lodepng.h; sourceTree = "<group>"; };
+		F29347C31F995228007678D0 /* materials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = materials.h; sourceTree = "<group>"; };
+		F29347C41F995228007678D0 /* objects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objects.h; sourceTree = "<group>"; };
+		F29347C51F995228007678D0 /* scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene.h; sourceTree = "<group>"; };
+		F29347C61F995228007678D0 /* texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture.h; sourceTree = "<group>"; };
+		F29347C71F995228007678D0 /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
+		F29347C81F995228007678D0 /* prj7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = prj7.png; sourceTree = "<group>"; };
+		F29347C91F995228007678D0 /* scene.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene.xml; sourceTree = "<group>"; };
+		F29347CA1F995228007678D0 /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
+		F29347CB1F995228007678D0 /* teapotlow.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapotlow.obj; sourceTree = "<group>"; };
+		F29347CC1F995228007678D0 /* texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture.cpp; sourceTree = "<group>"; };
+		F29347CE1F995228007678D0 /* changes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = changes.txt; sourceTree = "<group>"; };
+		F29347CF1F995228007678D0 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		F29347D01F995228007678D0 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		F29347D11F995228007678D0 /* tinystr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinystr.cpp; sourceTree = "<group>"; };
+		F29347D21F995228007678D0 /* tinystr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinystr.h; sourceTree = "<group>"; };
+		F29347D31F995228007678D0 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
+		F29347D41F995228007678D0 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
+		F29347D51F995228007678D0 /* tinyxml.sln */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tinyxml.sln; sourceTree = "<group>"; };
+		F29347D61F995228007678D0 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
+		F29347D71F995228007678D0 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
+		F29347D81F995228007678D0 /* utf8test.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = utf8test.gif; sourceTree = "<group>"; };
+		F29347D91F995228007678D0 /* utf8test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = utf8test.xml; sourceTree = "<group>"; };
+		F29347DA1F995228007678D0 /* utf8testverify.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = utf8testverify.xml; sourceTree = "<group>"; };
+		F29347DB1F995228007678D0 /* xmltest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmltest.cpp; sourceTree = "<group>"; };
+		F29347DC1F995228007678D0 /* viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = viewport.cpp; sourceTree = "<group>"; };
+		F29347DD1F995228007678D0 /* xmlload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmlload.cpp; sourceTree = "<group>"; };
+		F2E2F3D41F99682400839632 /* scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +86,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F29347B11F993BC8007678D0 /* OpenGL.framework in Frameworks */,
+				F29347AF1F993BC1007678D0 /* GLUT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +99,7 @@
 			children = (
 				F29347A51F993BAE007678D0 /* RayTracingProj8 */,
 				F29347A41F993BAE007678D0 /* Products */,
+				F29347AD1F993BC0007678D0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,9 +114,84 @@
 		F29347A51F993BAE007678D0 /* RayTracingProj8 */ = {
 			isa = PBXGroup;
 			children = (
+				F29347B21F995228007678D0 /* box.xml */,
+				F29347B31F995228007678D0 /* bricks.png */,
+				F29347B41F995228007678D0 /* clouds.png */,
+				F29347B51F995228007678D0 /* include */,
+				F29347C71F995228007678D0 /* plane.obj */,
+				F29347C81F995228007678D0 /* prj7.png */,
+				F29347C91F995228007678D0 /* scene.xml */,
+				F29347CA1F995228007678D0 /* teapot.obj */,
+				F29347CB1F995228007678D0 /* teapotlow.obj */,
+				F29347CC1F995228007678D0 /* texture.cpp */,
+				F2E2F3D41F99682400839632 /* scene.cpp */,
+				F29347CD1F995228007678D0 /* tinyxml */,
+				F29347DC1F995228007678D0 /* viewport.cpp */,
+				F29347DD1F995228007678D0 /* xmlload.cpp */,
 				F29347A61F993BAE007678D0 /* main.cpp */,
 			);
 			path = RayTracingProj8;
+			sourceTree = "<group>";
+		};
+		F29347AD1F993BC0007678D0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F29347B01F993BC8007678D0 /* OpenGL.framework */,
+				F29347AE1F993BC1007678D0 /* GLUT.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F29347B51F995228007678D0 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				F29347B61F995228007678D0 /* cmake_install.cmake */,
+				F29347B71F995228007678D0 /* CMakeFiles */,
+				F29347BA1F995228007678D0 /* cyBVH.h */,
+				F29347BB1F995228007678D0 /* cyColor.h */,
+				F29347BC1F995228007678D0 /* cyCore.h */,
+				F29347BD1F995228007678D0 /* cyMatrix.h */,
+				F29347BE1F995228007678D0 /* cyPoint.h */,
+				F29347BF1F995228007678D0 /* cyTriMesh.h */,
+				F29347C01F995228007678D0 /* lights.h */,
+				F29347C11F995228007678D0 /* lodepng.cpp */,
+				F29347C21F995228007678D0 /* lodepng.h */,
+				F29347C31F995228007678D0 /* materials.h */,
+				F29347C41F995228007678D0 /* objects.h */,
+				F29347C51F995228007678D0 /* scene.h */,
+				F29347C61F995228007678D0 /* texture.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		F29347B71F995228007678D0 /* CMakeFiles */ = {
+			isa = PBXGroup;
+			children = (
+				F29347B81F995228007678D0 /* CMakeDirectoryInformation.cmake */,
+				F29347B91F995228007678D0 /* progress.marks */,
+			);
+			path = CMakeFiles;
+			sourceTree = "<group>";
+		};
+		F29347CD1F995228007678D0 /* tinyxml */ = {
+			isa = PBXGroup;
+			children = (
+				F29347CE1F995228007678D0 /* changes.txt */,
+				F29347CF1F995228007678D0 /* Makefile */,
+				F29347D01F995228007678D0 /* readme.txt */,
+				F29347D11F995228007678D0 /* tinystr.cpp */,
+				F29347D21F995228007678D0 /* tinystr.h */,
+				F29347D31F995228007678D0 /* tinyxml.cpp */,
+				F29347D41F995228007678D0 /* tinyxml.h */,
+				F29347D51F995228007678D0 /* tinyxml.sln */,
+				F29347D61F995228007678D0 /* tinyxmlerror.cpp */,
+				F29347D71F995228007678D0 /* tinyxmlparser.cpp */,
+				F29347D81F995228007678D0 /* utf8test.gif */,
+				F29347D91F995228007678D0 /* utf8test.xml */,
+				F29347DA1F995228007678D0 /* utf8testverify.xml */,
+				F29347DB1F995228007678D0 /* xmltest.cpp */,
+			);
+			path = tinyxml;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -120,7 +252,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F29347E01F995228007678D0 /* Makefile in Sources */,
+				F2E2F3D61F99682400839632 /* scene.cpp in Sources */,
 				F29347A71F993BAE007678D0 /* main.cpp in Sources */,
+				F29347E21F995228007678D0 /* tinyxml.cpp in Sources */,
+				F29347E11F995228007678D0 /* tinystr.cpp in Sources */,
+				F2E2F3D31F99671100839632 /* texture.cpp in Sources */,
+				F29347E41F995228007678D0 /* tinyxmlparser.cpp in Sources */,
+				F29347E31F995228007678D0 /* tinyxmlerror.cpp in Sources */,
+				F29347DE1F995228007678D0 /* lodepng.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +389,7 @@
 				F29347AC1F993BAE007678D0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,8 +1,8 @@
 //
 //  main.cpp
-//  RayTracingP06
+//  RayTracingP08 Antialiasing
 //
-//  Created by Hsuan Lee on 9/27/17.
+//  Created by Hsuan Lee on 10/22/17.
 //  Copyright © 2017 Hsuan Lee. All rights reserved.
 //
 
@@ -13,6 +13,12 @@
 #include "objects.h"
 #include <math.h>
 #include <algorithm> 
+
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 64
+#define HALTON_BASE_1 2
+#define HALTON_BASE_2 3
+#define THRESHOLD 1e-3f
 
 using namespace std;
 
@@ -101,6 +107,72 @@ void setPixelColor(int index, float z, Color shade){
     *(zb_pixel+ index) = z;
     
 }
+void setPixelSampleCount(int index, float count){
+
+    uchar* zb_pixel = renderImage.GetSampleCount();
+    *(zb_pixel+ index) = count;
+    
+}
+
+void generateSample(vector<Point3> &samplelist, int s, int e, const Point3 base, const float u, const float v){
+
+    for(int j=s;j<e;j++){
+
+        //get shift from Halton
+        //float sx = 0;
+        float sx = Halton(j,HALTON_BASE_1)*u;
+        float sy = v * Halton(j,HALTON_BASE_2);
+        
+        //
+        //if(sx > du * 0.5) { sx -= du; }
+        //if(sy < dv * 0.5) { sy -= dv; }
+       
+        sx += base.x;
+        sy += base.y;
+        
+        Point3 sample = Point3(sx,sy,base.z);
+        samplelist.push_back(sample);
+    }
+}
+
+//(VariantOverThreshold(colorlist, s_start, s_end, variant)
+bool VariantOverThreshold(vector<Color> list){
+    //return false;
+    float ninverse = 1.0/list.size();
+    float rsum = 0, gsum = 0, bsum = 0;
+    float rsquare_sum = 0, gsquare_sum = 0, bsquare_sum = 0;
+    for(int i=0;i<list.size();i++){
+        Color tmpColor = list.at(i);
+        rsum+=tmpColor.r;
+        gsum+=tmpColor.g;
+        bsum+=tmpColor.b;
+        
+        rsquare_sum+=pow(tmpColor.r,2);
+        gsquare_sum+=pow(tmpColor.g,2);
+        bsquare_sum+=pow(tmpColor.b,2);
+    }
+    
+    float ravg = ninverse*rsum;
+    float gavg = ninverse*gsum;
+    float bavg = ninverse*bsum;
+    
+    float rvariance = rsquare_sum*ninverse + pow(ravg, 2) - 2*ravg*ninverse*rsum;
+    float gvariance = gsquare_sum*ninverse + pow(gavg, 2) - 2*gavg*ninverse*gsum;
+    float bvariance = bsquare_sum*ninverse + pow(bavg, 2) - 2*bavg*ninverse*bsum;
+    
+    return (rvariance>THRESHOLD) || (gvariance>THRESHOLD) || (bvariance>THRESHOLD);
+}
+
+Color averageColor(vector<Color> list){
+    int size = (int)list.size();
+    float n = 1/(float)size;
+    Color c(0,0,0);
+    for(int i=0; i<size; i++){
+        c += list.at(i)*n;
+    }
+    return c;
+}
+
 
 void RenderPixel(pixelIterator &it){
     int x,y;
@@ -129,33 +201,87 @@ void RenderPixel(pixelIterator &it){
     
     while(it.GetPixel(x,y)){
         //debug
-        if (x==216 && y == 369) {
+        if (x==403 && y == 276) {
             std::cout << "xx" << std::endl;
         }
         
         Point3 tmp(x*u,y*v,0);
         tmp+=b;
-        Ray ray_pixel(camera.pos,tmp);
-        ray_pixel.dir=m*(ray_pixel.dir);
-        ray_pixel.dir.Normalize();
-        //ray_pixel.yangle = tan(fabs(dv));
-        //ray_pixel.xangle = tan(fabs(du));
+        Ray ray_base(camera.pos,tmp);
+        ray_base.dir=m*(ray_base.dir);
+        ray_base.dir.Normalize();
         
         HitInfo hitinfo;
         hitinfo.Init();
         bool hit = false;
         
         int index = y*camera.imgWidth+x;
+        //from project 7
+        /*
         if(rootNode.GetNumChild()>0){
             
-            if(Trace(ray_pixel,hitinfo)){
+            if(Trace(ray_base,hitinfo)){
                 //set color
                 hit = true;
-                setPixelColor(index,hitinfo.z,hitinfo.node->GetMaterial()->Shade(ray_pixel, hitinfo, lights,bouncelimit));
+                setPixelColor(index,hitinfo.z,hitinfo.node->GetMaterial()->Shade(ray_base, hitinfo, lights,bouncelimit));
             }
             else{
                 Point3 uvw = Point3((float)x/camera.imgWidth,(float)y/camera.imgHeight,0);
                 setPixelColor(index,BIGFLOAT,background.Sample(uvw));
+            }
+            renderImage.IncrementNumRenderPixel(1);
+        }
+         */
+        ///*
+        float hitz = 0;
+        if(rootNode.GetNumChild()>0){
+            vector<Color> colorlist;
+            vector<Point3> samplelist;
+            int s_start = 0;
+            int s_end = MIN_SAMPLE;
+            //int newend = 0;
+            //float variant = 0;
+            
+
+            while(s_start==0 || (VariantOverThreshold(colorlist) && s_start!=MAX_SAMPLE)){
+                //initial: 4 sample
+                generateSample(samplelist, s_start, s_end, tmp, u, v);
+
+                for(int k=s_start;k<s_end;k++){
+                    hitinfo.Init();
+
+                    Point3 sampleloc = samplelist.at(k);
+                    Ray ray_pixel(camera.pos,sampleloc);
+                    ray_pixel.dir=m*(ray_pixel.dir);
+                    ray_pixel.dir.Normalize();
+
+                    if(Trace(ray_pixel,hitinfo)){
+                        //set color
+                        hit = true;
+                        colorlist.push_back(hitinfo.node->GetMaterial()->Shade(ray_pixel, hitinfo, lights,bouncelimit));
+                        
+                        hitz =hitinfo.z;
+                    }//end if
+                }//end for
+                
+                s_start+=4; s_end+=4;
+                if(!hit) break;
+                
+            }//end of while
+
+            if(hit){
+                //set average color in colorlist
+                Color avgColor = averageColor(colorlist);
+                if(colorlist.size()<5)
+                    setPixelSampleCount(index,0);
+                else
+                    setPixelSampleCount(index,255);
+                setPixelColor(index,hitz,avgColor);
+            }
+            else{
+                Point3 uvw = Point3((float)x/camera.imgWidth,(float)y/camera.imgHeight,0);
+                setPixelColor(index,BIGFLOAT,background.Sample(uvw));
+                setPixelSampleCount(index,0);
             }
             renderImage.IncrementNumRenderPixel(1);
         }
@@ -353,9 +479,11 @@ void BeginRender()
     }
     
     cout << "Saving z-buffer image...\n";
-    //renderImage.ComputeZBufferImage();
-    //renderImage.SaveZImage("prj6_zbuff.png");
-    renderImage.SaveImage("prj7.png");
+    renderImage.ComputeZBufferImage();
+    renderImage.SaveZImage("prj8_zbuff.png");
+    renderImage.SaveImage("prj8.png");
+    renderImage.ComputeSampleCountImage();
+    renderImage.SaveSampleCountImage("prj8_sc.png");
 }
 
 void StopRender(){
