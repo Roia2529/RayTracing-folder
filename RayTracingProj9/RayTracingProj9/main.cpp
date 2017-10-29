@@ -1,8 +1,8 @@
 //
 //  main.cpp
-//  RayTracingP08 Antialiasing
+//  RayTracingP09 Depth of Field
 //
-//  Created by Hsuan Lee on 10/22/17.
+//  Created by Hsuan Lee on 10/29/17.
 //  Copyright © 2017 Hsuan Lee. All rights reserved.
 //
 
