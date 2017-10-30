@@ -14,8 +14,9 @@
 #include <math.h>
 #include <algorithm> 
 
+#define CAM_SAMPLE 64
 #define MIN_SAMPLE 4
-#define MAX_SAMPLE 64
+#define MAX_SAMPLE 4
 #define HALTON_BASE_1 2
 #define HALTON_BASE_2 3
 #define THRESHOLD 1e-3f
@@ -178,7 +179,8 @@ void RenderPixel(pixelIterator &it){
     int x,y;
     
     float theta = camera.fov;
-    float l = 1.0;
+    //float l = 1.0;
+    float l = camera.focaldist;
     float h = 2*l*tan(theta/2*(M_PI/180));
     float w = h*(float)camera.imgWidth/camera.imgHeight;
     Point3 b;
@@ -207,32 +209,41 @@ void RenderPixel(pixelIterator &it){
         
         Point3 tmp(x*u,y*v,0);
         tmp+=b;
-        Ray ray_base(camera.pos,tmp);
-        ray_base.dir=m*(ray_base.dir);
-        ray_base.dir.Normalize();
+        //Ray ray_base(camera.pos,tmp);
+        //ray_base.dir=m*(ray_base.dir);
+        //ray_base.dir.Normalize();
         
         HitInfo hitinfo;
         hitinfo.Init();
         bool hit = false;
         
         int index = y*camera.imgWidth+x;
-        //from project 7
-        /*
-        if(rootNode.GetNumChild()>0){
+        
+        //Prepare 64 camera pos samples
+        vector<Point3> camposSample;
+        
+        for(int i = 1; i<=CAM_SAMPLE; i++){
+            float r = Halton(i, HALTON_BASE_1);
             
-            if(Trace(ray_base,hitinfo)){
-                //set color
-                hit = true;
-                setPixelColor(index,hitinfo.z,hitinfo.node->GetMaterial()->Shade(ray_base, hitinfo, lights,bouncelimit));
-            }
-            else{
-                Point3 uvw = Point3((float)x/camera.imgWidth,(float)y/camera.imgHeight,0);
-                setPixelColor(index,BIGFLOAT,background.Sample(uvw));
-            }
-            renderImage.IncrementNumRenderPixel(1);
+            r = sqrtf(r)*camera.dof;
+            float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
+            
+            float dx =  r * cosf(theta);
+            float dy =  r * sinf(theta);
+            
+            if(sqrtf(dx*dx+dy*dy)>camera.dof)
+               std::cout << "sample out of range" <<std::endl;
+            Point3 newCamPos(dx, dy, 0);
+            newCamPos = m * newCamPos;
+            camposSample.push_back(newCamPos);
+            //float test = z_new.Dot(newCamPos);
+            //std::cout << "should be zero:" << test <<std::endl;
+            //std::cout << "y:" << test.y <<std::endl;
+            //std::cout << "z:" << test.z <<std::endl;
         }
-         */
-        ///*
+        
+        
+        
         float hitz = 0;
         if(rootNode.GetNumChild()>0){
             vector<Color> colorlist;
@@ -248,11 +259,16 @@ void RenderPixel(pixelIterator &it){
                 generateSample(samplelist, s_start, s_end, tmp, u, v);
 
                 for(int k=s_start;k<s_end;k++){
+                    
                     hitinfo.Init();
 
                     Point3 sampleloc = samplelist.at(k);
-                    Ray ray_pixel(camera.pos,sampleloc);
+                    Point3 d_campos = camposSample.at(rand()%CAM_SAMPLE);
+                    
+                    Ray ray_pixel(camera.pos+d_campos,sampleloc);
                     ray_pixel.dir=m*(ray_pixel.dir);
+                    
+                    ray_pixel.dir -= d_campos;
                     ray_pixel.dir.Normalize();
 
                     if(Trace(ray_pixel,hitinfo)){
@@ -285,12 +301,6 @@ void RenderPixel(pixelIterator &it){
             }
             renderImage.IncrementNumRenderPixel(1);
         }
-        /*
-         if(!hit){
-            Point3 uvw = Point3((float)x*u/camera.imgWidth,(float)y*v/camera.imgHeight,0);
-            setPixelColor(index,BIGFLOAT,background.Sample(uvw));
-        }
-         */
         
     }
 }
@@ -301,17 +311,13 @@ float GenLight::Shadow(Ray ray, float t_max){
     
     HitInfo hitInfo;
 
-    //*/
-        hitInfo.Init();
-        if(TraceNode(rootNode,ray,hitInfo))
-        {
-            if(hitInfo.z>bias && hitInfo.z < t_max){
-                return 0.0;
-            }
+    hitInfo.Init();
+    if(TraceNode(rootNode,ray,hitInfo))
+    {
+        if(hitInfo.z>bias && hitInfo.z < t_max){
+            return 0.0;
         }
-    //*/
-    
-    //it is not shadow, intensity would not change.
+    }
     return 1.0;
 }
 
@@ -464,7 +470,7 @@ void BeginRender()
 	
     unsigned num_thread = thread::hardware_concurrency()*2;
     //unsigned num_thread = 1;
-    //renderImage.SaveImage("prj7input.png");
+    //renderImage.SaveImage("prj9input.png");
     
     cout<<"number of threads: "<<num_thread<<"\n";
     vector<thread> thr;
@@ -480,10 +486,10 @@ void BeginRender()
     
     cout << "Saving z-buffer image...\n";
     renderImage.ComputeZBufferImage();
-    renderImage.SaveZImage("prj8_zbuff.png");
-    renderImage.SaveImage("prj8.png");
+    renderImage.SaveZImage("prj9_zbuff.png");
+    renderImage.SaveImage("prj9.png");
     renderImage.ComputeSampleCountImage();
-    renderImage.SaveSampleCountImage("prj8_sc.png");
+    renderImage.SaveSampleCountImage("prj9_sc.png");
 }
 
 void StopRender(){
@@ -496,7 +502,7 @@ void StopRender(){
 int main(int argc, const char * argv[]) {
     pIt.Init();
     //const char *file = "box.xml";
-    const char *file = "scene.xml";
+    const char *file = "scene9.xml";
     LoadScene(file);
     ShowViewport();
     
