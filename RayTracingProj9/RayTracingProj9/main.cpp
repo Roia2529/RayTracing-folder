@@ -16,7 +16,7 @@
 
 #define CAM_SAMPLE 64
 #define MIN_SAMPLE 4
-#define MAX_SAMPLE 4
+#define MAX_SAMPLE 64
 #define HALTON_BASE_1 2
 #define HALTON_BASE_2 3
 #define THRESHOLD 1e-3f
