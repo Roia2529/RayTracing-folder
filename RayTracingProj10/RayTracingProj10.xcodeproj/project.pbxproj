@@ -74,7 +74,6 @@
 		F2E2F4A11FAFE02200839632 /* clouds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clouds.png; sourceTree = "<group>"; };
 		F2E2F4A21FAFE02200839632 /* box.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = box.xml; sourceTree = "<group>"; };
 		F2E2F4A31FAFE02200839632 /* scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene.cpp; sourceTree = "<group>"; };
-		F2E2F4A41FAFE02200839632 /* scene9.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene9.xml; sourceTree = "<group>"; };
 		F2E2F4A51FAFE02200839632 /* texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture.cpp; sourceTree = "<group>"; };
 		F2E2F4A61FAFE02200839632 /* viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = viewport.cpp; sourceTree = "<group>"; };
 		F2E2F4A71FAFE02200839632 /* xmlload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmlload.cpp; sourceTree = "<group>"; };
@@ -123,7 +122,6 @@
 				F2E2F4A11FAFE02200839632 /* clouds.png */,
 				F2E2F4A21FAFE02200839632 /* box.xml */,
 				F2E2F4A31FAFE02200839632 /* scene.cpp */,
-				F2E2F4A41FAFE02200839632 /* scene9.xml */,
 				F2E2F4A51FAFE02200839632 /* texture.cpp */,
 				F2E2F4A61FAFE02200839632 /* viewport.cpp */,
 				F2E2F4A71FAFE02200839632 /* xmlload.cpp */,

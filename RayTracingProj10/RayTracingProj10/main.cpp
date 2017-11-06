@@ -19,7 +19,8 @@
 #define MAX_SAMPLE 64
 #define HALTON_BASE_1 2
 #define HALTON_BASE_2 3
-#define THRESHOLD 1e-3f
+#define THRESHOLD 1e-4f
+#define BOUNCE 5
 
 using namespace std;
 
@@ -123,10 +124,6 @@ void generateSample(vector<Point3> &samplelist, int s, int e, const Point3 base,
         //float sx = 0;
         float sx = Halton(j,HALTON_BASE_1)*u;
         float sy = v * Halton(j,HALTON_BASE_2);
-        
-        //
-        //if(sx > du * 0.5) { sx -= du; }
-        //if(sy < dv * 0.5) { sy -= dv; }
        
         sx += base.x;
         sy += base.y;
@@ -136,7 +133,6 @@ void generateSample(vector<Point3> &samplelist, int s, int e, const Point3 base,
     }
 }
 
-//(VariantOverThreshold(colorlist, s_start, s_end, variant)
 bool VariantOverThreshold(vector<Color> list){
     //return false;
     float ninverse = 1.0/list.size();
@@ -199,19 +195,17 @@ void RenderPixel(pixelIterator &it){
     x_new.Normalize();
     Matrix3 m(x_new,camera.up, z_new);
 
-    int bouncelimit = 5;
+    int bouncelimit = BOUNCE;
     
     while(it.GetPixel(x,y)){
         //debug
-        if (x==403 && y == 276) {
+        if (x!=431 || y!=227) continue;
+        if (x==431 && y == 227) {
             std::cout << "xx" << std::endl;
         }
         
         Point3 tmp(x*u,y*v,0);
         tmp+=b;
-        //Ray ray_base(camera.pos,tmp);
-        //ray_base.dir=m*(ray_base.dir);
-        //ray_base.dir.Normalize();
         
         HitInfo hitinfo;
         hitinfo.Init();
@@ -221,7 +215,7 @@ void RenderPixel(pixelIterator &it){
         
         //Prepare 64 camera pos samples
         vector<Point3> camposSample;
-        
+        if(camera.dof){
         for(int i = 1; i<=CAM_SAMPLE; i++){
             float r = Halton(i, HALTON_BASE_1);
             
@@ -231,8 +225,8 @@ void RenderPixel(pixelIterator &it){
             float dx =  r * cosf(theta);
             float dy =  r * sinf(theta);
             
-            if(sqrtf(dx*dx+dy*dy)>camera.dof)
-               std::cout << "sample out of range" <<std::endl;
+            //if(sqrtf(dx*dx+dy*dy)>camera.dof)
+            //   std::cout << "sample out of range" <<std::endl;
             Point3 newCamPos(dx, dy, 0);
             newCamPos = m * newCamPos;
             camposSample.push_back(newCamPos);
@@ -241,7 +235,7 @@ void RenderPixel(pixelIterator &it){
             //std::cout << "y:" << test.y <<std::endl;
             //std::cout << "z:" << test.z <<std::endl;
         }
-        
+        }
         
         
         float hitz = 0;
@@ -250,8 +244,6 @@ void RenderPixel(pixelIterator &it){
             vector<Point3> samplelist;
             int s_start = 0;
             int s_end = MIN_SAMPLE;
-            //int newend = 0;
-            //float variant = 0;
             
 
             while(s_start==0 || (VariantOverThreshold(colorlist) && s_start!=MAX_SAMPLE)){
@@ -263,7 +255,11 @@ void RenderPixel(pixelIterator &it){
                     hitinfo.Init();
 
                     Point3 sampleloc = samplelist.at(k);
-                    Point3 d_campos = camposSample.at(rand()%CAM_SAMPLE);
+                    Point3 d_campos;
+                    if(camera.dof)
+                        d_campos = camposSample.at(rand()%CAM_SAMPLE);
+                    else
+                        d_campos = Point3(0,0,0);
                     
                     Ray ray_pixel(camera.pos+d_campos,sampleloc);
                     ray_pixel.dir=m*(ray_pixel.dir);
@@ -280,7 +276,8 @@ void RenderPixel(pixelIterator &it){
                     }//end if
                 }//end for
                 
-                s_start=s_end; s_end*=4;
+                s_start=s_end; //s_end*=4;
+                s_end = MAX_SAMPLE;
                 if(!hit) break;
                 
             }//end of while
@@ -354,7 +351,7 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
             Point3 V = -ray.dir;//camera.pos - hInfo.p; this will effect reflection calculation
             V.Normalize();
             Point3 LpV = L+V;
-            Point3 H = LpV;///LpV.Length();
+            Point3 H = LpV;
             H.Normalize();
 
             Color kse = Ks*pow(N.Dot(H),alpha)+Kd;
@@ -373,12 +370,37 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
     Point3 V = -ray.dir.GetNormalized();
     //Color re = reflection;
     if(/*re.Gray()>0 &&*/ bounceCount >0){
-        
+        Point3 newN=N;
+        if(reflectionGlossiness){
+            /*
+            float r = rand()/ (float) RAND_MAX;
+            r = sqrtf(r)*reflectionGlossiness;
+            float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
+            float gamma = M_PI * rand()/ (float) RAND_MAX;
+            float dx =  r * sinf(gamma) * cosf(theta);
+            float dy =  r * sinf(gamma) * sinf(theta);
+            float dz =  r * cosf(gamma);
+            Point3 dn(dx,dy,dz);
+             newN += dn;
+             */
+            Point3 newx(1,0,0);
+            newx = newN ^ newx;
+            Point3 newy = newN ^ newx;
+            float r = rand()/ (float) RAND_MAX;
+            r = sqrtf(r)*reflectionGlossiness;
+            float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
+            float dx =  r * cosf(theta);
+            float dy =  r * sinf(theta);
+            newN += dx*newx+dy*newy;
+             
+            newN.Normalize();
+        }
+        N = newN;
         float costheta = clamp(N.Dot(V),-1.0,1.0);
         Point3 R = 2*costheta*N - V; //reflection vector
-        R.Normalize();
+        //R.Normalize();
         Ray Ray_rf = Ray(P+bias*R, R);
-
+        Ray_rf.dir.Normalize();
         HitInfo hitinfo_rf;
         hitinfo_rf.Init();
         if(TraceNode(rootNode,Ray_rf,hitinfo_rf))
@@ -397,7 +419,34 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
     **/
     
      if(  bounceCount>0){
-        //Color reflShade = Color(0,0,0);
+         Point3 newN = hInfo.N;;
+         if(refractionGlossiness){
+             /*
+             float r = rand()/ (float) RAND_MAX;
+             r = sqrtf(r)*refractionGlossiness;
+             float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
+             float gamma = M_PI * rand()/ (float) RAND_MAX;
+             float dx =  r * sinf(gamma) * cosf(theta);
+             float dy =  r * sinf(gamma) * sinf(theta);
+             float dz =  r * cosf(gamma);
+             Point3 dn(dx,dy,dz);
+             newN += dn;
+             newN.Normalize();
+              */
+             Point3 newx(1,0,0);
+             newx = newN ^ newx;
+             Point3 newy = newN ^ newx;
+             float r = rand()/ (float) RAND_MAX;
+             r = sqrtf(r)*refractionGlossiness;
+             float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
+             float dx =  r * cosf(theta);
+             float dy =  r * sinf(theta);
+             newN += dx*newx+dy*newy;
+             
+             newN.Normalize();
+         }
+         N = newN;
+        
         float R0 = 0.0f, re_ratio = 0.0f, ra_ratio = 0.0f;
         
         V.Normalize();//unit vector
@@ -412,7 +461,7 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
         }
         else if(!hInfo.front){ //in->out
             n1 = ior;
-            N = -hInfo.N;
+            N = -N;
         }
         float ratio_n = n1 / n2;
         float sintheta2 = ratio_n*sintheta1;
@@ -468,9 +517,9 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
 void BeginRender()
 {
 	
-    //unsigned num_thread = thread::hardware_concurrency()*2;
-    unsigned num_thread = 1;
-    //renderImage.SaveImage("prj9input.png");
+    unsigned num_thread = thread::hardware_concurrency()*2;
+    //unsigned num_thread = 1;
+    //renderImage.SaveImage("prj10input.png");
     
     cout<<"number of threads: "<<num_thread<<"\n";
     vector<thread> thr;
@@ -486,7 +535,7 @@ void BeginRender()
     
     cout << "Saving z-buffer image...\n";
     renderImage.ComputeZBufferImage();
-    renderImage.SaveZImage("prj10_zbuff.png");
+    //renderImage.SaveZImage("prj10_zbuff.png");
     renderImage.SaveImage("prj10.png");
     renderImage.ComputeSampleCountImage();
     renderImage.SaveSampleCountImage("prj10_sc.png");
@@ -501,7 +550,6 @@ void StopRender(){
 
 int main(int argc, const char * argv[]) {
     pIt.Init();
-    //const char *file = "box.xml";
     const char *file = "scene.xml";
     LoadScene(file);
     ShowViewport();
