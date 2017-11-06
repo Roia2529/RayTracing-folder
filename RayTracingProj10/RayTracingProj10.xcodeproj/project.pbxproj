@@ -1,0 +1,396 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F2E2F4721FAFDFC600839632 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2E2F4711FAFDFC600839632 /* main.cpp */; };
+		F2E2F47A1FAFDFDC00839632 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2E2F4791FAFDFDC00839632 /* GLUT.framework */; };
+		F2E2F47C1FAFDFE300839632 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2E2F47B1FAFDFE300839632 /* OpenGL.framework */; };
+		F2E2F4A81FAFE02200839632 /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2E2F48B1FAFE02200839632 /* lodepng.cpp */; };
+		F2E2F4A91FAFE02200839632 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = F2E2F4931FAFE02200839632 /* Makefile */; };
+		F2E2F4AA1FAFE02200839632 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2E2F4951FAFE02200839632 /* tinystr.cpp */; };
+		F2E2F4AB1FAFE02200839632 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2E2F4971FAFE02200839632 /* tinyxml.cpp */; };
+		F2E2F4AC1FAFE02200839632 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2E2F49A1FAFE02200839632 /* tinyxmlerror.cpp */; };
+		F2E2F4AD1FAFE02300839632 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2E2F49B1FAFE02200839632 /* tinyxmlparser.cpp */; };
+		F2E2F4AF1FAFE02300839632 /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2E2F4A31FAFE02200839632 /* scene.cpp */; };
+		F2E2F4B01FAFE02300839632 /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2E2F4A51FAFE02200839632 /* texture.cpp */; };
+		F2E2F4B41FAFE0E800839632 /* Screen Shot 2017-10-29 at 1.22.24 PM.png in Frameworks */ = {isa = PBXBuildFile; fileRef = F2E2F4B31FAFE0E800839632 /* Screen Shot 2017-10-29 at 1.22.24 PM.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F2E2F46C1FAFDFC600839632 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F2E2F46E1FAFDFC600839632 /* RayTracingProj10 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RayTracingProj10; sourceTree = BUILT_PRODUCTS_DIR; };
+		F2E2F4711FAFDFC600839632 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		F2E2F4791FAFDFDC00839632 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		F2E2F47B1FAFDFE300839632 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		F2E2F47D1FAFE02200839632 /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
+		F2E2F47E1FAFE02200839632 /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
+		F2E2F4801FAFE02200839632 /* cmake_install.cmake */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cmake_install.cmake; sourceTree = "<group>"; };
+		F2E2F4821FAFE02200839632 /* CMakeDirectoryInformation.cmake */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeDirectoryInformation.cmake; sourceTree = "<group>"; };
+		F2E2F4831FAFE02200839632 /* progress.marks */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = progress.marks; sourceTree = "<group>"; };
+		F2E2F4841FAFE02200839632 /* cyBVH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyBVH.h; sourceTree = "<group>"; };
+		F2E2F4851FAFE02200839632 /* cyColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyColor.h; sourceTree = "<group>"; };
+		F2E2F4861FAFE02200839632 /* cyCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyCore.h; sourceTree = "<group>"; };
+		F2E2F4871FAFE02200839632 /* cyMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyMatrix.h; sourceTree = "<group>"; };
+		F2E2F4881FAFE02200839632 /* cyPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyPoint.h; sourceTree = "<group>"; };
+		F2E2F4891FAFE02200839632 /* cyTriMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyTriMesh.h; sourceTree = "<group>"; };
+		F2E2F48A1FAFE02200839632 /* lights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lights.h; sourceTree = "<group>"; };
+		F2E2F48B1FAFE02200839632 /* lodepng.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lodepng.cpp; sourceTree = "<group>"; };
+		F2E2F48C1FAFE02200839632 /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lodepng.h; sourceTree = "<group>"; };
+		F2E2F48D1FAFE02200839632 /* materials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = materials.h; sourceTree = "<group>"; };
+		F2E2F48E1FAFE02200839632 /* objects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objects.h; sourceTree = "<group>"; };
+		F2E2F48F1FAFE02200839632 /* scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene.h; sourceTree = "<group>"; };
+		F2E2F4901FAFE02200839632 /* texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture.h; sourceTree = "<group>"; };
+		F2E2F4921FAFE02200839632 /* changes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = changes.txt; sourceTree = "<group>"; };
+		F2E2F4931FAFE02200839632 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		F2E2F4941FAFE02200839632 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		F2E2F4951FAFE02200839632 /* tinystr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinystr.cpp; sourceTree = "<group>"; };
+		F2E2F4961FAFE02200839632 /* tinystr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinystr.h; sourceTree = "<group>"; };
+		F2E2F4971FAFE02200839632 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
+		F2E2F4981FAFE02200839632 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
+		F2E2F4991FAFE02200839632 /* tinyxml.sln */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tinyxml.sln; sourceTree = "<group>"; };
+		F2E2F49A1FAFE02200839632 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
+		F2E2F49B1FAFE02200839632 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
+		F2E2F49C1FAFE02200839632 /* utf8test.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = utf8test.gif; sourceTree = "<group>"; };
+		F2E2F49D1FAFE02200839632 /* utf8test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = utf8test.xml; sourceTree = "<group>"; };
+		F2E2F49E1FAFE02200839632 /* utf8testverify.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = utf8testverify.xml; sourceTree = "<group>"; };
+		F2E2F49F1FAFE02200839632 /* xmltest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmltest.cpp; sourceTree = "<group>"; };
+		F2E2F4A01FAFE02200839632 /* bricks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bricks.png; sourceTree = "<group>"; };
+		F2E2F4A11FAFE02200839632 /* clouds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clouds.png; sourceTree = "<group>"; };
+		F2E2F4A21FAFE02200839632 /* box.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = box.xml; sourceTree = "<group>"; };
+		F2E2F4A31FAFE02200839632 /* scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene.cpp; sourceTree = "<group>"; };
+		F2E2F4A41FAFE02200839632 /* scene9.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene9.xml; sourceTree = "<group>"; };
+		F2E2F4A51FAFE02200839632 /* texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture.cpp; sourceTree = "<group>"; };
+		F2E2F4A61FAFE02200839632 /* viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = viewport.cpp; sourceTree = "<group>"; };
+		F2E2F4A71FAFE02200839632 /* xmlload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmlload.cpp; sourceTree = "<group>"; };
+		F2E2F4B31FAFE0E800839632 /* Screen Shot 2017-10-29 at 1.22.24 PM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Screen Shot 2017-10-29 at 1.22.24 PM.png"; path = "../../../../Desktop/Screen Shot 2017-10-29 at 1.22.24 PM.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F2E2F46B1FAFDFC600839632 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2E2F4B41FAFE0E800839632 /* Screen Shot 2017-10-29 at 1.22.24 PM.png in Frameworks */,
+				F2E2F47C1FAFDFE300839632 /* OpenGL.framework in Frameworks */,
+				F2E2F47A1FAFDFDC00839632 /* GLUT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F2E2F4651FAFDFC600839632 = {
+			isa = PBXGroup;
+			children = (
+				F2E2F4701FAFDFC600839632 /* RayTracingProj10 */,
+				F2E2F46F1FAFDFC600839632 /* Products */,
+				F2E2F4781FAFDFDC00839632 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F2E2F46F1FAFDFC600839632 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F2E2F46E1FAFDFC600839632 /* RayTracingProj10 */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F2E2F4701FAFDFC600839632 /* RayTracingProj10 */ = {
+			isa = PBXGroup;
+			children = (
+				F2E2F47D1FAFE02200839632 /* plane.obj */,
+				F2E2F47E1FAFE02200839632 /* teapot.obj */,
+				F2E2F47F1FAFE02200839632 /* include */,
+				F2E2F4911FAFE02200839632 /* tinyxml */,
+				F2E2F4A01FAFE02200839632 /* bricks.png */,
+				F2E2F4A11FAFE02200839632 /* clouds.png */,
+				F2E2F4A21FAFE02200839632 /* box.xml */,
+				F2E2F4A31FAFE02200839632 /* scene.cpp */,
+				F2E2F4A41FAFE02200839632 /* scene9.xml */,
+				F2E2F4A51FAFE02200839632 /* texture.cpp */,
+				F2E2F4A61FAFE02200839632 /* viewport.cpp */,
+				F2E2F4A71FAFE02200839632 /* xmlload.cpp */,
+				F2E2F4711FAFDFC600839632 /* main.cpp */,
+			);
+			path = RayTracingProj10;
+			sourceTree = "<group>";
+		};
+		F2E2F4781FAFDFDC00839632 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F2E2F4B31FAFE0E800839632 /* Screen Shot 2017-10-29 at 1.22.24 PM.png */,
+				F2E2F47B1FAFDFE300839632 /* OpenGL.framework */,
+				F2E2F4791FAFDFDC00839632 /* GLUT.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F2E2F47F1FAFE02200839632 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				F2E2F4801FAFE02200839632 /* cmake_install.cmake */,
+				F2E2F4811FAFE02200839632 /* CMakeFiles */,
+				F2E2F4841FAFE02200839632 /* cyBVH.h */,
+				F2E2F4851FAFE02200839632 /* cyColor.h */,
+				F2E2F4861FAFE02200839632 /* cyCore.h */,
+				F2E2F4871FAFE02200839632 /* cyMatrix.h */,
+				F2E2F4881FAFE02200839632 /* cyPoint.h */,
+				F2E2F4891FAFE02200839632 /* cyTriMesh.h */,
+				F2E2F48A1FAFE02200839632 /* lights.h */,
+				F2E2F48B1FAFE02200839632 /* lodepng.cpp */,
+				F2E2F48C1FAFE02200839632 /* lodepng.h */,
+				F2E2F48D1FAFE02200839632 /* materials.h */,
+				F2E2F48E1FAFE02200839632 /* objects.h */,
+				F2E2F48F1FAFE02200839632 /* scene.h */,
+				F2E2F4901FAFE02200839632 /* texture.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		F2E2F4811FAFE02200839632 /* CMakeFiles */ = {
+			isa = PBXGroup;
+			children = (
+				F2E2F4821FAFE02200839632 /* CMakeDirectoryInformation.cmake */,
+				F2E2F4831FAFE02200839632 /* progress.marks */,
+			);
+			path = CMakeFiles;
+			sourceTree = "<group>";
+		};
+		F2E2F4911FAFE02200839632 /* tinyxml */ = {
+			isa = PBXGroup;
+			children = (
+				F2E2F4921FAFE02200839632 /* changes.txt */,
+				F2E2F4931FAFE02200839632 /* Makefile */,
+				F2E2F4941FAFE02200839632 /* readme.txt */,
+				F2E2F4951FAFE02200839632 /* tinystr.cpp */,
+				F2E2F4961FAFE02200839632 /* tinystr.h */,
+				F2E2F4971FAFE02200839632 /* tinyxml.cpp */,
+				F2E2F4981FAFE02200839632 /* tinyxml.h */,
+				F2E2F4991FAFE02200839632 /* tinyxml.sln */,
+				F2E2F49A1FAFE02200839632 /* tinyxmlerror.cpp */,
+				F2E2F49B1FAFE02200839632 /* tinyxmlparser.cpp */,
+				F2E2F49C1FAFE02200839632 /* utf8test.gif */,
+				F2E2F49D1FAFE02200839632 /* utf8test.xml */,
+				F2E2F49E1FAFE02200839632 /* utf8testverify.xml */,
+				F2E2F49F1FAFE02200839632 /* xmltest.cpp */,
+			);
+			path = tinyxml;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F2E2F46D1FAFDFC600839632 /* RayTracingProj10 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F2E2F4751FAFDFC600839632 /* Build configuration list for PBXNativeTarget "RayTracingProj10" */;
+			buildPhases = (
+				F2E2F46A1FAFDFC600839632 /* Sources */,
+				F2E2F46B1FAFDFC600839632 /* Frameworks */,
+				F2E2F46C1FAFDFC600839632 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RayTracingProj10;
+			productName = RayTracingProj10;
+			productReference = F2E2F46E1FAFDFC600839632 /* RayTracingProj10 */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F2E2F4661FAFDFC600839632 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Hsuan Lee";
+				TargetAttributes = {
+					F2E2F46D1FAFDFC600839632 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 57HFA229TN;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F2E2F4691FAFDFC600839632 /* Build configuration list for PBXProject "RayTracingProj10" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F2E2F4651FAFDFC600839632;
+			productRefGroup = F2E2F46F1FAFDFC600839632 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F2E2F46D1FAFDFC600839632 /* RayTracingProj10 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F2E2F46A1FAFDFC600839632 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2E2F4A91FAFE02200839632 /* Makefile in Sources */,
+				F2E2F4721FAFDFC600839632 /* main.cpp in Sources */,
+				F2E2F4AC1FAFE02200839632 /* tinyxmlerror.cpp in Sources */,
+				F2E2F4AB1FAFE02200839632 /* tinyxml.cpp in Sources */,
+				F2E2F4AD1FAFE02300839632 /* tinyxmlparser.cpp in Sources */,
+				F2E2F4AA1FAFE02200839632 /* tinystr.cpp in Sources */,
+				F2E2F4B01FAFE02300839632 /* texture.cpp in Sources */,
+				F2E2F4AF1FAFE02300839632 /* scene.cpp in Sources */,
+				F2E2F4A81FAFE02200839632 /* lodepng.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F2E2F4731FAFDFC600839632 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F2E2F4741FAFDFC600839632 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F2E2F4761FAFDFC600839632 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 57HFA229TN;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F2E2F4771FAFDFC600839632 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 57HFA229TN;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F2E2F4691FAFDFC600839632 /* Build configuration list for PBXProject "RayTracingProj10" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2E2F4731FAFDFC600839632 /* Debug */,
+				F2E2F4741FAFDFC600839632 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F2E2F4751FAFDFC600839632 /* Build configuration list for PBXNativeTarget "RayTracingProj10" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2E2F4761FAFDFC600839632 /* Debug */,
+				F2E2F4771FAFDFC600839632 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F2E2F4661FAFDFC600839632 /* Project object */;
+}

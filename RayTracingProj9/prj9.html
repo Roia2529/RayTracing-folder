@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: center;    
+}
+h2 {
+	text-align: center;
+}
+
+</style>
+</head>
+
+<title>Ray Tracing Project 9</title>
+
+<body>
+<h1>CS-6620 Project 9 - Depth of Field</h1>
+<h4>Name: Hsuan Lee </h4><h4>e-mail: hsuan.lee@utah.edu</h4>
+<hr>
+
+<table>
+  <tr>
+    <th colspan="2">MacBook Pro (Retina, 13-inch, Early 2015)</th>
+  </tr>
+  <tr>
+    <th>Processor</td>
+    <td>2.9GHz intel Core i5</td>
+  </tr>
+  <tr>
+    <th>Memory</td>
+    <td>8GB 1867 MHz DDR3</td>
+  </tr>
+  <tr>
+    <th>Graphics</td>
+    <td>Intel Iris Graphics 6100 1536 MB</td>
+  </tr>
+</table>
+<p></p>
+
+<h1>Input</h1>
+    <p style="text-align:center;"><img src="prj9input.png" /></p>
+
+<h1>Final Result</h1>
+<b>Render time with BVH(8 threads) : 0:02:19.</b>
+<h2>4 samples per pixel:</h2>
+<table style="width:100%">
+<tr>
+    <th>Output</th>
+    <th>Z-buffer image</th>
+</tr>
+    <tr>
+    <td><p style="text-align:center;"><img src="prj9_4sample.png" /></p></td>
+    <td><p style="text-align:center;"><img src="prj9_zbuff.png" /></p></td>
+    </tr>
+ </table>   
+
+<h2>adaptive sampling (maximun samples: 64) :</h2>
+<b>Render time with BVH(8 threads) : 0:14:50.</b>
+<table style="width:100%">
+  <tr>
+    <th>Output</th>
+    <th>Sample Counts</th>
+  </tr>
+  <tr>
+    <td><p style="text-align:center;"><img src="prj9.png" /></p></td>
+    <td><p style="text-align:center;"><img src="prj9_sc.png" /></p></td> 
+  </tr>
+</table> 
+
+</body>
+</html>

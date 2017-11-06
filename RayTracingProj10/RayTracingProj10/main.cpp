@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  RayTracingP09 Depth of Field
+//  RayTracingP10 Soft Shadows and Glossy Surfaces
 //
 //  Created by Hsuan Lee on 10/29/17.
 //  Copyright © 2017 Hsuan Lee. All rights reserved.
@@ -486,10 +486,10 @@ void BeginRender()
     
     cout << "Saving z-buffer image...\n";
     renderImage.ComputeZBufferImage();
-    renderImage.SaveZImage("prj9_zbuff.png");
-    renderImage.SaveImage("prj9.png");
+    renderImage.SaveZImage("prj10_zbuff.png");
+    renderImage.SaveImage("prj10.png");
     renderImage.ComputeSampleCountImage();
-    renderImage.SaveSampleCountImage("prj9_sc.png");
+    renderImage.SaveSampleCountImage("prj10_sc.png");
 }
 
 void StopRender(){
@@ -502,7 +502,7 @@ void StopRender(){
 int main(int argc, const char * argv[]) {
     pIt.Init();
     //const char *file = "box.xml";
-    const char *file = "scene9.xml";
+    const char *file = "scene.xml";
     LoadScene(file);
     ShowViewport();
     
