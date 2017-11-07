@@ -199,7 +199,7 @@ void RenderPixel(pixelIterator &it){
     
     while(it.GetPixel(x,y)){
         //debug
-        if (x!=431 || y!=227) continue;
+        //if (x!=431 || y!=227) continue;
         if (x==431 && y == 227) {
             std::cout << "xx" << std::endl;
         }
