@@ -1,0 +1,395 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F222BE171FB8DB350080F35D /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F222BDFA1FB8DB350080F35D /* lodepng.cpp */; };
+		F222BE181FB8DB350080F35D /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = F222BE021FB8DB350080F35D /* Makefile */; };
+		F222BE191FB8DB350080F35D /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F222BE041FB8DB350080F35D /* tinystr.cpp */; };
+		F222BE1A1FB8DB350080F35D /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F222BE061FB8DB350080F35D /* tinyxml.cpp */; };
+		F222BE1B1FB8DB350080F35D /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F222BE091FB8DB350080F35D /* tinyxmlerror.cpp */; };
+		F222BE1C1FB8DB350080F35D /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F222BE0A1FB8DB350080F35D /* tinyxmlparser.cpp */; };
+		F222BE1F1FB8DB350080F35D /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F222BE141FB8DB350080F35D /* texture.cpp */; };
+		F222BE241FB8E89A0080F35D /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F222BE231FB8E89A0080F35D /* GLUT.framework */; };
+		F222BE261FB8E8A00080F35D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F222BE251FB8E8A00080F35D /* OpenGL.framework */; };
+		F222BE271FB8E8D70080F35D /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F222BE121FB8DB350080F35D /* scene.cpp */; };
+		F23CBB011FB4E5D1000850CE /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F23CBB001FB4E5D1000850CE /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F23CBAFB1FB4E5D0000850CE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F222BDEC1FB8DB350080F35D /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
+		F222BDED1FB8DB350080F35D /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
+		F222BDEF1FB8DB350080F35D /* cmake_install.cmake */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cmake_install.cmake; sourceTree = "<group>"; };
+		F222BDF11FB8DB350080F35D /* CMakeDirectoryInformation.cmake */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeDirectoryInformation.cmake; sourceTree = "<group>"; };
+		F222BDF21FB8DB350080F35D /* progress.marks */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = progress.marks; sourceTree = "<group>"; };
+		F222BDF31FB8DB350080F35D /* cyBVH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyBVH.h; sourceTree = "<group>"; };
+		F222BDF41FB8DB350080F35D /* cyColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyColor.h; sourceTree = "<group>"; };
+		F222BDF51FB8DB350080F35D /* cyCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyCore.h; sourceTree = "<group>"; };
+		F222BDF61FB8DB350080F35D /* cyMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyMatrix.h; sourceTree = "<group>"; };
+		F222BDF71FB8DB350080F35D /* cyPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyPoint.h; sourceTree = "<group>"; };
+		F222BDF81FB8DB350080F35D /* cyTriMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyTriMesh.h; sourceTree = "<group>"; };
+		F222BDF91FB8DB350080F35D /* lights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lights.h; sourceTree = "<group>"; };
+		F222BDFA1FB8DB350080F35D /* lodepng.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lodepng.cpp; sourceTree = "<group>"; };
+		F222BDFB1FB8DB350080F35D /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lodepng.h; sourceTree = "<group>"; };
+		F222BDFC1FB8DB350080F35D /* materials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = materials.h; sourceTree = "<group>"; };
+		F222BDFD1FB8DB350080F35D /* objects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objects.h; sourceTree = "<group>"; };
+		F222BDFE1FB8DB350080F35D /* scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene.h; sourceTree = "<group>"; };
+		F222BDFF1FB8DB350080F35D /* texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture.h; sourceTree = "<group>"; };
+		F222BE011FB8DB350080F35D /* changes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = changes.txt; sourceTree = "<group>"; };
+		F222BE021FB8DB350080F35D /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		F222BE031FB8DB350080F35D /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		F222BE041FB8DB350080F35D /* tinystr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinystr.cpp; sourceTree = "<group>"; };
+		F222BE051FB8DB350080F35D /* tinystr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinystr.h; sourceTree = "<group>"; };
+		F222BE061FB8DB350080F35D /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
+		F222BE071FB8DB350080F35D /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
+		F222BE081FB8DB350080F35D /* tinyxml.sln */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tinyxml.sln; sourceTree = "<group>"; };
+		F222BE091FB8DB350080F35D /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
+		F222BE0A1FB8DB350080F35D /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
+		F222BE0B1FB8DB350080F35D /* utf8test.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = utf8test.gif; sourceTree = "<group>"; };
+		F222BE0C1FB8DB350080F35D /* utf8test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = utf8test.xml; sourceTree = "<group>"; };
+		F222BE0D1FB8DB350080F35D /* utf8testverify.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = utf8testverify.xml; sourceTree = "<group>"; };
+		F222BE0E1FB8DB350080F35D /* xmltest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmltest.cpp; sourceTree = "<group>"; };
+		F222BE0F1FB8DB350080F35D /* bricks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bricks.png; sourceTree = "<group>"; };
+		F222BE101FB8DB350080F35D /* clouds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clouds.png; sourceTree = "<group>"; };
+		F222BE121FB8DB350080F35D /* scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene.cpp; sourceTree = "<group>"; };
+		F222BE141FB8DB350080F35D /* texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture.cpp; sourceTree = "<group>"; };
+		F222BE151FB8DB350080F35D /* viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = viewport.cpp; sourceTree = "<group>"; };
+		F222BE161FB8DB350080F35D /* xmlload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmlload.cpp; sourceTree = "<group>"; };
+		F222BE231FB8E89A0080F35D /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		F222BE251FB8E8A00080F35D /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		F222BE281FB8F9B20080F35D /* scene-2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "scene-2.xml"; sourceTree = "<group>"; };
+		F222BE291FB8F9B20080F35D /* scene_simple.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene_simple.xml; sourceTree = "<group>"; };
+		F222BE2A1FB967EF0080F35D /* cyIrradianceMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyIrradianceMap.h; sourceTree = "<group>"; };
+		F23CBAFD1FB4E5D1000850CE /* RayTracingProj11 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RayTracingProj11; sourceTree = BUILT_PRODUCTS_DIR; };
+		F23CBB001FB4E5D1000850CE /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F23CBAFA1FB4E5D0000850CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F222BE261FB8E8A00080F35D /* OpenGL.framework in Frameworks */,
+				F222BE241FB8E89A0080F35D /* GLUT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F222BDEE1FB8DB350080F35D /* include */ = {
+			isa = PBXGroup;
+			children = (
+				F222BDEF1FB8DB350080F35D /* cmake_install.cmake */,
+				F222BDF01FB8DB350080F35D /* CMakeFiles */,
+				F222BDF31FB8DB350080F35D /* cyBVH.h */,
+				F222BDF41FB8DB350080F35D /* cyColor.h */,
+				F222BDF51FB8DB350080F35D /* cyCore.h */,
+				F222BDF61FB8DB350080F35D /* cyMatrix.h */,
+				F222BDF71FB8DB350080F35D /* cyPoint.h */,
+				F222BE2A1FB967EF0080F35D /* cyIrradianceMap.h */,
+				F222BDF81FB8DB350080F35D /* cyTriMesh.h */,
+				F222BDF91FB8DB350080F35D /* lights.h */,
+				F222BDFA1FB8DB350080F35D /* lodepng.cpp */,
+				F222BDFB1FB8DB350080F35D /* lodepng.h */,
+				F222BDFC1FB8DB350080F35D /* materials.h */,
+				F222BDFD1FB8DB350080F35D /* objects.h */,
+				F222BDFE1FB8DB350080F35D /* scene.h */,
+				F222BDFF1FB8DB350080F35D /* texture.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		F222BDF01FB8DB350080F35D /* CMakeFiles */ = {
+			isa = PBXGroup;
+			children = (
+				F222BDF11FB8DB350080F35D /* CMakeDirectoryInformation.cmake */,
+				F222BDF21FB8DB350080F35D /* progress.marks */,
+			);
+			path = CMakeFiles;
+			sourceTree = "<group>";
+		};
+		F222BE001FB8DB350080F35D /* tinyxml */ = {
+			isa = PBXGroup;
+			children = (
+				F222BE011FB8DB350080F35D /* changes.txt */,
+				F222BE021FB8DB350080F35D /* Makefile */,
+				F222BE031FB8DB350080F35D /* readme.txt */,
+				F222BE041FB8DB350080F35D /* tinystr.cpp */,
+				F222BE051FB8DB350080F35D /* tinystr.h */,
+				F222BE061FB8DB350080F35D /* tinyxml.cpp */,
+				F222BE071FB8DB350080F35D /* tinyxml.h */,
+				F222BE081FB8DB350080F35D /* tinyxml.sln */,
+				F222BE091FB8DB350080F35D /* tinyxmlerror.cpp */,
+				F222BE0A1FB8DB350080F35D /* tinyxmlparser.cpp */,
+				F222BE0B1FB8DB350080F35D /* utf8test.gif */,
+				F222BE0C1FB8DB350080F35D /* utf8test.xml */,
+				F222BE0D1FB8DB350080F35D /* utf8testverify.xml */,
+				F222BE0E1FB8DB350080F35D /* xmltest.cpp */,
+			);
+			path = tinyxml;
+			sourceTree = "<group>";
+		};
+		F222BE221FB8E89A0080F35D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F222BE251FB8E8A00080F35D /* OpenGL.framework */,
+				F222BE231FB8E89A0080F35D /* GLUT.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F23CBAF41FB4E5D0000850CE = {
+			isa = PBXGroup;
+			children = (
+				F23CBAFF1FB4E5D1000850CE /* RayTracingProj11 */,
+				F23CBAFE1FB4E5D1000850CE /* Products */,
+				F222BE221FB8E89A0080F35D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F23CBAFE1FB4E5D1000850CE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F23CBAFD1FB4E5D1000850CE /* RayTracingProj11 */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F23CBAFF1FB4E5D1000850CE /* RayTracingProj11 */ = {
+			isa = PBXGroup;
+			children = (
+				F23CBB001FB4E5D1000850CE /* main.cpp */,
+				F222BDEC1FB8DB350080F35D /* plane.obj */,
+				F222BDED1FB8DB350080F35D /* teapot.obj */,
+				F222BDEE1FB8DB350080F35D /* include */,
+				F222BE001FB8DB350080F35D /* tinyxml */,
+				F222BE0F1FB8DB350080F35D /* bricks.png */,
+				F222BE101FB8DB350080F35D /* clouds.png */,
+				F222BE121FB8DB350080F35D /* scene.cpp */,
+				F222BE281FB8F9B20080F35D /* scene-2.xml */,
+				F222BE291FB8F9B20080F35D /* scene_simple.xml */,
+				F222BE141FB8DB350080F35D /* texture.cpp */,
+				F222BE151FB8DB350080F35D /* viewport.cpp */,
+				F222BE161FB8DB350080F35D /* xmlload.cpp */,
+			);
+			path = RayTracingProj11;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F23CBAFC1FB4E5D0000850CE /* RayTracingProj11 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F23CBB041FB4E5D1000850CE /* Build configuration list for PBXNativeTarget "RayTracingProj11" */;
+			buildPhases = (
+				F23CBAF91FB4E5D0000850CE /* Sources */,
+				F23CBAFA1FB4E5D0000850CE /* Frameworks */,
+				F23CBAFB1FB4E5D0000850CE /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RayTracingProj11;
+			productName = RayTracingProj11;
+			productReference = F23CBAFD1FB4E5D1000850CE /* RayTracingProj11 */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F23CBAF51FB4E5D0000850CE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Hsuan Lee";
+				TargetAttributes = {
+					F23CBAFC1FB4E5D0000850CE = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 57HFA229TN;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F23CBAF81FB4E5D0000850CE /* Build configuration list for PBXProject "RayTracingProj11" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F23CBAF41FB4E5D0000850CE;
+			productRefGroup = F23CBAFE1FB4E5D1000850CE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F23CBAFC1FB4E5D0000850CE /* RayTracingProj11 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F23CBAF91FB4E5D0000850CE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F222BE181FB8DB350080F35D /* Makefile in Sources */,
+				F23CBB011FB4E5D1000850CE /* main.cpp in Sources */,
+				F222BE1B1FB8DB350080F35D /* tinyxmlerror.cpp in Sources */,
+				F222BE1A1FB8DB350080F35D /* tinyxml.cpp in Sources */,
+				F222BE1C1FB8DB350080F35D /* tinyxmlparser.cpp in Sources */,
+				F222BE191FB8DB350080F35D /* tinystr.cpp in Sources */,
+				F222BE271FB8E8D70080F35D /* scene.cpp in Sources */,
+				F222BE1F1FB8DB350080F35D /* texture.cpp in Sources */,
+				F222BE171FB8DB350080F35D /* lodepng.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F23CBB021FB4E5D1000850CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F23CBB031FB4E5D1000850CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F23CBB051FB4E5D1000850CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 57HFA229TN;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F23CBB061FB4E5D1000850CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 57HFA229TN;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F23CBAF81FB4E5D0000850CE /* Build configuration list for PBXProject "RayTracingProj11" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F23CBB021FB4E5D1000850CE /* Debug */,
+				F23CBB031FB4E5D1000850CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F23CBB041FB4E5D1000850CE /* Build configuration list for PBXNativeTarget "RayTracingProj11" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F23CBB051FB4E5D1000850CE /* Debug */,
+				F23CBB061FB4E5D1000850CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F23CBAF51FB4E5D0000850CE /* Project object */;
+}

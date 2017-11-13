@@ -3,8 +3,8 @@
 ///
 /// \file       viewport.cpp
 /// \author     Cem Yuksel (www.cemyuksel.com)
-/// \version    9.0
-/// \date       October 23, 2017
+/// \version    11.0
+/// \date       November 6, 2017
 ///
 /// \brief Example source for CS 6620 - University of Utah.
 ///
@@ -28,12 +28,14 @@
 # else
 #  include <GL/glut.h>
 # endif
+//#else
+//# include <GL/freeglut.h>
+//#endif
 
 //-------------------------------------------------------------------------------
-
+void saveImage();
 void BeginRender(); // Called to start rendering (renderer must run in a separate thread)
 void StopRender();  // Called to end rendering (if it is not already finished)
-void saveImage();
 
 extern Node rootNode;
 extern Camera camera;
@@ -55,6 +57,7 @@ enum ViewMode
     VIEWMODE_IMAGE,
     VIEWMODE_Z,
     VIEWMODE_SAMPLECOUNT,
+    VIEWMODE_IRRADCOMP,
 };
 
 enum MouseMode {
@@ -373,6 +376,11 @@ void GlutDisplay()
             if ( ! renderImage.GetSampleCountImage() ) renderImage.ComputeSampleCountImage();
             DrawImage( renderImage.GetSampleCountImage(), GL_UNSIGNED_BYTE, GL_LUMINANCE );
             break;
+        case VIEWMODE_IRRADCOMP:
+            if ( renderImage.GetIrradianceComputationImage() ) {
+                DrawImage( renderImage.GetIrradianceComputationImage(), GL_UNSIGNED_BYTE, GL_LUMINANCE );
+            }
+            break;
     }
     
     glutSwapBuffers();
@@ -398,6 +406,7 @@ void GlutIdle()
             }
             glutPostRedisplay();
         }
+        if ( viewMode == VIEWMODE_IRRADCOMP ) glutPostRedisplay();
     }
 }
 
@@ -462,6 +471,10 @@ void GlutKeyboard(unsigned char key, int x, int y)
             break;
         case '4':
             viewMode = VIEWMODE_SAMPLECOUNT;
+            glutPostRedisplay();
+            break;
+        case '5':
+            viewMode = VIEWMODE_IRRADCOMP;
             glutPostRedisplay();
             break;
     }
@@ -561,7 +574,6 @@ void Plane::ViewportDisplay(const Material *mtl) const
 }
 void TriObj::ViewportDisplay(const Material *mtl) const
 {
-    glBegin(GL_TRIANGLES);
     unsigned int nextMtlID = 0;
     unsigned int nextMtlSwith = NF();
     if ( mtl && NM() > 0 ) {
@@ -569,13 +581,16 @@ void TriObj::ViewportDisplay(const Material *mtl) const
         nextMtlSwith = GetMaterialFaceCount(0);
         nextMtlID = 1;
     }
+    glBegin(GL_TRIANGLES);
     for ( unsigned int i=0; i<NF(); i++ ) {
         while ( i >= nextMtlSwith ) {
             if ( nextMtlID >= NM() ) nextMtlSwith = NF();
             else {
+                glEnd();
                 nextMtlSwith += GetMaterialFaceCount(nextMtlID);
                 mtl->SetViewportMaterial(nextMtlID);
                 nextMtlID++;
+                glBegin(GL_TRIANGLES);
             }
         }
         for ( int j=0; j<3; j++ ) {
@@ -594,6 +609,8 @@ void MtlBlinn::SetViewportMaterial(int subMtlID) const
     c = ColorA(specular.GetColor());
     glMaterialfv( GL_FRONT, GL_SPECULAR, &c.r );
     glMaterialf( GL_FRONT, GL_SHININESS, glossiness*1.5f );
+    c = ColorA(emission.GetColor());
+    glMaterialfv( GL_FRONT, GL_EMISSION, &c.r );
     const TextureMap *dm = diffuse.GetTexture();
     if ( dm && dm->SetViewportTexture() ) {
         glEnable( GL_TEXTURE_2D );
@@ -607,7 +624,7 @@ void MtlBlinn::SetViewportMaterial(int subMtlID) const
         glDisable( GL_TEXTURE_2D );
     }
 }
-void GenLight::SetViewportParam(int lightID, ColorA ambient, ColorA intensity, Point4 pos ) const
+void GenLight::SetViewportParam(int lightID, ColorA ambient, ColorA intensity, Point4 pos) const
 {
     glEnable ( GL_LIGHT0 + lightID );
     glLightfv( GL_LIGHT0 + lightID, GL_AMBIENT,  &ambient.r );

@@ -1,8 +1,8 @@
 //
 //  main.cpp
-//  RayTracingP10 Soft Shadows and Glossy Surfaces
+//  RayTracingP11 Monte Carlo GI
 //
-//  Created by Hsuan Lee on 10/29/17.
+//  Created by Hsuan Lee on 11/12/17.
 //  Copyright © 2017 Hsuan Lee. All rights reserved.
 //
 
@@ -16,11 +16,12 @@
 
 #define CAM_SAMPLE 64
 #define MIN_SAMPLE 4
-#define MAX_SAMPLE 64
+#define MAX_SAMPLE 32
 #define HALTON_BASE_1 2
 #define HALTON_BASE_2 3
 #define THRESHOLD 1e-4f
-#define BOUNCE 5
+#define BOUNCE 4
+#define HEMISPHERE_SAMPLE 50
 
 using namespace std;
 
@@ -362,14 +363,53 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
             diffuse_color += I_i*(theta>0.0?theta:0.0)*kse;
         }
     }
-
-    all = ambient_color+diffuse_color;
+    Color idr_Color;
+    //indirect color
+    if(bounceCount > 0){
+        Point3 newz = hInfo.N;
+        Point3 v1(1,0,0),v2(0,0,1);
+        Point3 newx;
+        if(newz.Dot(v1)<0.4)
+            newx =newz^v1;
+        else
+            newx = newz^v2;
+        
+        Point3 newy = newz ^ newx;
+        int Nofsample;
+        if(bounceCount==BOUNCE)
+            Nofsample = HEMISPHERE_SAMPLE;
+        else
+            Nofsample = 1;
+        
+        for(int i=0;i<Nofsample;i++){
+            float r_x = 2 * (rand()/ (float) RAND_MAX)-1;
+            float r_y = 2 * (rand()/ (float) RAND_MAX)-1;
+            float r_z = rand()/ (float) RAND_MAX;
+            Point3 hemis_dir = r_x*newx + r_y * newy + r_z * newz;
+            hemis_dir.Normalize();
+            
+            float dotN_wi = hemis_dir.Dot(newz);
+            Ray Ray_idr = Ray(P, hemis_dir );
+            Ray_idr.dir.Normalize();
+            HitInfo hitinfo_idr;
+            hitinfo_idr.Init();
+            
+            Color idrColor;
+            if(TraceNode(rootNode,Ray_idr,hitinfo_idr)){
+                idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, bounceCount - 1);
+            }
+            else{
+                idrColor = environment.SampleEnvironment(Ray_idr.dir);
+            }
+            idr_Color+=0.5*M_PI/Nofsample * idrColor * dotN_wi * Kd;
+        }
+    }
+    all = ambient_color+diffuse_color+idr_Color;
 
     /**
      ** reflection calculation
     **/
     Point3 V = -ray.dir.GetNormalized();
-    //Color re = reflection;
     if(/*re.Gray()>0 &&*/ bounceCount >0){
         Point3 newN=N;
         if(reflectionGlossiness){
@@ -520,7 +560,7 @@ void BeginRender()
 	
     unsigned num_thread = thread::hardware_concurrency()*2;
     //unsigned num_thread = 1;
-    //renderImage.SaveImage("prj10input.png");
+    renderImage.SaveImage("prj11input.png");
     
     cout<<"number of threads: "<<num_thread<<"\n";
     vector<thread> thr;
@@ -543,10 +583,10 @@ void BeginRender()
 void saveImage(){
     cout << "Saving z-buffer image...\n";
     renderImage.ComputeZBufferImage();
-    //renderImage.SaveZImage("prj10_zbuff.png");
-    //renderImage.SaveImage("prj10.png");
+    renderImage.SaveZImage("prj11_zbuff.png");
+    renderImage.SaveImage("prj11.png");
     renderImage.ComputeSampleCountImage();
-    renderImage.SaveSampleCountImage("prj10_sc.png");
+    renderImage.SaveSampleCountImage("prj11_sc.png");
 }
 void StopRender(){
     //stop multithread
@@ -557,7 +597,8 @@ void StopRender(){
 
 int main(int argc, const char * argv[]) {
     pIt.Init();
-    const char *file = "scene.xml";
+    //const char *file = "scene-2.xml";
+    const char *file = "scene_simple.xml";
     LoadScene(file);
     ShowViewport();
     
