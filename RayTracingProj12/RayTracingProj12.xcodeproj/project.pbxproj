@@ -1,0 +1,394 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F2717BCE1FBD5C7F00F75FB9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2717BCD1FBD5C7F00F75FB9 /* main.cpp */; };
+		F2717C001FBD5C9E00F75FB9 /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2717BE31FBD5C9E00F75FB9 /* lodepng.cpp */; };
+		F2717C011FBD5C9E00F75FB9 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = F2717BEB1FBD5C9E00F75FB9 /* Makefile */; };
+		F2717C021FBD5C9E00F75FB9 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2717BED1FBD5C9E00F75FB9 /* tinystr.cpp */; };
+		F2717C031FBD5C9E00F75FB9 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2717BEF1FBD5C9E00F75FB9 /* tinyxml.cpp */; };
+		F2717C041FBD5C9E00F75FB9 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2717BF21FBD5C9E00F75FB9 /* tinyxmlerror.cpp */; };
+		F2717C051FBD5C9E00F75FB9 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2717BF31FBD5C9E00F75FB9 /* tinyxmlparser.cpp */; };
+		F2717C071FBD5C9E00F75FB9 /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2717BFC1FBD5C9E00F75FB9 /* scene.cpp */; };
+		F2717C081FBD5C9E00F75FB9 /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2717BFD1FBD5C9E00F75FB9 /* texture.cpp */; };
+		F2717C0D1FBD5DA500F75FB9 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2717C0C1FBD5DA500F75FB9 /* GLUT.framework */; };
+		F2717C0F1FBD5DAE00F75FB9 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2717C0E1FBD5DAE00F75FB9 /* OpenGL.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F2717BC81FBD5C7D00F75FB9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F2717BCA1FBD5C7F00F75FB9 /* RayTracingProj12 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RayTracingProj12; sourceTree = BUILT_PRODUCTS_DIR; };
+		F2717BCD1FBD5C7F00F75FB9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		F2717BD41FBD5C9E00F75FB9 /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
+		F2717BD51FBD5C9E00F75FB9 /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
+		F2717BD71FBD5C9E00F75FB9 /* cmake_install.cmake */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cmake_install.cmake; sourceTree = "<group>"; };
+		F2717BD91FBD5C9E00F75FB9 /* CMakeDirectoryInformation.cmake */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeDirectoryInformation.cmake; sourceTree = "<group>"; };
+		F2717BDA1FBD5C9E00F75FB9 /* progress.marks */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = progress.marks; sourceTree = "<group>"; };
+		F2717BDB1FBD5C9E00F75FB9 /* cyBVH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyBVH.h; sourceTree = "<group>"; };
+		F2717BDC1FBD5C9E00F75FB9 /* cyColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyColor.h; sourceTree = "<group>"; };
+		F2717BDD1FBD5C9E00F75FB9 /* cyCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyCore.h; sourceTree = "<group>"; };
+		F2717BDE1FBD5C9E00F75FB9 /* cyIrradianceMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyIrradianceMap.h; sourceTree = "<group>"; };
+		F2717BDF1FBD5C9E00F75FB9 /* cyMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyMatrix.h; sourceTree = "<group>"; };
+		F2717BE01FBD5C9E00F75FB9 /* cyPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyPoint.h; sourceTree = "<group>"; };
+		F2717BE11FBD5C9E00F75FB9 /* cyTriMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyTriMesh.h; sourceTree = "<group>"; };
+		F2717BE21FBD5C9E00F75FB9 /* lights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lights.h; sourceTree = "<group>"; };
+		F2717BE31FBD5C9E00F75FB9 /* lodepng.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lodepng.cpp; sourceTree = "<group>"; };
+		F2717BE41FBD5C9E00F75FB9 /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lodepng.h; sourceTree = "<group>"; };
+		F2717BE51FBD5C9E00F75FB9 /* materials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = materials.h; sourceTree = "<group>"; };
+		F2717BE61FBD5C9E00F75FB9 /* objects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objects.h; sourceTree = "<group>"; };
+		F2717BE71FBD5C9E00F75FB9 /* scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene.h; sourceTree = "<group>"; };
+		F2717BE81FBD5C9E00F75FB9 /* texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture.h; sourceTree = "<group>"; };
+		F2717BEA1FBD5C9E00F75FB9 /* changes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = changes.txt; sourceTree = "<group>"; };
+		F2717BEB1FBD5C9E00F75FB9 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		F2717BEC1FBD5C9E00F75FB9 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		F2717BED1FBD5C9E00F75FB9 /* tinystr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinystr.cpp; sourceTree = "<group>"; };
+		F2717BEE1FBD5C9E00F75FB9 /* tinystr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinystr.h; sourceTree = "<group>"; };
+		F2717BEF1FBD5C9E00F75FB9 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
+		F2717BF01FBD5C9E00F75FB9 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
+		F2717BF11FBD5C9E00F75FB9 /* tinyxml.sln */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tinyxml.sln; sourceTree = "<group>"; };
+		F2717BF21FBD5C9E00F75FB9 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
+		F2717BF31FBD5C9E00F75FB9 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
+		F2717BF41FBD5C9E00F75FB9 /* utf8test.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = utf8test.gif; sourceTree = "<group>"; };
+		F2717BF51FBD5C9E00F75FB9 /* utf8test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = utf8test.xml; sourceTree = "<group>"; };
+		F2717BF61FBD5C9E00F75FB9 /* utf8testverify.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = utf8testverify.xml; sourceTree = "<group>"; };
+		F2717BF71FBD5C9E00F75FB9 /* xmltest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmltest.cpp; sourceTree = "<group>"; };
+		F2717BF81FBD5C9E00F75FB9 /* bricks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bricks.png; sourceTree = "<group>"; };
+		F2717BF91FBD5C9E00F75FB9 /* clouds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clouds.png; sourceTree = "<group>"; };
+		F2717BFA1FBD5C9E00F75FB9 /* scene_simple.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene_simple.xml; sourceTree = "<group>"; };
+		F2717BFB1FBD5C9E00F75FB9 /* scene-2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "scene-2.xml"; sourceTree = "<group>"; };
+		F2717BFC1FBD5C9E00F75FB9 /* scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene.cpp; sourceTree = "<group>"; };
+		F2717BFD1FBD5C9E00F75FB9 /* texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture.cpp; sourceTree = "<group>"; };
+		F2717BFE1FBD5C9E00F75FB9 /* viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = viewport.cpp; sourceTree = "<group>"; };
+		F2717BFF1FBD5C9E00F75FB9 /* xmlload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmlload.cpp; sourceTree = "<group>"; };
+		F2717C0C1FBD5DA500F75FB9 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		F2717C0E1FBD5DAE00F75FB9 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F2717BC71FBD5C7D00F75FB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2717C0F1FBD5DAE00F75FB9 /* OpenGL.framework in Frameworks */,
+				F2717C0D1FBD5DA500F75FB9 /* GLUT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F2717BC11FBD5C7D00F75FB9 = {
+			isa = PBXGroup;
+			children = (
+				F2717BCC1FBD5C7F00F75FB9 /* RayTracingProj12 */,
+				F2717BCB1FBD5C7F00F75FB9 /* Products */,
+				F2717C0B1FBD5DA500F75FB9 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F2717BCB1FBD5C7F00F75FB9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F2717BCA1FBD5C7F00F75FB9 /* RayTracingProj12 */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F2717BCC1FBD5C7F00F75FB9 /* RayTracingProj12 */ = {
+			isa = PBXGroup;
+			children = (
+				F2717BCD1FBD5C7F00F75FB9 /* main.cpp */,
+				F2717BD41FBD5C9E00F75FB9 /* plane.obj */,
+				F2717BD51FBD5C9E00F75FB9 /* teapot.obj */,
+				F2717BD61FBD5C9E00F75FB9 /* include */,
+				F2717BE91FBD5C9E00F75FB9 /* tinyxml */,
+				F2717BF81FBD5C9E00F75FB9 /* bricks.png */,
+				F2717BF91FBD5C9E00F75FB9 /* clouds.png */,
+				F2717BFA1FBD5C9E00F75FB9 /* scene_simple.xml */,
+				F2717BFB1FBD5C9E00F75FB9 /* scene-2.xml */,
+				F2717BFC1FBD5C9E00F75FB9 /* scene.cpp */,
+				F2717BFD1FBD5C9E00F75FB9 /* texture.cpp */,
+				F2717BFE1FBD5C9E00F75FB9 /* viewport.cpp */,
+				F2717BFF1FBD5C9E00F75FB9 /* xmlload.cpp */,
+			);
+			path = RayTracingProj12;
+			sourceTree = "<group>";
+		};
+		F2717BD61FBD5C9E00F75FB9 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				F2717BD71FBD5C9E00F75FB9 /* cmake_install.cmake */,
+				F2717BD81FBD5C9E00F75FB9 /* CMakeFiles */,
+				F2717BDB1FBD5C9E00F75FB9 /* cyBVH.h */,
+				F2717BDC1FBD5C9E00F75FB9 /* cyColor.h */,
+				F2717BDD1FBD5C9E00F75FB9 /* cyCore.h */,
+				F2717BDE1FBD5C9E00F75FB9 /* cyIrradianceMap.h */,
+				F2717BDF1FBD5C9E00F75FB9 /* cyMatrix.h */,
+				F2717BE01FBD5C9E00F75FB9 /* cyPoint.h */,
+				F2717BE11FBD5C9E00F75FB9 /* cyTriMesh.h */,
+				F2717BE21FBD5C9E00F75FB9 /* lights.h */,
+				F2717BE31FBD5C9E00F75FB9 /* lodepng.cpp */,
+				F2717BE41FBD5C9E00F75FB9 /* lodepng.h */,
+				F2717BE51FBD5C9E00F75FB9 /* materials.h */,
+				F2717BE61FBD5C9E00F75FB9 /* objects.h */,
+				F2717BE71FBD5C9E00F75FB9 /* scene.h */,
+				F2717BE81FBD5C9E00F75FB9 /* texture.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		F2717BD81FBD5C9E00F75FB9 /* CMakeFiles */ = {
+			isa = PBXGroup;
+			children = (
+				F2717BD91FBD5C9E00F75FB9 /* CMakeDirectoryInformation.cmake */,
+				F2717BDA1FBD5C9E00F75FB9 /* progress.marks */,
+			);
+			path = CMakeFiles;
+			sourceTree = "<group>";
+		};
+		F2717BE91FBD5C9E00F75FB9 /* tinyxml */ = {
+			isa = PBXGroup;
+			children = (
+				F2717BEA1FBD5C9E00F75FB9 /* changes.txt */,
+				F2717BEB1FBD5C9E00F75FB9 /* Makefile */,
+				F2717BEC1FBD5C9E00F75FB9 /* readme.txt */,
+				F2717BED1FBD5C9E00F75FB9 /* tinystr.cpp */,
+				F2717BEE1FBD5C9E00F75FB9 /* tinystr.h */,
+				F2717BEF1FBD5C9E00F75FB9 /* tinyxml.cpp */,
+				F2717BF01FBD5C9E00F75FB9 /* tinyxml.h */,
+				F2717BF11FBD5C9E00F75FB9 /* tinyxml.sln */,
+				F2717BF21FBD5C9E00F75FB9 /* tinyxmlerror.cpp */,
+				F2717BF31FBD5C9E00F75FB9 /* tinyxmlparser.cpp */,
+				F2717BF41FBD5C9E00F75FB9 /* utf8test.gif */,
+				F2717BF51FBD5C9E00F75FB9 /* utf8test.xml */,
+				F2717BF61FBD5C9E00F75FB9 /* utf8testverify.xml */,
+				F2717BF71FBD5C9E00F75FB9 /* xmltest.cpp */,
+			);
+			path = tinyxml;
+			sourceTree = "<group>";
+		};
+		F2717C0B1FBD5DA500F75FB9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F2717C0E1FBD5DAE00F75FB9 /* OpenGL.framework */,
+				F2717C0C1FBD5DA500F75FB9 /* GLUT.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F2717BC91FBD5C7D00F75FB9 /* RayTracingProj12 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F2717BD11FBD5C7F00F75FB9 /* Build configuration list for PBXNativeTarget "RayTracingProj12" */;
+			buildPhases = (
+				F2717BC61FBD5C7D00F75FB9 /* Sources */,
+				F2717BC71FBD5C7D00F75FB9 /* Frameworks */,
+				F2717BC81FBD5C7D00F75FB9 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RayTracingProj12;
+			productName = RayTracingProj12;
+			productReference = F2717BCA1FBD5C7F00F75FB9 /* RayTracingProj12 */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F2717BC21FBD5C7D00F75FB9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Hsuan Lee";
+				TargetAttributes = {
+					F2717BC91FBD5C7D00F75FB9 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 57HFA229TN;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F2717BC51FBD5C7D00F75FB9 /* Build configuration list for PBXProject "RayTracingProj12" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F2717BC11FBD5C7D00F75FB9;
+			productRefGroup = F2717BCB1FBD5C7F00F75FB9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F2717BC91FBD5C7D00F75FB9 /* RayTracingProj12 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F2717BC61FBD5C7D00F75FB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2717BCE1FBD5C7F00F75FB9 /* main.cpp in Sources */,
+				F2717C011FBD5C9E00F75FB9 /* Makefile in Sources */,
+				F2717C031FBD5C9E00F75FB9 /* tinyxml.cpp in Sources */,
+				F2717C051FBD5C9E00F75FB9 /* tinyxmlparser.cpp in Sources */,
+				F2717C041FBD5C9E00F75FB9 /* tinyxmlerror.cpp in Sources */,
+				F2717C021FBD5C9E00F75FB9 /* tinystr.cpp in Sources */,
+				F2717C001FBD5C9E00F75FB9 /* lodepng.cpp in Sources */,
+				F2717C071FBD5C9E00F75FB9 /* scene.cpp in Sources */,
+				F2717C081FBD5C9E00F75FB9 /* texture.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F2717BCF1FBD5C7F00F75FB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F2717BD01FBD5C7F00F75FB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F2717BD21FBD5C7F00F75FB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 57HFA229TN;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F2717BD31FBD5C7F00F75FB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 57HFA229TN;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F2717BC51FBD5C7D00F75FB9 /* Build configuration list for PBXProject "RayTracingProj12" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2717BCF1FBD5C7F00F75FB9 /* Debug */,
+				F2717BD01FBD5C7F00F75FB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F2717BD11FBD5C7F00F75FB9 /* Build configuration list for PBXNativeTarget "RayTracingProj12" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2717BD21FBD5C7F00F75FB9 /* Debug */,
+				F2717BD31FBD5C7F00F75FB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F2717BC21FBD5C7D00F75FB9 /* Project object */;
+}

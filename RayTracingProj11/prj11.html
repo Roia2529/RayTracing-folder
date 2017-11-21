@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: center;    
+}
+h2 {
+	text-align: center;
+}
+
+</style>
+</head>
+
+<title>Ray Tracing Project 11</title>
+
+<body>
+<h1>CS-6620 Project 11 - Monte Carlo GI</h1>
+<h4>Name: Hsuan Lee </h4><h4>e-mail: hsuan.lee@utah.edu</h4>
+<hr>
+
+<table>
+  <tr>
+    <th colspan="2">MacBook Pro (Retina, 13-inch, Early 2015)</th>
+  </tr>
+  <tr>
+    <th>Processor</td>
+    <td>2.9GHz intel Core i5</td>
+  </tr>
+  <tr>
+    <th>Memory</td>
+    <td>8GB 1867 MHz DDR3</td>
+  </tr>
+  <tr>
+    <th>Graphics</td>
+    <td>Intel Iris Graphics 6100 1536 MB</td>
+  </tr>
+</table>
+
+
+<h1>Input</h1>
+<table>
+    <caption>Input Scene</caption>
+    <thead>
+        <tr>
+            <th>Skylight Teapot</th>
+             <th>Cornell Box</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+    <td><p style="text-align:center;"><img src="prj11input.png" /></p></td>
+    <td><p style="text-align:center;"><img src="prj11boxinput.png" /></p></td>
+    </tr>
+    </tbody>
+ </table>  
+
+<h1>Results</h1>
+<table>
+<tr>
+    <th colspan="2">Parameters</th>
+</tr>
+<tr>
+    <th>Thread</th>
+    <td>8</th>
+</tr>
+<tr>
+    <th>Bounce</th>
+    <td>4</th>
+</tr>
+<tr>
+    <th>adaptive sampling threshold</th>
+    <td>0.01</th>
+</tr>
+<tr>
+    <th>adaptive sampling samples</th>
+    <td>4, or 16</th>
+</tr>
+<tr>
+    <th>soft shadow samples</th>
+    <td>4</th>
+</tr>
+<tr>
+    <th>Hemisphere samples</th>
+    <td>500</th>
+</tr> 
+<tr>
+    <th>Gamma Correction</th>
+    <td>Off</th>
+</tr> 
+<tr>
+    <th>time</th>
+    <td>0:49:42</th>
+</tr>     
+ </table> 
+<br>
+<table >
+<tr>
+    <th>Output</th>
+    <th>Sample Count</th>
+</tr>
+    <tr>
+    <td><p style="text-align:center;"><img src="prj11_500sam.png" /></p></td>
+    <td><p style="text-align:center;"><img src="prj11_sc_500sam.png" /></p></td>
+    </tr>
+ </table>   
+<br>
+
+<table>
+<tr>
+    <th colspan="2">Parameters</th>
+</tr>
+<tr>
+    <th>Thread</th>
+    <td>8</th>
+</tr>
+<tr>
+    <th>Bounce</th>
+    <td>2</th>
+</tr>
+<tr>
+    <th>adaptive sampling threshold</th>
+    <td>0.001</th>
+</tr>
+<tr>
+    <th>adaptive sampling samples</th>
+    <td>4, or 16</th>
+</tr>
+<tr>
+    <th>soft shadow samples</th>
+    <td>4</th>
+</tr>
+<tr>
+    <th>Hemisphere samples</th>
+    <td>20</th>
+</tr> 
+<tr>
+    <th>Gamma Correction</th>
+    <td>3.2</th>
+</tr> 
+<tr>
+    <th>time</th>
+    <td>00:18:19</th>
+</tr>     
+ </table> 
+
+
+<br>
+<table >
+<tr>
+    <th>Output</th>
+    <th>Sample Count</th>
+</tr>
+    <tr>
+    <td><p style="text-align:center;"><img src="prj11.png" /></p></td>
+    <td><p style="text-align:center;"><img src="prj11box_sc22.png" /></p></td>
+    </tr>
+ </table>
+
+<h1>Issues</h1>
+<ol>
+    <li>
+    <table>
+    <tr>
+    <th>Issue</th>
+    <td>Blue wall reflect objects</th>
+    </tr> 
+    <tr>
+    <th>Solution</th>
+    <td>The 3 vectors used to generate direction on hemisphere should be normalized.</th>
+    </tr> 
+     </table>
+     <br>
+        <img src="prj11_8.png"/>
+    </li>
+
+    <li>
+    <table>
+    <tr>
+    <th>Issue</th>
+    <td>Using scaling to make scene brighter.</th>
+    </tr> 
+    <tr>
+    <th>Solution</th>
+    <td>Multiplying pi to the indirect color is not the correct way to adjust color. Gamma correction is the general way to do it.</th>
+    </tr> 
+     </table>
+     <br>
+        <img src="prj11_9.png"/>
+    </li>
+</ol>
+
+<h1>Reference</h1>
+<ol>
+    <li><a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/global-illumination-path-tracing/global-illumination-path-tracing-practical-implementation">scratchapixel website </a></li>
+</ol>
+<br>
+
+</body>
+</html>

@@ -1,8 +1,8 @@
 //
 //  main.cpp
-//  RayTracingP11 Monte Carlo GI
+//  RayTracingP12 Path Tracing
 //
-//  Created by Hsuan Lee on 11/12/17.
+//  Created by Hsuan Lee on 11/15/17.
 //  Copyright © 2017 Hsuan Lee. All rights reserved.
 //
 
@@ -16,15 +16,15 @@
 #include <algorithm> 
 
 #define CAM_SAMPLE 64
-#define MIN_SAMPLE 4
-#define MAX_SAMPLE 16
+#define MIN_SAMPLE 16
+#define MAX_SAMPLE 128
 #define HALTON_BASE_1 2
 #define HALTON_BASE_2 3
 #define THRESHOLD 1e-3f
-#define BOUNCE 2
-#define HEMISPHERE_SAMPLE 20
+#define BOUNCE 4
+#define HEMISPHERE_SAMPLE 1
 
-#define gamma 3.2
+#define gamma 2.2
 
 using namespace std;
 
@@ -50,7 +50,7 @@ private:
 public:
     void Init(){ ix = 0; stop = false;}
     bool GetPixel(int &x, int &y){
-        if(stop) return true;
+        if(stop) return false;
         int i=ix++;
         if(i>=camera.imgWidth*camera.imgHeight) return false;
         x = i%camera.imgWidth;
@@ -58,7 +58,10 @@ public:
         return true;
     }
     void setFlag(){
-        stop = ~stop;
+        stop = true;
+    }
+    void clearFlag(){
+        stop = false;
     }
 };
 //multi-thread
@@ -285,7 +288,7 @@ void RenderPixel(pixelIterator &it){
             if(hit){
                 //set average color in colorlist
                 Color avgColor = averageColor(colorlist);
-                if(colorlist.size()<5)
+                if(colorlist.size()<=MIN_SAMPLE)
                     setPixelSampleCount(index,0);
                 else
                     setPixelSampleCount(index,255);
@@ -382,12 +385,12 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
             // */
         }
     }
-    Color idr_Color(0,0,0);
-    ///*
+    
+    
     //indirect color
-    //if(bounceCount > 0
-    if(bounceCount==BOUNCE //bounceCount > 0
-       ){
+    Color idr_Color(0,0,0);
+    
+    if(bounceCount > 0){
         Point3 newz = hInfo.N;
         Point3 v1(1,0,0),v2(0,0,1);
         //Point3 newx(newz.z,0,-newz.x);
@@ -407,10 +410,13 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
             Nofsample = 1;
         
         for(int i=0;i<Nofsample;i++){
-            float r_x = 2 * (rand()/ (float) RAND_MAX)-1;
-            float r_y = 2 * (rand()/ (float) RAND_MAX)-1;
-            float r_z = rand()/ (float) RAND_MAX;
-            Point3 hemis_dir = r_x*newx + r_y * newy + r_z * newz;
+            float phi = 2*M_PI*(rand()/ (float) RAND_MAX);
+            float cosphi = cosf(phi);
+            float ysquare = (rand()/ (float) RAND_MAX);
+            float sintheta = sqrt(ysquare);
+            float costheta = sqrt(1-ysquare);
+            
+            Point3 hemis_dir = sintheta * cosphi * newx + sintheta * sinf(phi) * newy + costheta * newz;
             hemis_dir.Normalize();
             //cout << newz.Length() << endl;
             
@@ -422,8 +428,7 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
             
             Color idrColor;
             if(TraceNode(rootNode,Ray_idr,hitinfo_idr)){
-                //idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, bounceCount - 1);
-                idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, 1);
+                idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, bounceCount-1);
             }
             else{
                 idrColor = environment.SampleEnvironment(Ray_idr.dir);
@@ -437,10 +442,6 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
             //idrColor.b = max(0.0f,min(1.0f,idrColor.b));
             
             idr_Color+= 2.0 * idrColor /(float)Nofsample;
-            
-            //diffuse_color += I_i*(theta>0.0?theta:0.0)*kse;
-            //  */
-            //idr_Color+= light /(float)Nofsample;
         }
     }
     //*/
@@ -588,7 +589,7 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
 
 void BeginRender()
 {
-	
+	pIt.clearFlag();
     unsigned num_thread = thread::hardware_concurrency()*2;
     //unsigned num_thread = 1;
     //renderImage.SaveImage("prj11boxinput.png");
@@ -615,9 +616,9 @@ void saveImage(){
     cout << "Saving z-buffer image...\n";
     renderImage.ComputeZBufferImage();
     //renderImage.SaveZImage("prj11_boxzbuff.png");
-    renderImage.SaveImage("prj11box.png");
+    renderImage.SaveImage("prj12box.png");
     renderImage.ComputeSampleCountImage();
-    //renderImage.SaveSampleCountImage("prj11box_sc.png");
+    renderImage.SaveSampleCountImage("prj12box_sc.png");
 }
 void StopRender(){
     //stop multithread

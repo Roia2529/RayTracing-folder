@@ -1,0 +1,125 @@
+//1 0,5pi
+#define CAM_SAMPLE 64
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 16
+#define HALTON_BASE_1 2
+#define HALTON_BASE_2 3
+#define THRESHOLD 1e-3f
+#define BOUNCE 4
+#define HEMISPHERE_SAMPLE 20
+
+//2 1pi
+#define CAM_SAMPLE 64
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 16
+#define HALTON_BASE_1 2
+#define HALTON_BASE_2 3
+#define THRESHOLD 1e-3f
+#define BOUNCE 4
+#define HEMISPHERE_SAMPLE 20
+
+//3
+#define CAM_SAMPLE 64
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 64
+#define HALTON_BASE_1 2
+#define HALTON_BASE_2 3
+#define THRESHOLD 1e-3f
+#define BOUNCE 4
+#define HEMISPHERE_SAMPLE 20
+
+//4
+idrColor = idrColor* 1.0*M_PI * dotN_wi;
+            
+idrColor.r = max(0.0f,min(1.0f,idrColor.r));
+idrColor.g = max(0.0f,min(1.0f,idrColor.g));
+idrColor.b = max(0.0f,min(1.0f,idrColor.b));   
+idr_Color+= idrColor /(float)Nofsample;
+
+//5
+#define CAM_SAMPLE 64
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 16
+#define HALTON_BASE_1 2
+#define HALTON_BASE_2 3
+#define THRESHOLD 1e-2f
+#define BOUNCE 4
+#define HEMISPHERE_SAMPLE 100
+
+//6
+#define CAM_SAMPLE 64
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 16
+#define HALTON_BASE_1 2
+#define HALTON_BASE_2 3
+#define THRESHOLD 1e-2f
+#define BOUNCE 4
+#define HEMISPHERE_SAMPLE 500
+
+//7 1000
+
+//8
+#define CAM_SAMPLE 64
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 16
+#define HALTON_BASE_1 2
+#define HALTON_BASE_2 3
+#define THRESHOLD 1e-3f
+#define BOUNCE 4
+#define HEMISPHERE_SAMPLE 20
+idr_Color*Kd*M_PI*0.5;
+
+//9
+0:46:17.
+#define CAM_SAMPLE 64
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 16
+#define HALTON_BASE_1 2
+#define HALTON_BASE_2 3
+#define THRESHOLD 1e-3f
+#define BOUNCE 4
+#define HEMISPHERE_SAMPLE 20
+2pi
+
+//2 bounce  1:16:55.
+#define CAM_SAMPLE 64
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 16
+#define HALTON_BASE_1 2
+#define HALTON_BASE_2 3
+#define THRESHOLD 1e-3f
+#define BOUNCE 2
+#define HEMISPHERE_SAMPLE 20
+
+without multiplying 2*pi
+
+
+//11 
+#define CAM_SAMPLE 64
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 16
+#define HALTON_BASE_1 2
+#define HALTON_BASE_2 3
+#define THRESHOLD 1e-3f
+#define BOUNCE 2
+#define HEMISPHERE_SAMPLE 20
+
+            Color idrColor;
+            if(TraceNode(rootNode,Ray_idr,hitinfo_idr)){
+                //idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, bounceCount - 1);
+                idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, 1);
+            }
+            else{
+                idrColor = environment.SampleEnvironment(Ray_idr.dir);
+            }
+
+            //
+            idrColor = idrColor* dotN_wi;
+            
+            //idrColor.r = max(0.0f,min(1.0f,idrColor.r));
+            //idrColor.g = max(0.0f,min(1.0f,idrColor.g));
+            //idrColor.b = max(0.0f,min(1.0f,idrColor.b));
+            
+            idr_Color+= 2.0 * idrColor /(float)Nofsample ;
+}
+            all = ambient_color + ((diffuse_color/M_PI)+idr_Color)*Kd;
