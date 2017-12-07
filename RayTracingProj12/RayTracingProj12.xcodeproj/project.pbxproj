@@ -78,6 +78,7 @@
 		F2717BFF1FBD5C9E00F75FB9 /* xmlload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmlload.cpp; sourceTree = "<group>"; };
 		F2717C0C1FBD5DA500F75FB9 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		F2717C0E1FBD5DAE00F75FB9 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		F27E1FD31FCE40B600AF9924 /* christmas_balls.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = christmas_balls.obj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +116,7 @@
 			children = (
 				F2717BCD1FBD5C7F00F75FB9 /* main.cpp */,
 				F2717BD41FBD5C9E00F75FB9 /* plane.obj */,
+				F27E1FD31FCE40B600AF9924 /* christmas_balls.obj */,
 				F2717BD51FBD5C9E00F75FB9 /* teapot.obj */,
 				F2717BD61FBD5C9E00F75FB9 /* include */,
 				F2717BE91FBD5C9E00F75FB9 /* tinyxml */,
@@ -356,6 +358,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 57HFA229TN;
+				ENABLE_TESTABILITY = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -364,6 +367,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 57HFA229TN;
+				ENABLE_TESTABILITY = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -387,6 +391,7 @@
 				F2717BD31FBD5C7F00F75FB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

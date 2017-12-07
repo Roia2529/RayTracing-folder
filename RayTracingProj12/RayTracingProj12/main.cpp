@@ -16,12 +16,12 @@
 #include <algorithm> 
 
 #define CAM_SAMPLE 64
-#define MIN_SAMPLE 16
-#define MAX_SAMPLE 128
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 64
 #define HALTON_BASE_1 2
 #define HALTON_BASE_2 3
 #define THRESHOLD 1e-3f
-#define BOUNCE 4
+#define BOUNCE 3
 #define HEMISPHERE_SAMPLE 1
 
 #define gamma 2.2
@@ -207,7 +207,7 @@ void RenderPixel(pixelIterator &it){
     while(it.GetPixel(x,y)){
         //debug
         //if (x!=431 || y!=227) continue;
-        if (x==391 && y == 254) {
+        if (x==10 && y == 0) {
             std::cout << "xx" << std::endl;
         }
         
@@ -441,7 +441,7 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
             //idrColor.g = max(0.0f,min(1.0f,idrColor.g));
             //idrColor.b = max(0.0f,min(1.0f,idrColor.b));
             
-            idr_Color+= 2.0 * idrColor /(float)Nofsample;
+            idr_Color+= 1.0 * idrColor /(float)Nofsample;
         }
     }
     //*/
