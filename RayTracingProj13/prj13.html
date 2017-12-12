@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: center;    
+}
+h2 {
+	text-align: center;
+}
+
+</style>
+</head>
+
+<title>Ray Tracing Project 13</title>
+
+<body>
+<h1>CS-6620 Project 13 - Photon Mapping</h1>
+<h4>Name: Hsuan Lee </h4><h4>e-mail: hsuan.lee@utah.edu</h4>
+<hr>
+
+<table>
+  <tr>
+    <th colspan="2">MacBook Pro (Retina, 13-inch, Early 2015)</th>
+  </tr>
+  <tr>
+    <th>Processor</td>
+    <td>2.9GHz intel Core i5</td>
+  </tr>
+  <tr>
+    <th>Memory</td>
+    <td>8GB 1867 MHz DDR3</td>
+  </tr>
+  <tr>
+    <th>Graphics</td>
+    <td>Intel Iris Graphics 6100 1536 MB</td>
+  </tr>
+</table>
+
+
+<h1>Input</h1>
+<table>
+    <caption>Input Scene</caption>
+    <thead>
+        <tr>
+             <th>Cornell Box</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+    <td><p style="text-align:center;"><img src="prj13boxinput.png" /></p></td>
+    </tr>
+    </tbody>
+ </table>  
+
+<h1>Results</h1>
+<table>
+<tr>
+    <th colspan="2">Parameters</th>
+</tr>
+<tr>
+    <th>Thread</th>
+    <td>8</th>
+</tr>
+<tr>
+    <th>Bounce</th>
+    <td>4</th>
+</tr>
+<tr>
+    <th>adaptive sampling threshold</th>
+    <td>0.001</th>
+</tr>
+<tr>
+    <th>adaptive sampling samples</th>
+    <td>4 to 64 16</th>
+</tr>
+<tr>
+    <th>soft shadow samples</th>
+    <td>4</th>
+</tr>
+<tr>
+    <th>Number of photons in photon map:</th>
+    <td>1,000,000</th>
+</tr>
+<tr>
+    <th>Number of photons for irradiance:</th>
+    <td>200</th>
+</tr> 
+<tr>
+    <th>Radius for finding photons:</th>
+    <td>10</th>
+</tr>  
+<tr>
+    <th>Apply Caustic map:</th>
+    <td>NO</th>
+</tr>  
+<tr>
+    <th>Use photon map for direct illumination:</th>
+    <td>Yes</th>
+</tr>  
+<tr>
+    <th>Gamma Correction</th>
+    <td>on, 2.2</th>
+</tr> 
+<tr>
+    <th>time</th>
+    <td>1:52:46</th>
+</tr>     
+ </table> 
+<br>
+<table >
+<tr>
+    <th>Output</th>
+    <th>Sample Count</th>
+</tr>
+    <tr>
+    <td><p style="text-align:center;"><img src="prj13_usepmDirect.png" /></p></td>
+    <td><p style="text-align:center;"><img src="prj13box_sc_usePMD.png" /></p></td>
+    </tr>
+ </table>   
+<br>
+
+<table>
+<tr>
+    <th colspan="2">Parameters</th>
+</tr>
+<tr>
+    <th>Thread</th>
+    <td>8</th>
+</tr>
+<tr>
+    <th>Bounce</th>
+    <td>4</th>
+</tr>
+<tr>
+    <th>adaptive sampling threshold</th>
+    <td>0.001</th>
+</tr>
+<tr>
+    <th>adaptive sampling samples</th>
+    <td>4~64</th>
+</tr>
+<tr>
+    <th>soft shadow samples</th>
+    <td>4</th>
+</tr>
+<tr>
+    <th>Number of photons in photon map:</th>
+    <td>1,000,000</th>
+</tr>
+<tr>
+    <th>Number of photons for irradiance:</th>
+    <td>200</th>
+</tr> 
+<tr>
+    <th>Radius for finding photons:</th>
+    <td>10</th>
+</tr>  
+<tr>
+    <th>Apply Caustic map:</th>
+    <td>NO</th>
+</tr>  
+<tr>
+    <th>Use photon map for direct illumination:</th>
+    <td>NO</th>
+</tr>  
+<tr>
+    <th>Gamma Correction</th>
+    <td>on, 2.2</th>
+</tr> 
+<tr>
+    <th>time</th>
+    <td>0:23:50.</th>
+</tr>     
+ </table> 
+
+
+<br>
+<table >
+<tr>
+    <th>Output</th>
+    <th>Sample Count</th>
+</tr>
+    <tr>
+    <td><p style="text-align:center;"><img src="prj13box.png" /></p></td>
+    <td><p style="text-align:center;"><img src="prj13box_sc.png" /></p></td>
+    </tr>
+ </table>
+
+<h4>Visualization of caustic map</h4>
+<img src="prj13box_causticmap.png" />
+
+<table>
+<tr>
+    <th colspan="2">Parameters</th>
+</tr>
+<tr>
+    <th>Thread</th>
+    <td>8</th>
+</tr>
+<tr>
+    <th>Bounce</th>
+    <td>4</th>
+</tr>
+<tr>
+    <th>adaptive sampling threshold</th>
+    <td>0.001</th>
+</tr>
+<tr>
+    <th>adaptive sampling samples</th>
+    <td>4~64</th>
+</tr>
+<tr>
+    <th>soft shadow samples</th>
+    <td>4</th>
+</tr>
+<tr>
+    <th>Number of photons in photon map:</th>
+    <td>1,000,000</th>
+</tr>
+<tr>
+    <th>Number of photons for irradiance:</th>
+    <td>200</th>
+</tr> 
+<tr>
+    <th>Radius for finding photons:</th>
+    <td>2</th>
+</tr>  
+<tr>
+    <th>Number of photons in caustic map:</th>
+    <td>1,000,000</th>
+</tr>
+<tr>
+    <th>Number of photons for caustic irradiance:</th>
+    <td>400</th>
+</tr> 
+<tr>
+    <th>Radius for finding photons:</th>
+    <td>0.5</th>
+</tr>  
+<tr>
+    <th>Use photon map for direct illumination:</th>
+    <td>NO</th>
+</tr>  
+<tr>
+    <th>Gamma Correction</th>
+    <td>on, 2.2</th>
+</tr> 
+<tr>
+    <th>time</th>
+    <td>0:39:53.</th>
+</tr>     
+ </table> 
+
+
+<br>
+<table >
+<tr>
+    <th>Output</th>
+    <th>Sample Count</th>
+</tr>
+    <tr>
+    <td><p style="text-align:center;"><img src="prj13box_addc.png" /></p></td>
+    <td><p style="text-align:center;"><img src="prj13box_sc_addc.png" /></p></td>
+    </tr>
+ </table>
+ <p>The reflection of on the right ball is too bright, I think it is due to how I apply caustic map.</p>
+
+
+</body>
+</html>

@@ -28,12 +28,14 @@
         <translate x="15"/>
       </object>
     </object>
+    <!--
     <object type="obj" name="teapot.obj" material="mtl1">
       <scale value="0.75"/>
       <rotate angle="30" z="1"/>
       <translate x="-4.5" y="5" z="0"/>
     </object>
-    <object type="sphere" name="sphere2" material="mtl2">
+     -->
+    <object type="sphere" name="sphere2" material="mtl3">
       <scale value="4.5"/>
       <rotate angle="30" y="1"/>
       <translate x="8" y="-6" z="4.5"/>
@@ -66,7 +68,13 @@
       <specular r="0.9" g="0.9" b="1.0" value="0.8"/>
       <glossiness value="10"/>
     </material>
-
+    <material type="blinn" name="mtl3">
+        <diffuse  value="0"/>
+        <specular vakye="1.0"/>
+        <glossiness value="80"/>
+        <refraction value="1.0" index="1.52"/>
+        <absorption r="0.1" g="0.001" b="0.1"/>
+    </material>
     <!-- Lights -->
     <light type="point" name="pointLight">
       <intensity value="0.5"/>

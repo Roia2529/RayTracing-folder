@@ -28,7 +28,7 @@
       <scale value="6"/>
       <translate x="-5" y="10" z="6.5"/>
     </object>
-    <object type="sphere" name="sphere2" material="mtl2">
+    <object type="sphere" name="sphere2" material="mtl3">
       <scale value="6"/>
       <rotate angle="30" y="1"/>
       <translate x="7" y="-5" z="6.5"/>
@@ -60,7 +60,13 @@
       <refraction value="0.8" index="1.52"/>
       <absorption r="0.01" g="0.001" b="0.0001"/>
     </material>
- 
+    <material type="blinn" name="mtl3">
+        <diffuse  value="0"/>
+        <specular value="1.0"/>
+        <glossiness value="80"/>
+        <refraction value="1.0" index="1.52"/>
+        <absorption r="0.1" g="0.1" b="0.1"/>
+    </material>
     <!-- Lights -->
     <light type="ambient" name="ambientLight">
       <intensity value="0.1"/>

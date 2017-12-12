@@ -33,6 +33,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F27A4A681FDB7CDA00EC11E0 /* solid_teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = solid_teapot.obj; sourceTree = "<group>"; };
+		F27A4A691FDB7CDA00EC11E0 /* scene_nt.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene_nt.xml; sourceTree = "<group>"; };
 		F27E1FDD1FD4AED100AF9924 /* RayTracingProj13 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RayTracingProj13; sourceTree = BUILT_PRODUCTS_DIR; };
 		F27E1FE01FD4AED100AF9924 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		F27E1FE71FD4AF7A00AF9924 /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 		F27E201E1FD4AF9200AF9924 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		F27E20201FD4AF9900AF9924 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		F27E20221FD4B52C00AF9924 /* cyPhotonMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyPhotonMap.h; sourceTree = "<group>"; };
+		F27E20401FDB40DD00AF9924 /* scene.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +116,9 @@
 		F27E1FDF1FD4AED100AF9924 /* RayTracingProj13 */ = {
 			isa = PBXGroup;
 			children = (
+				F27A4A681FDB7CDA00EC11E0 /* solid_teapot.obj */,
+				F27A4A691FDB7CDA00EC11E0 /* scene_nt.xml */,
+				F27E20401FDB40DD00AF9924 /* scene.xml */,
 				F27E1FE01FD4AED100AF9924 /* main.cpp */,
 				F27E1FE71FD4AF7A00AF9924 /* plane.obj */,
 				F27E1FE81FD4AF7A00AF9924 /* teapot.obj */,
@@ -388,6 +394,7 @@
 				F27E1FE61FD4AED100AF9924 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

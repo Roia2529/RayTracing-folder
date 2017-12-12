@@ -22,7 +22,7 @@
 #define HALTON_BASE_1 2
 #define HALTON_BASE_2 3
 #define THRESHOLD 1e-3f
-#define BOUNCE 4
+#define BOUNCE 6
 #define HEMISPHERE_SAMPLE 20
 #define MAX_NUM_OF_PHOTON 1000000
 #define MAX_NUM_OF_CAUSTIC_PHOTON 1000000
@@ -216,7 +216,7 @@ void RenderPixel(pixelIterator &it){
     
     while(it.GetPixel(x,y)){
         //debug
-        //if (x!=431 || y!=227) continue;
+        if (y<327) continue;
         if (x==10 && y == 0) {
             std::cout << "xx" << std::endl;
         }
@@ -375,7 +375,7 @@ void generatePhotonMap(){
     
     int numofcausphoton = 0;
     //assume always choose first light
-    
+    /*
     while(numofcausphoton < MAX_NUM_OF_CAUSTIC_PHOTON){
         //numofcausphoton choose light/PointLight?
         const PointLight* pL = static_cast<const PointLight*>( lights[0]);
@@ -402,6 +402,7 @@ void generatePhotonMap(){
     fclose(fpc);
     
     causticmap.PrepareForIrradianceEstimation();
+     */
     
 }
 
@@ -414,7 +415,7 @@ void PhotonTracing(Ray rayPre,HitInfo hitInfo,Color intensity,int &savedPhoton,i
         if(Trace(rayPre, newhitInfo)){
             Point3 pos = newhitInfo.p;
             Point3 dir = rayPre.dir;
-            Color power = intensity;
+            Color power(intensity.r,intensity.g,intensity.b);
             
             const MtlBlinn *mtlb = static_cast<const MtlBlinn *>(newhitInfo.node->GetMaterial());
             if(mtlb->IsPhotonSurface()){
@@ -513,7 +514,7 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
         }
         else{
             
-            
+            /*
             if(mtlb->IsPhotonSurface()&&specount>2){
                 Color causticrad;
                 Point3 dirc;
@@ -530,6 +531,8 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
             }
             
             specount++;
+             */
+            
             //direct
             
             Color I_i = lights[i]->Illuminate(P,N);
@@ -553,10 +556,8 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
     }
     //return cau_Color;
     //indirect //add after second bounce
-    
+    /*
     if(bounceCount>0){
-        //&& bounceCount!=BOUNCE){
-        //photon map
         
         Color photonrad;
         Point3 dir;
@@ -615,8 +616,8 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
             
             idr_Color+= 2.0 * idrColor /(float)Nofsample;
         }
-         *///
-    }
+     
+    }*/
 
     all = ambient_color + (diffuse_color+idr_Color+cau_Color);
     
@@ -707,7 +708,7 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
          HitInfo hitinfo_ra;
          hitinfo_ra.Init();
          
-         float absorb = 0.0;
+         float absorb = 1.0;
         if(sintheta2 <= 1.0){
 
             float costheta2 = sqrtf(max(0.0f,1 - (sintheta2 * sintheta2)));
@@ -787,7 +788,7 @@ void StopRender(){
 
 int main(int argc, const char * argv[]) {
     pIt.Init();
-    const char *file = "scene.xml";
+    const char *file = "scene_nt.xml";
     //const char *file = "scene_simple.xml";
     LoadScene(file);
     ShowViewport();
