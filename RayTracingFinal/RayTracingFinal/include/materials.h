@@ -16,6 +16,13 @@
 #include "scene.h"
 
 //-------------------------------------------------------------------------------
+inline Color Attenuation(const Color &absorption, float l)
+{
+    const auto R = exp(-absorption.r * l);
+    const auto G = exp(-absorption.g * l);
+    const auto B = exp(-absorption.b * l);
+    return Color(R, G, B); // attenuation
+}
 
 class MtlBlinn : public Material
 {

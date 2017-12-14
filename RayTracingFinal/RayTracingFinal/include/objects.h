@@ -61,7 +61,7 @@ public:
                 hitinfo.N = hitinfo.p;
                 hitinfo.N.Normalize();
                 float u = 0.5 - atan2(hitinfo.p.x,hitinfo.p.y)/ (2 * M_PI);
-                float temp = asin(hitinfo.p.z);
+                //float temp = asin(hitinfo.p.z);
                 float v = 0.5 + asin(hitinfo.p.z)/M_PI;
                 hitinfo.uvw = Point3(u,v,0);
             }

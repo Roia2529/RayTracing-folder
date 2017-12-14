@@ -1,0 +1,137 @@
+<xml>
+	<scene>
+        <!-- Objects -->
+        <object type="plane" name="WallBottom" material="wall">
+            <scale value="30"/>
+            <translate x="0.041829" y="-1.47655" z="0.015305"/>
+        </object>
+        <object type="plane" name="Wallback" material="wallback">
+            <scale value="20"/>
+            <rotate angle="90" x="1" />
+            <translate x="-5.46323" y="5.81463" z="2.37967"/>
+        </object>
+        <object type="plane" name="Wallleft" material="wallside">
+            <scale value="20"/>
+            <rotate angle="90" y="1" />
+            <translate x="-14.4938" y="-1.78153" z="7.21942"/>
+        </object>
+        <object type="plane" name="Wallright" material="wallside">
+            <scale value="20"/>
+            <rotate angle="90" y="1" />
+            <translate x="13.9643" y="-1.78153" z="7.21942"/>
+        </object>
+		<object type="obj" name="data/solid_teapot.obj" material="mtl1">
+			<scale value="0.098"/>
+			<rotate angle="-179" x="1" />
+			<rotate angle="-179" y="1" />
+			<rotate angle="25.3" z="1"/>
+			<translate x="2.48025" y="0.405745" z="3.18487"/>
+		</object>
+        <object type="obj" name="data/tableall3.obj" material="wood">
+            <scale value="1"/>
+            <rotate angle="90" x="1" />
+            <rotate angle="0" y="1" />
+            <rotate angle="0" z="1"/>
+            <translate x="0" y="0" z="0"/>
+        </object>
+        <object type="obj" name="data/root.obj" material="root">
+            <scale value="1"/>
+            <rotate angle="90" x="1" />
+            <rotate angle="0" y="1" />
+            <rotate angle="0" z="1"/>
+            <translate x="0" y="0" z="0"/>
+        </object>
+        <object type="obj" name="data/cerimic.obj" material="ceramic">
+            <scale value="1"/>
+            <rotate angle="90" x="1" />
+            <rotate angle="0" y="1" />
+            <rotate angle="0" z="1"/>
+            <translate x="0" y="0" z="0"/>
+        </object>
+        <!--
+        <object type="sphere" name="sphere1" material="fire">
+            <scale value="0.9"/>
+            <translate x="0.08" y="-1" z="4.01536"/>
+        </object>
+        
+        <object type="obj" name="newtwand.obj" >
+            <scale value="0.3"/>
+            <rotate angle="167" x="1" />
+            <rotate angle="30" y="1" />
+            <rotate angle="175" z="1"/>
+            <translate x="4.2036" y="-4.72926" z="4.50124"/>
+        </object>
+        -->
+        
+        <!-- Materials -->
+        <material type="blinn" name="wood">
+            <diffuse texture="data/wood.png">
+            </diffuse>
+            <specular value="0.4"/>
+            <glossiness value="10"/>
+        </material>
+        <material type="blinn" name="root">
+            <diffuse texture="data/005_wood_001_color.png">
+            </diffuse>
+            <specular value="0.4"/>
+            <glossiness value="10"/>
+        </material>
+		<material type="blinn" name="wall">
+			<diffuse  r="1" g="1" b="1"/>
+			<specular value="0"/>
+		</material>
+        <material type="blinn" name="wallback">
+            <diffuse  r="0.9" g="1" b="0.6"/>
+            <specular value="0.3"/>
+        </material>
+        <material type="blinn" name="wallside">
+			<diffuse  r="0.5" g="0.5" b="0.5"/>
+			<specular value="0"/>
+		</material>
+		<material type="blinn" name="ceramic">
+			<diffuse  r="1.0" g="1.0" b="1.0"/>
+			<specular value="0.5"/>
+		</material>
+        <material type="blinn" name="fire">
+            <diffuse  r="0.5" g="0.5" b="1.0"/>
+            <specular value="0"/>
+            <emission r="0.5" g="0.5" b="1.0"/>
+        </material>
+        <material type="blinn" name="mtl1">
+			<diffuse  r="1.0" g="0.3" b="0.3"/>
+			<specular r="1.0" g="1.0" b="1.0" value="0.7"/>
+			<glossiness value="20"/>
+		</material>
+		<material type="blinn" name="mtl2">
+			<diffuse  value="0"/>
+			<specular vakye="1.0"/>
+			<glossiness value="80"/>
+			<reflection value="1.0"/>
+		</material>
+		<material type="blinn" name="mtl3">
+			<diffuse  value="0"/>
+			<specular vakye="1.0"/>
+			<glossiness value="80"/>
+			<refraction value="1.0" index="1.52"/>
+      <absorption r="0.1" g="0.001" b="0.1"/>
+    </material>
+
+		<!-- Lights -->
+		<light type="ambient" name="ambientLight">
+      		<intensity value="0.3"/>
+    	</light>
+		<light type="point" name="pointLight">
+			<intensity value="100.5"/>
+			<position x="-4.41672" y="-5.478" z="5.28724"/>
+		</light>
+	</scene>
+
+	<camera>
+		<position x="0.160607" y="-16.2073" z="5.54447"/>
+		<target x="0" y="0" z="5.8"/>
+		<up x="0" y="0" z="1"/>
+		<fov value="30"/>
+		<width value="800"/>
+		<height value="600"/>
+	</camera>
+</xml>

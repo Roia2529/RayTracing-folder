@@ -17,16 +17,16 @@
 #include "cyPhotonMap.h"
 
 #define CAM_SAMPLE 64
-#define MIN_SAMPLE 4
+#define MIN_SAMPLE 16
 #define MAX_SAMPLE 64
 #define HALTON_BASE_1 2
 #define HALTON_BASE_2 3
 #define THRESHOLD 1e-3f
-#define BOUNCE 4
+#define BOUNCE 5
 #define HEMISPHERE_SAMPLE 20
 #define MAX_NUM_OF_PHOTON 1000000
 #define MAX_NUM_OF_CAUSTIC_PHOTON 1000000
-#define PHOTON_BOUNCE 8
+#define PHOTON_BOUNCE 6
 #define CAUSTIC_PHOTON_BOUNCE 5
 
 #define gamma 2.2
@@ -47,6 +47,17 @@ TextureList textureList;
 
 cy::PhotonMap photonmap;
 cy::PhotonMap causticmap;
+
+/**
+ * Thresholds for Reflection and Refraction
+ */
+
+const float total_reflection_threshold = 1.001f;
+const float refraction_color_threshold = 0.001f;
+const float reflection_color_threshold = 0.001f;
+const float glossiness_value_threshold = 0.001f;
+const float glossiness_power_threshold = 0.f;
+
 
 //if not hit
 Color black(0.0);
@@ -482,280 +493,405 @@ float GenLight::Shadow(Ray ray, float t_max){
     return 1.0;
 }
 
+
 Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lights, int bounceCount, int specount) const{
-    Color ra_color(0.0);
-    Color re_color(0.0);
-    Color re_ra_color(0.0);
-
-    Color ambient_color(0.0);
-    Color diffuse_color(0.0);
-
-    Color all;
-    float bias = 0.0;//0.0001f;
-
-    Point3 N = hInfo.N;
-    Point3 P = hInfo.p;
-
-    const Material *material;
-    material = hInfo.node->GetMaterial();
-
-    const MtlBlinn* mtlb =static_cast<const MtlBlinn*>(material);
-    Color Kd = mtlb->diffuse.Sample(hInfo.uvw, hInfo.duvw);
-    Color Ks = mtlb->specular.Sample(hInfo.uvw, hInfo.duvw);
-    float alpha = mtlb->glossiness;
-
+    Color color = emission.GetColor();
     
-    Color idr_Color(0,0,0);//indirect color
-    Color cau_Color(0,0,0);//indirect color
-    for(int i=0; i<lights.size(); i++){
-        //ambient light
-        if(lights[i]->IsAmbient()){
-           ambient_color += lights[i]->Illuminate(P,N)*Kd;
-        }
-        else{
-            
-            //direct
-            
-            Color I_i = lights[i]->Illuminate(P,N);
-            Point3 L = -1*(lights[i]->Direction(P));
-            L.Normalize();
-            Point3 V = -ray.dir;
-            V.Normalize();
-            Point3 LpV = L+V;
-            Point3 H = LpV;
-            H.Normalize();
-            
-            Color kse = Ks*pow(N.Dot(H),alpha)+Kd;
-            
-            float theta = N.Dot(L);
-            
-            diffuse_color += I_i*(theta>0.0?theta:0.0)*kse;
-
-        }
-    }
+    const Node *node = hInfo.node;
+    const Point3 p = hInfo.p; // hit point
+    Point3 N = hInfo.N; // normal
+    N.Normalize();
+    Point3 direction = -ray.dir;
+    direction.Normalize();
     
-    //Color idr_Color(0,0,0);
-    if(bounceCount==BOUNCE //bounceCount > 0
-       ){
-        Point3 newz = hInfo.N;
-        Point3 v1(1,0,0),v2(0,0,1);
-        //Point3 newx(newz.z,0,-newz.x);
-        Point3 newx;
+    // get material
+    const Material *material = node -> GetMaterial();
+    // cast to MtlBlinn
+    const MtlBlinn *mtl = (MtlBlinn*) material;
+    // get diffuse, specular and glossiness
+    Color kd = mtl -> diffuse.Sample(hInfo.uvw, hInfo.duvw);
+    Color ks = mtl -> specular.Sample(hInfo.uvw , hInfo.duvw);
+    float gloss = mtl -> glossiness;
+    // get reflection refraction
+    Color reflection = mtl -> reflection.GetColor();
+    Color refraction = mtl -> refraction.GetColor();
+    // get ior absorption
+    float ior = mtl -> ior;
+    Color absorption = mtl -> absorption;
+    float reflectionGlossiness = mtl -> reflectionGlossiness;
+    float refractionGlossiness = mtl -> refractionGlossiness;
+    Color intensity;
+    
+    // direct lights
+    const float coef = lights.empty() ? 1.0f : 1.0f / lights.size();
+    //for( int i = 0; i < lights.size(); i++){
+    for(auto &light : lights){
+        //Light *curlight = (GenLight*)lights[i];
         
-        if(newz.Dot(v1)<0.4)
-            newx =newz^v1;
-        else
-            newx = newz^v2;
+        //intensity = curlight -> Illuminate(p, N);
+        intensity = light -> Illuminate(p, N) * coef;
         
-        newx.Normalize();
-        Point3 newy = newz ^ newx;
-        int Nofsample;
-        if(bounceCount==BOUNCE)
-            Nofsample = HEMISPHERE_SAMPLE;
-        else
-            Nofsample = 1;
-        
-        for(int i=0;i<Nofsample;i++){
-            float r_x = 2 * (rand()/ (float) RAND_MAX)-1;
-            float r_y = 2 * (rand()/ (float) RAND_MAX)-1;
-            float r_z = rand()/ (float) RAND_MAX;
-            Point3 hemis_dir = r_x*newx + r_y * newy + r_z * newz;
-            hemis_dir.Normalize();
-            //cout << newz.Length() << endl;
-            
-            float dotN_wi = hemis_dir.Dot(newz);
-            Ray Ray_idr = Ray(P, hemis_dir );
-            Ray_idr.dir.Normalize();
-            HitInfo hitinfo_idr;
-            hitinfo_idr.Init();
-            
-            Color idrColor;
-            if(TraceNode(rootNode,Ray_idr,hitinfo_idr)){
-                //idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, bounceCount - 1);
-                idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, 1,1);
+        if(hInfo.front){
+            if(!light -> IsAmbient()){
+                
+                Point3 L  = (float)(-1) * light -> Direction(p);
+                L.Normalize();
+                Point3 H = (L + direction);
+                H.Normalize();
+                auto cosNL = max(0.f, N.Dot(L));
+                auto cosNH = max(0.f, N.Dot(H));
+                
+                Color diffuse = kd * intensity * cosNL;
+                Color specular = ks * intensity * pow(cosNH, gloss) * cosNL;
+                
+                color += diffuse + specular;
+            }else{
+                intensity = light -> Illuminate(p, N);
+                color = color + kd * intensity;
             }
-            else{
-                idrColor = environment.SampleEnvironment(Ray_idr.dir);
-            }
-            
-            //
-            idrColor = idrColor* dotN_wi;
-            
-            //idrColor.r = max(0.0f,min(1.0f,idrColor.r));
-            //idrColor.g = max(0.0f,min(1.0f,idrColor.g));
-            //idrColor.b = max(0.0f,min(1.0f,idrColor.b));
-            
-            idr_Color+= 2.0 * idrColor /(float)Nofsample;
-            
-            //diffuse_color += I_i*(theta>0.0?theta:0.0)*kse;
-            //  */
-            //idr_Color+= light /(float)Nofsample;
-        }
-    }
-    //*/
-    all = ambient_color + ((diffuse_color/M_PI)+idr_Color)*Kd;
-  
-    //all = ambient_color+diffuse_color+idr_Color*Kd*M_PI*2;
-    
+        } // end hit front
+    } // end go through light
     
     /**
-     ** reflection calculation
-    **/
+     * Reflection and Refraction
+     */
+    Point3 tDir; //refraction Dir
+    Point3 rDir; //reflection Dir
     
-    Point3 V = -ray.dir.GetNormalized();
-    if(bounceCount >0){
-        Point3 newN=N;
-        if(reflectionGlossiness){
-            Point3 newx(1,0,0),newxalter(0,1,0);
-            //Point3 newx;
-            if(newx.Dot(newN)<0.4)
-                newx =newN^newx;
-            else
-                newx = newN^newxalter;
-            
-            //newx = newN ^ newx;
-            Point3 newy = newN ^ newx;
-            float r = rand()/ (float) RAND_MAX;
-            r = sqrtf(r)*reflectionGlossiness;
-            float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
-            float dx =  r * cosf(theta);
-            float dy =  r * sinf(theta);
-            
-            newx.Normalize();
-            newy.Normalize();
-            newN += dx*newx+dy*newy;
-             
-            newN.Normalize();
-        }
-        N = newN;
-        float costheta = clamp(N.Dot(V),-1.0,1.0);
-        Point3 R = 2*costheta*N - V; //reflection vector
-        //R.Normalize();
-        Ray Ray_rf = Ray(P+bias*R, R);
-        Ray_rf.dir.Normalize();
-        HitInfo hitinfo_rf;
-        hitinfo_rf.Init();
-        if(TraceNode(rootNode,Ray_rf,hitinfo_rf))
-        {
-            re_color = hitinfo_rf.node->GetMaterial()->Shade(Ray_rf, hitinfo_rf, lights, bounceCount - 1,specount);
-        }
-        else{
-            re_color = environment.SampleEnvironment(Ray_rf.dir);
+    float ein = 1; float eout = ior; // index
+    if(!hInfo.front){
+        ein = ior; eout = 1;
+    }
+    float eta = ein / eout;
+    
+    Point3 Y = N.Dot(direction) > 0.f ? N : -N;
+    const Point3 Z = direction.Cross(Y);
+    Point3 X = Y.Cross(Z);
+    X.Normalize();
+    
+    float cosI = N.Dot(direction);
+    float sinI = sqrtf(1 - cosI * cosI);
+    float sinO = max(0.f, min(1.f, sinI * eta));
+    float cosO = sqrtf(1.f - sinO * sinO);
+    
+    tDir = -X * sinO - Y * cosO;
+    rDir = 2.f * N * (N.Dot(direction)) - direction;
+    
+    // reflection and transmission coefficients
+    const float C0 = (eta - 1.f) * (eta - 1.f) / ((eta + 1.f) * (eta + 1.f));
+    float rC = C0 + (1.f - C0) * pow(1.f - fabsf(cosI), 5.f);
+    //if(sinO >= 1) rC = 1;
+    const float tC = 1.f - rC;
+    
+    const bool totReflection = (eta * sinI) > total_reflection_threshold;
+    //bool totReflection = false;
+    const Color sampleRefraction = refraction;
+    const Color sampleReflection = reflection;
+    const Color tK = totReflection ? Color(0.f) : sampleRefraction * tC;
+    const Color rK = totReflection ? (sampleReflection + sampleRefraction) : (sampleReflection + sampleRefraction * rC);
+    
+    // reflection
+    if(bounceCount > 0 && (rK.r > reflection_color_threshold || rK.g > reflection_color_threshold || rK.b > reflection_color_threshold)){
+        Ray r(p, rDir);
+        r.Normalize();
+        HitInfo h;
+        h.z = BIGFLOAT;
+        if(Trace(r, h)){
+            const auto *rMtl = h.node->GetMaterial();
+            const auto K = rK * (h.front ? Color(1.f) : Attenuation(absorption, h.z));
+            color += K * rMtl -> Shade(r, h, lights, bounceCount - 1,1); // reflection
         }
     }
-
-    all+=re_color*reflection.GetColor();
     
-    /**
-     ** refraction calculation
-    **/
-    V = -ray.dir.GetNormalized();
-     if(  bounceCount>0){
-         Point3 newN = hInfo.N;
-         
-         if(refractionGlossiness){
-
-             Point3 newx(1,0,0),newxalter(0,1,0);
-             //Point3 newx;
-             
-             if(newx.Dot(newN)<0.4)
-                 newx =newN^newx;
-             else
-                 newx = newN^newxalter;
-             
-             Point3 newy = newN ^ newx;
-             float r = rand()/ (float) RAND_MAX;
-             r = sqrtf(r)*refractionGlossiness;
-             float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
-             float dx =  r * cosf(theta);
-             float dy =  r * sinf(theta);
-             
-             newx.Normalize();
-             newy.Normalize();
-             newN += dx*newx+dy*newy;
-             
-             newN.Normalize();
-         }
-         N = newN;
-        
-        float R0 = 0.0f, re_ratio = 0.0f, ra_ratio = 0.0f;
-        
-        V.Normalize();//unit vector
-        
-         //costheta1 may be negative
-         float costheta1 = fabsf(V.Dot(N));
-         float sintheta1 = sqrtf(max(0.0f,1 - (costheta1 * costheta1)));
-         
-         float n1 = 1.0, n2 = 1.0;
-         if(hInfo.front){ // out -> in
-             n2 = ior;
-         }
-         else if(!hInfo.front){ //in->out
-             n1 = ior;
-             N = -N;
-             if(n1>1){
-                 //cout<<"in to out\n";
-             }
-             
-         }
-         float ratio_n = n1 / n2;
-         float sintheta2 = ratio_n*sintheta1;
-         
-         HitInfo hitinfo_ra;
-         hitinfo_ra.Init();
-         
-         //float absorb = 0.0;
-         if(sintheta2 <= 1.0){
-             
-             float costheta2 = sqrtf(max(0.0f,1 - (sintheta2 * sintheta2)));
-             Point3 S = N ^ (N ^ V);
-             Point3 Y = (hInfo.N * N.Dot(V));
-             Y.Normalize();
-             //N.Normalize();
-             //S.Normalize();
-             Point3 T = -Y * costheta2 + S * sintheta2;
-             T.Normalize();
-             Ray Ray_rfa = Ray(P+bias*T, T);
-             
-             if(TraceNode(rootNode,Ray_rfa,hitinfo_ra)){
-                 ra_color  =  hitinfo_ra.node->GetMaterial()->Shade(Ray_rfa,hitinfo_ra,lights,bounceCount-1,1);
-             }
-             else{
-                 ra_color = environment.SampleEnvironment(Ray_rfa.dir);
-             }
-             //absorb = exp(-absorption.r * hitinfo_ra.z);
-             ra_color.r *= exp(-absorption.r * hitinfo_ra.z);
-             ra_color.g *= exp(-absorption.g * hitinfo_ra.z);
-             ra_color.b *= exp(-absorption.b * hitinfo_ra.z);
-             
-             //
-             //Shlick's approximation
-             R0 = (n1 - n2)/(n1 + n2);
-             R0 = R0*R0;
-             double  tmp = 1.0 - costheta1;
-             re_ratio = R0 + (1.0 - R0) * pow(tmp,5.0);
-             ra_ratio = 1.0 - re_ratio;
-         }
-
-        else {
-            // complete reflection
-            re_ratio = 1.0f;
+    if(bounceCount > 0 && (tK.r > refraction_color_threshold || tK.g > refraction_color_threshold || tK.b > refraction_color_threshold)){
+        Ray tRay(p, tDir);
+        tRay.Normalize();
+        HitInfo tHit;
+        tHit.z = BIGFLOAT;
+        if(Trace(tRay, tHit)){
+            const auto *tMtl = tHit.node->GetMaterial();
+            const auto K = tK * (tHit.front ? Color(1.f) : Attenuation(absorption, tHit.z));
+            color += K * tMtl -> Shade(tRay, tHit, lights, bounceCount - 1,1);
+        }else{
+            color += tK * environment.SampleEnvironment(tRay.dir);
         }
         
-        /*** 
-        **   Reflection because of refraction
-        ***/
-        //already calculated
-    
-        re_ra_color = re_color;
-         
-        all += refraction.GetColor() * (ra_ratio * ra_color + re_ratio * re_ra_color);
-        
     }
-     
-
-     
-    return all;
+    return color;
+    
+//    Color ra_color(0.0);
+//    Color re_color(0.0);
+//    Color re_ra_color(0.0);
+//
+//    Color ambient_color(0.0);
+//    Color diffuse_color(0.0);
+//
+//    Color all;
+//    float bias = 0.0;//0.0001f;
+//
+//    Point3 N = hInfo.N;
+//    Point3 P = hInfo.p;
+//
+//    const Material *material;
+//    material = hInfo.node->GetMaterial();
+//
+//    const MtlBlinn* mtlb =static_cast<const MtlBlinn*>(material);
+//    Color Kd = mtlb->diffuse.Sample(hInfo.uvw, hInfo.duvw);
+//    Color Ks = mtlb->specular.Sample(hInfo.uvw, hInfo.duvw);
+//    float alpha = mtlb->glossiness;
+//
+//    
+//    Color idr_Color(0,0,0);//indirect color
+//    Color cau_Color(0,0,0);//indirect color
+//    
+//    for(int i=0; i<lights.size(); i++){
+//        //ambient light
+//        if(!hInfo.front) break; 
+//        if(lights[i]->IsAmbient()){
+//           ambient_color += lights[i]->Illuminate(P,N)*Kd;
+//        }
+//        else{
+//            
+//            //direct
+//            
+//            Color I_i = lights[i]->Illuminate(P,N);
+//            Point3 L = -1*(lights[i]->Direction(P));
+//            L.Normalize();
+//            Point3 V = -ray.dir;
+//            V.Normalize();
+//            Point3 LpV = L+V;
+//            Point3 H = LpV;
+//            H.Normalize();
+//            float cosNH = N.Dot(H);
+//            if(cosNH < 0.0) cosNH = 0.0;
+//            
+//            Color kse = Ks*pow(cosNH,alpha)+Kd;
+//            
+//            float theta = N.Dot(L);
+//            
+//            diffuse_color += I_i*(theta>0.0?theta:0.0)*kse;
+//
+//        }
+//    }
+//    //indirect light
+//    //Path Tracing
+////    if(bounceCount == BOUNCE){
+////        Point3 newz = hInfo.N;
+////        Point3 v1(1,0,0),v2(0,0,1);
+////        //Point3 newx(newz.z,0,-newz.x);
+////        Point3 newx;
+////        
+////        if(newz.Dot(v1)<0.4)
+////            newx =newz^v1;
+////        else
+////            newx = newz^v2;
+////        
+////        newx.Normalize();
+////        Point3 newy = newz ^ newx;
+////        int Nofsample= 1;
+////        
+////        for(int i=0;i<Nofsample;i++){
+////            float phi = 2*M_PI*(rand()/ (float) RAND_MAX);
+////            float cosphi = cosf(phi);
+////            float ysquare = (rand()/ (float) RAND_MAX);
+////            float sintheta = sqrt(ysquare);
+////            float costheta = sqrt(1-ysquare);
+////            
+////            Point3 hemis_dir = sintheta * cosphi * newx + sintheta * sinf(phi) * newy + costheta * newz;
+////            hemis_dir.Normalize();
+////            
+////            float dotN_wi = hemis_dir.Dot(newz);
+////            if(dotN_wi<0.0) break;
+////            
+////            Ray Ray_idr = Ray(P, hemis_dir );
+////            Ray_idr.dir.Normalize();
+////            HitInfo hitinfo_idr;
+////            hitinfo_idr.Init();
+////            
+////            Color idrColor;
+////            if(TraceNode(rootNode,Ray_idr,hitinfo_idr)){
+////                idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, bounceCount-1,1);
+////            }
+////            else{
+////                idrColor = environment.SampleEnvironment(Ray_idr.dir);
+////            }
+////            
+////            //
+////            idrColor = idrColor* dotN_wi * Kd;
+////            
+////            //idrColor.r = max(0.0f,min(1.0f,idrColor.r));
+////            //idrColor.g = max(0.0f,min(1.0f,idrColor.g));
+////            //idrColor.b = max(0.0f,min(1.0f,idrColor.b));
+////            
+////            idr_Color+= 1.0 * idrColor ;///(float)Nofsample;
+////        }
+////    }
+////    else{
+////        Color photonrad;
+////        Point3 dir;
+////        float radius = 2;
+////        Point3 N = hInfo.N;
+////        photonmap.EstimateIrradiance<200>(photonrad,dir,radius,hInfo.p, &N ,1.f,cy::PhotonMap::FilterType::FILTER_TYPE_CONSTANT);
+////        
+////        float theta = N.Dot(-dir);
+////        theta = (theta>0.0?theta:0.0);
+////        
+////        idr_Color += Kd * photonrad * theta;
+////    }
+//    //*/
+//    //all = ambient_color + ((diffuse_color/M_PI)+idr_Color)*Kd;
+//  
+//    all = ambient_color + ((diffuse_color/M_PI)+idr_Color);
+//    
+//    /**
+//     ** coefficient calculation
+//     **/
+//    float R0 = 0.0f, re_ratio = 0.0f, ra_ratio = 0.0f;
+//    Point3 V = -ray.dir.GetNormalized();
+//    
+//    float n1 = 1.0, n2 = 1.0;
+//    if(hInfo.front){ // out -> in
+//        n2 = ior;
+//    }
+//    else if(!hInfo.front){ //in->out
+//        n1 = ior;
+//        //newN_rfa = -newN_rfa;
+//    }
+//    const Point3 Y = V.Dot(N) > 0.f ? N : -N;
+//    
+//    float ratio_n = n1 / n2;
+//    float costheta1 = fabsf(V.Dot(N));
+//    float sintheta1 = 1.f - (costheta1 * costheta1);
+//    float sintheta2 = max(0.f, min(1.f, ratio_n*sintheta1));
+//    
+//    bool totalreflect = (sintheta2>=1.0f);
+//    
+//    if(!totalreflect){
+//        //Shlick's approximation
+//        R0 = (n1 - n2)/(n1 + n2);
+//        R0 = R0*R0;
+//        double  tmp = 1.0 - costheta1;
+//        re_ratio = R0 + (1.0 - R0) * pow(tmp,5.0);
+//        ra_ratio = 1.0 - re_ratio;
+//    }
+//    
+//    Point3 newN_refl=hInfo.N;
+//    if(reflectionGlossiness){
+//        Point3 newx(1,0,0),newxalter(0,1,0);
+//        //Point3 newx;
+//        if(newx.Dot(newN_refl)<0.4)
+//            newx =newN_refl^newx;
+//        else
+//            newx = newN_refl^newxalter;
+//        
+//        Point3 newy = newN_refl ^ newx;
+//        float r = rand()/ (float) RAND_MAX;
+//        r = sqrtf(r)*reflectionGlossiness;
+//        float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
+//        float dx =  r * cosf(theta);
+//        float dy =  r * sinf(theta);
+//        
+//        newx.Normalize();
+//        newy.Normalize();
+//        newN_refl += dx*newx+dy*newy;
+//        
+//        newN_refl.Normalize();
+//    }
+//    
+//    const Color tK = totalreflect ? Color(0.f) : refraction.GetColor() * ra_ratio;
+//    const Color rK = totalreflect ? (reflection.GetColor() + refraction.GetColor()) : (reflection.GetColor() + refraction.GetColor() * re_ratio);
+//
+//    /**
+//     ** reflection calculation
+//    **/
+//    
+//    //bool refhit = false;
+//    
+//    if(bounceCount >0){
+//        float costheta = clamp(newN_refl.Dot(V),-1.0,1.0);
+//        Point3 R = 2*costheta*newN_refl - V; //reflection vector
+//        Ray Ray_rf = Ray(P+bias*R, R);
+//        Ray_rf.dir.Normalize();
+//        HitInfo hitinfo_rf;
+//        hitinfo_rf.Init();
+//        
+//        if(TraceNode(rootNode,Ray_rf,hitinfo_rf))
+//        {
+//            re_color = hitinfo_rf.node->GetMaterial()->Shade(Ray_rf, hitinfo_rf, lights, bounceCount - 1,specount);
+//            
+//            //absorption
+//            if(!hitinfo_rf.front){
+//                re_color.r *= exp(-absorption.r * hitinfo_rf.z);
+//                re_color.g *= exp(-absorption.g * hitinfo_rf.z);
+//                re_color.b *= exp(-absorption.b * hitinfo_rf.z);
+//            }
+//            all+= rK * re_color;
+//        }
+//        //else{
+//        //    re_color = environment.SampleEnvironment(Ray_rf.dir);
+//        //}
+//        
+//    }
+//
+//    /**
+//     ** refraction calculation
+//    **/
+//    //V = -ray.dir.GetNormalized();
+//     if(  bounceCount > 0 && !totalreflect){
+//         
+////         Point3 newN_rfa = hInfo.N;
+////         
+////         if(refractionGlossiness){
+////             
+////             Point3 newx(1,0,0),newxalter(0,1,0);
+////             //Point3 newx;
+////             
+////             if(newx.Dot(newN_rfa)<0.4)
+////                 newx =newN_rfa^newx;
+////             else
+////                 newx = newN_rfa^newxalter;
+////             
+////             Point3 newy = newN_rfa ^ newx;
+////             float r = rand()/ (float) RAND_MAX;
+////             r = sqrtf(r)*refractionGlossiness;
+////             float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
+////             float dx =  r * cosf(theta);
+////             float dy =  r * sinf(theta);
+////             
+////             newx.Normalize();
+////             newy.Normalize();
+////             newN_rfa += dx*newx+dy*newy;
+////             
+////             newN_rfa.Normalize();
+////         }
+//         
+//         HitInfo hitinfo_ra;
+//         hitinfo_ra.Init();
+//         
+//             float costheta2 = sqrtf(1 - (sintheta2 * sintheta2));
+//             Point3 S = N ^ (N ^ V);
+//             //Y.Normalize();
+//             Point3 T = -Y * costheta2 + S * sintheta2;
+//             T.Normalize();
+//             Ray Ray_rfa = Ray(P+bias*T, T);
+//             
+//             if(TraceNode(rootNode,Ray_rfa,hitinfo_ra)){
+//                 ra_color  =  hitinfo_ra.node->GetMaterial()->Shade(Ray_rfa,hitinfo_ra,lights,bounceCount-1,1);
+//                 if(!hitinfo_ra.front){
+//                     ra_color.r *= exp(-absorption.r * hitinfo_ra.z);
+//                     ra_color.g *= exp(-absorption.g * hitinfo_ra.z);
+//                     ra_color.b *= exp(-absorption.b * hitinfo_ra.z);
+//                 }
+//             }
+//             else{
+//                 ra_color = environment.SampleEnvironment(Ray_rfa.dir);
+//             }
+//     
+//         all+= ra_color * tK;
+//        
+//    }
+//    
+//    return all;
 }
 
 void BeginRender()
@@ -764,7 +900,7 @@ void BeginRender()
     unsigned num_thread = thread::hardware_concurrency()*2;
     //unsigned num_thread = 1;
     //renderImage.SaveImage("prj13boxinput.png");
-    //generatePhotonMap();
+    generatePhotonMap();
     cout<<"number of threads: "<<num_thread<<"\n";
     vector<thread> thr;
     for(int j=0;j<num_thread;j++){
@@ -791,10 +927,16 @@ void StopRender(){
 
 int main(int argc, const char * argv[]) {
     pIt.Init();
-    const char *file = "scene_nt.xml";
+    const char *file = "data/scene_b.xml";
     //const char *file = "scene-2.xml";
     LoadScene(file);
+    //printm();
     ShowViewport();
     //saveImage();
     return 0;
+}
+
+void printm(){
+    const MtlBlinn* mtlb =static_cast<const MtlBlinn*>( materials.Find("wallRed"));
+   // cout<< mtlb->specular;
 }

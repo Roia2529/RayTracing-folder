@@ -14,6 +14,8 @@
 
 #include "scene.h"
 #define SHADOW_SAMPLES 4
+#define MIN_SHADOW_SAMPLES 4
+#define MAX_SHADOW_SAMPLES 16
 //-------------------------------------------------------------------------------
 
 class GenLight : public Light
@@ -64,6 +66,70 @@ public:
     PointLight() : intensity(0,0,0), position(0,0,0), size(0) {}
     Color Illuminate(const Point3 &p, const Point3 &N) const{
         
+        //create a ray towards light
+        Point3 dir = position - p;
+        
+        Ray sRay = Ray(p, dir);
+        
+        Point3 xAxis(1,0,0), yAxis(0,1,0), v1;
+        
+        if(dir.Dot(xAxis) > 0.8) {
+            v1 = yAxis.Cross(dir);
+        }
+        else{
+            v1 = xAxis.Cross(dir);
+        }
+        
+        float shadow = 0.0;
+        Point3 v2 = v1.Cross(dir);
+        v2.Normalize();
+        v1.Normalize();
+        Point3 xv1 = v1;
+        Point3 yv2 = v2;
+        //    srand(time(NULL));
+        float random = 0.0;
+        
+        for(int i =0; i< MIN_SHADOW_SAMPLES; i++){
+            random = rand() / (float) RAND_MAX;
+            float rRadius = sqrtf(random) * size;
+            random = rand() / (float) RAND_MAX;
+            float rAngle = random * (2.0 * M_PI);
+            float xv = rRadius * cos(rAngle);
+            float yv = rRadius * sin(rAngle);
+            xv1 *= xv;
+            yv2 *= yv;
+            
+            
+            sRay.dir = (position + xv1.Length()+ yv2.Length() ) - p;
+            //    sRay.dir.Normalize();
+            shadow += Shadow(sRay, 1);
+            xv1 = v1; yv2 = v2;
+        }
+        shadow /= (float)MIN_SHADOW_SAMPLES;
+        
+        if(shadow != 0.0 && shadow != 1.0)
+        {
+            shadow = 0.0;
+            for(int i = 0; i< MAX_SHADOW_SAMPLES; i++){
+                random = rand() / (float) RAND_MAX;
+                float rRadius = sqrtf(random) * size;
+                random = rand() / (float) RAND_MAX;
+                float rAngle = random * (2.0 * M_PI);
+                float xv = rRadius * cos(rAngle);
+                float yv = rRadius * sin(rAngle);
+                xv1 *= -xv;
+                yv2 *= -yv;
+                
+                sRay.dir = (position +xv1.Length() + yv2.Length() ) - p;
+                //            sRay.dir.Normalize();
+                shadow += Shadow(sRay, 1);
+                xv1 = v1; yv2 = v2;
+            }
+            shadow /= (float)(MAX_SHADOW_SAMPLES);
+        }
+        return intensity * shadow / (p - position).LengthSquared();
+
+        /*
         float shadow_coef = 0.0;
         for(int i=0;i<SHADOW_SAMPLES;i++){
             float r = Halton(i, 2);
@@ -87,7 +153,7 @@ public:
         //inverse square fall off!
         float distance = (p-position).LengthSquared();
         
-        return avg_shadow/distance;
+        return avg_shadow/distance;*/
     };
     
     virtual Point3 Direction(const Point3 &p) const { return (p-position).GetNormalized(); }
