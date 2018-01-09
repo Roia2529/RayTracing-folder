@@ -92,6 +92,9 @@
 		F2B112CF1FE220A10093713C /* tableall2.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tableall2.mtl; path = data/tableall2.mtl; sourceTree = "<group>"; };
 		F2B112D01FE231560093713C /* cerimic.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cerimic.obj; path = data/cerimic.obj; sourceTree = "<group>"; };
 		F2B112D11FE231560093713C /* root.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = root.obj; path = data/root.obj; sourceTree = "<group>"; };
+		F2B112D21FE311F90093713C /* scene_test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = scene_test.xml; path = data/scene_test.xml; sourceTree = "<group>"; };
+		F2B112D41FE39B660093713C /* teapotB.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = teapotB.obj; path = data/teapotB.obj; sourceTree = "<group>"; };
+		F2B112D51FE39B660093713C /* teapotTop.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = teapotTop.obj; path = data/teapotTop.obj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,12 +219,15 @@
 				F2B112CB1FE120B10093713C /* wood.png */,
 				F2B112C01FE11ABE0093713C /* wand.obj */,
 				F2B112C11FE11ABE0093713C /* bricks.png */,
+				F2B112D41FE39B660093713C /* teapotB.obj */,
+				F2B112D51FE39B660093713C /* teapotTop.obj */,
 				F2B112C21FE11ABE0093713C /* clouds.png */,
 				F2B112C31FE11ABE0093713C /* mask_bola_2.png */,
 				F2B112C41FE11ABE0093713C /* newtwand.png */,
 				F2B112C51FE11ABE0093713C /* scene_b.xml */,
 				F2B112C61FE11ABE0093713C /* scene_nt.xml */,
 				F2B112C71FE11ABE0093713C /* scene-2.xml */,
+				F2B112D21FE311F90093713C /* scene_test.xml */,
 				F2B112C81FE11ABE0093713C /* scene.xml */,
 				F2B112C91FE11ABE0093713C /* newtwand.mtl */,
 			);

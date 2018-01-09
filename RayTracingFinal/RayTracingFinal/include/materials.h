@@ -14,8 +14,49 @@
 #define _MATERIALS_H_INCLUDED_
 
 #include "scene.h"
-
+/**
+ * Thresholds for Reflection and Refraction
+ */
+const float total_reflection_threshold = 1.001f;
+const float refraction_color_threshold = 0.001f;
+const float reflection_color_threshold = 0.001f;
+const float glossiness_value_threshold = 0.001f;
+const float glossiness_power_threshold = 0.f;
+const float color_luma_threshold = 0.00001f;
 //-------------------------------------------------------------------------------
+inline Point3 CosineSampleHemisphere()
+{
+    float u1 = rand() / (float) RAND_MAX;
+    float u2 = rand() / (float) RAND_MAX;
+    const float r = sqrtf(u1);
+    const float theta = 2 * M_PI * u2;
+    
+    const float x = r * cosf(theta);
+    const float y = r * sinf(theta);
+    
+    return Point3(x, y, sqrtf(fmax(0.0f, 1 - u1)));
+}
+
+inline Point3 SampleHemisphere(){
+    float u1 = rand() / (float) RAND_MAX;
+    float u2 = rand() / (float) RAND_MAX;
+    
+    const float r = sqrtf(1.0f - u1 * u1);
+    const float phi = 2 * M_PI * u2;
+    
+    return Point3(cosf(phi) * r, sinf(phi) * r, u1);
+}
+
+inline void createCoordinateSystem(const Point3 &N, Point3 &Nt,Point3 &Nb)
+{
+    Point3 v1(1, 0, 0), v2(0, 0, 1);
+    if(N.Dot(v1) < 0.4)
+        Nt = N ^ v1;
+    else
+        Nt = N ^v2;
+    Nt.Normalize();
+    Nb = N^Nt;
+}
 inline Color Attenuation(const Color &absorption, float l)
 {
     const auto R = exp(-absorption.r * l);
@@ -56,16 +97,177 @@ public:
     virtual bool IsPhotonSurface(int subMtlID=0) const { return diffuse.GetColor().Gray() > 0; } // if this method returns true, the photon will be stored
     
     virtual bool RandomPhotonBounce(Ray &r, Color &c, const HitInfo &hInfo) const{
+        //Color color = emission.GetColor();
+        const Point3 V = -r.dir;
+        const Point3 N = hInfo.N;
+        const Point3 Y = N.Dot(V) > 0.f ? N : -N;
+        const Point3 p = hInfo.p;
+        
+        // Reflection and Transmission
+        Point3 tDir; //refraction Dir
+        Point3 rDir; //reflection Dir
+        
+        float ein = 1; float eout = ior; // index
+        if(!hInfo.front){
+            ein = ior; eout = 1;
+        }
+        float eta = ein / eout;
+        
+        const Point3 Z = V.Cross(Y);
+        Point3 X = Y.Cross(Z);
+        X.Normalize();
+        
+        float cosI = N.Dot(V);
+        float sinI = sqrtf(1 - cosI * cosI);
+        float sinO = max(0.f, min(1.f, sinI * eta));
+        float cosO = sqrtf(1.f - sinO * sinO);
+        
+        tDir = -X * sinO - Y * cosO;
+        rDir = 2.f * N * (N.Dot(V)) - V;
+        
+        // reflection and transmission coefficients
+        const float C0 = (eta - 1.f) * (eta - 1.f) / ((eta + 1.f) * (eta + 1.f));
+        float rC = C0 + (1.f - C0) * pow(1.f - fabsf(cosI), 5.f);
+        const float tC = 1.f - rC;
+        
+        const bool totReflection = (eta * sinI) > total_reflection_threshold;
+        //bool totReflection = false;
+        const Color tK = refraction.GetColor();
+        const Color rK = reflection.GetColor();
+        const Color sampleRefraction = totReflection ? Color(0.f) : tK * tC;
+        const Color sampleReflection = totReflection ? (rK + tK) : (rK + tK * rC);
+        const Color sampleDiffuse = diffuse.GetColor();
+        const Color sampleSpecular = specular.GetColor();
+        
+        // select one property
+        Point3 sampleDir;
+        Color BxDF;
+        float PDF = 1.f;
+        float scale = 1.f;
+        bool doShade = false;
+        int selected;
+        
+        float random = rand() / (float)RAND_MAX;
+        float diffuseProb = sampleDiffuse.Gray();
+        float specularProb = sampleSpecular.Gray();
+        float refractionProb = sampleRefraction.Gray();
+        float reflectionProb = sampleReflection.Gray();
+        float absorptionProb = absorption.Gray();
+        float total = diffuseProb + reflectionProb + refractionProb + absorptionProb;
+        diffuseProb /= total;
+        refractionProb /= total;
+        reflectionProb /= total;
+        absorptionProb /= total;
+        
+        const float rcpCoefSum = 1.f / total;
+        const float select = random * total;
+        
+        if (select <= refractionProb && refractionProb > color_luma_threshold) {
+            //selectedMtl = TRANSMIT;
+            selected = 0;
+            scale = refractionProb * rcpCoefSum;
+        } else if (select > refractionProb && select <= refractionProb + reflectionProb && reflectionProb > color_luma_threshold ) {
+            //selectedMtl = REFLECT;
+            selected = 1;
+            scale = reflectionProb * rcpCoefSum;
+        } else if (select > refractionProb + reflectionProb && select < refractionProb + reflectionProb + diffuseProb && diffuseProb > color_luma_threshold) {
+            //selectedMtl = DIFFUSE;
+            selected = 2;
+            scale = diffuseProb * rcpCoefSum;
+        } else {
+            //selectedMtl = ABSORB;
+            selected = 3;
+            //scale = coefAbsorb * rcpCoefSum;
+        }
+        
+        switch (selected){
+            case(0): // transmission
+            {
+                if(refractionGlossiness > glossiness_power_threshold){
+                    //sampleDir = CosineSampleHemisphere();
+                    sampleDir = SampleHemisphere();
+                    const Point3 L = sampleDir.GetNormalized();
+                    const Point3 H = (V + L).GetNormalized();
+                    const float cosVH = max(0.f, V.Dot(H));
+                    const float glossiness = pow(cosVH, refractionGlossiness); // My Hack
+                    BxDF = sampleRefraction * glossiness; // ==> rho / pi
+                    PDF = 1.f;   // ==> cosTheta / pi cos-weighted hemisphere sampling
+                } else {
+                    sampleDir = tDir;
+                    BxDF = sampleRefraction; // ==> reflect all light
+                    PDF = 1.f;    // ==> PDF = 1
+                }
+                doShade = true;
+                
+            }
+                break;
+            case(1): // reflection
+            {
+                if(reflectionGlossiness > glossiness_power_threshold){
+                    sampleDir = CosineSampleHemisphere();
+                    const Point3 L = sampleDir.GetNormalized();
+                    const Point3 H = (V + L).GetNormalized();
+                    const float cosNH = max(0.f, N.Dot(H));
+                    const float glossiness = pow(cosNH, reflectionGlossiness); // My Hack
+                    BxDF = sampleReflection * glossiness; // ==> rho / pi
+                    PDF = 1.f;   // ==> cosTheta / pi cos-weighted hemisphere sampling
+                } else {
+                    sampleDir = rDir;
+                    BxDF = sampleReflection;
+                    PDF = 1.f;
+                }
+                doShade = true;
+            }
+                break;
+            case(2): // diffuse
+            {
+                if(hInfo.front){
+                    Point3 Nt, Nb;
+                    createCoordinateSystem(N, Nt, Nb);
+                    float theta = (rand()/ (float)RAND_MAX) * M_PI_2;
+                    float phi = rand()/(float)RAND_MAX * (2.0 * M_PI);
+                    sampleDir = Nt * cosf(phi) * sinf(theta) + Nb * sinf(phi) * sinf(theta) + N * cosf(theta);
+                    const Point3 L = sampleDir.GetNormalized();
+                    const Point3 H = (V + L).GetNormalized();
+                    const float cosNH = max(0.f, N.Dot(H));
+                    const float gloss = pow(cosNH, glossiness); // My Hack
+                    BxDF = sampleDiffuse + sampleSpecular * gloss;
+                    PDF = 1.f;   // ==> cosTheta / pi cos-weighted hemisphere sampling
+                    doShade = true;
+                    
+                }
+            }
+                break;
+            case (3):
+            {
+                doShade = false;
+            }
+                break;
+                
+        } // end switch
+        
+        if (doShade) {
+            r = Ray(hInfo.p, sampleDir);
+            r.Normalize();
+            c = c * BxDF / (PDF * scale);
+            if (!hInfo.front) { c *= Attenuation(absorption, hInfo.z); }
+            return true;
+        }
+        return false;
+        /*
             float prob_diffuse = diffuse.GetColor().Gray();
             float prob_specular = specular.GetColor().Gray();
             float prob_absorbtion = absorption.Gray();  //end
             float prob_refra = refraction.GetColor().Gray();
+        float prob_refle = reflection.GetColor().Gray();
         
-        float prob_sum = prob_diffuse+prob_specular+prob_absorbtion+prob_refra;
+        //float prob_sum = prob_diffuse+prob_specular+prob_absorbtion+prob_refra;
+        float prob_sum = prob_diffuse+prob_refle+prob_absorbtion+prob_refra;
         prob_diffuse /= prob_sum;
         prob_specular/=prob_sum;
         prob_absorbtion/=prob_sum;
         prob_refra /=prob_sum;
+        prob_refle /=prob_sum;
         
         float bias = 0.0;//0.0001f;
         float rand_n = rand()/ (float) RAND_MAX;
@@ -99,7 +301,8 @@ public:
             
             c = c * diffuse.GetColor()/prob_diffuse;
         }
-        else if(rand_n<=prob_specular+prob_diffuse){
+        //else if(rand_n<=prob_specular+prob_diffuse){
+        else if(rand_n<=prob_refle+prob_diffuse){
             
             //specular
             Point3 N = hInfo.N;
@@ -117,9 +320,11 @@ public:
             Ray_rf.dir.Normalize();
             r =Ray_rf;
 
-            c = c *specular.GetColor() /prob_specular;
+            //c = c *specular.GetColor() /prob_specular;
+            c = c *reflection.GetColor() /prob_refle;
         }
-        else if(rand_n<=prob_refra+prob_specular+prob_diffuse){
+        //else if(rand_n<=prob_refra+prob_specular+prob_diffuse){
+        else if(rand_n<=prob_refra+prob_refle+prob_diffuse){
             Point3 P = hInfo.p;
             Point3 N = hInfo.N;
             Point3 V = -r.dir.GetNormalized();
@@ -154,6 +359,7 @@ public:
                 Ray Ray_rfa = Ray(P+bias*T, T);
                 r = Ray_rfa;
 
+                //c = c * refraction.GetColor()/prob_refra;
                 c = c * refraction.GetColor()/prob_refra;
              }
             
@@ -164,7 +370,8 @@ public:
         
         //c = c * diffuse.GetColor();
         
-        return true;
+        return true;*/
+         
     }// if this method returns true, a new photon with the given direction and color will be traced
     
 private:

@@ -17,16 +17,16 @@
 #include "cyPhotonMap.h"
 
 #define CAM_SAMPLE 64
-#define MIN_SAMPLE 16
-#define MAX_SAMPLE 64
+#define MIN_SAMPLE 4
+#define MAX_SAMPLE 8
 #define HALTON_BASE_1 2
 #define HALTON_BASE_2 3
 #define THRESHOLD 1e-3f
-#define BOUNCE 5
-#define HEMISPHERE_SAMPLE 20
+#define BOUNCE 4
+#define HEMISPHERE_SAMPLE 30
 #define MAX_NUM_OF_PHOTON 1000000
 #define MAX_NUM_OF_CAUSTIC_PHOTON 1000000
-#define PHOTON_BOUNCE 6
+#define PHOTON_BOUNCE 8
 #define CAUSTIC_PHOTON_BOUNCE 5
 
 #define gamma 2.2
@@ -51,13 +51,13 @@ cy::PhotonMap causticmap;
 /**
  * Thresholds for Reflection and Refraction
  */
-
+/*
 const float total_reflection_threshold = 1.001f;
 const float refraction_color_threshold = 0.001f;
 const float reflection_color_threshold = 0.001f;
 const float glossiness_value_threshold = 0.001f;
 const float glossiness_power_threshold = 0.f;
-
+*/
 
 //if not hit
 Color black(0.0);
@@ -227,7 +227,7 @@ void RenderPixel(pixelIterator &it){
     
     while(it.GetPixel(x,y)){
         //debug
-        if (y<346) continue;
+        //if (y<300) continue;
         if (x==312 && y == 346) {
             std::cout << "xx" << std::endl;
         }
@@ -342,16 +342,35 @@ void RenderPixel(pixelIterator &it){
         
     }
 }
-
+void lightlist(){
+    for(int i=0;i<lights.size();i++){
+        
+    }
+}
 void generatePhotonMap(){
     causticmap.AllocatePhotons(MAX_NUM_OF_PHOTON);
     photonmap.AllocatePhotons(MAX_NUM_OF_PHOTON);
     
+    vector<Light *> photonLights;
+    for(int i=0;i<lights.size();i++){
+        if(!lights[i]->IsAmbient()){
+            photonLights.push_back(lights[i]);
+        }
+    }
     int numofphoton = 0;
-    //assume always choose first light
+    //choose one light
     while(numofphoton < MAX_NUM_OF_PHOTON){
+        //PointLight *_curLight = (PointLight *)(list_PointLights.at(0));
         //randomly choose light/PointLight?
-        const PointLight* pL = static_cast<const PointLight*>( lights[0]);
+        PointLight* pL;
+        
+        if((rand()/ (float) RAND_MAX)<0.5)
+            pL = (PointLight*)( photonLights.at(0));
+        else
+            pL = (PointLight*)( photonLights.at(1));
+        
+        //pL = (PointLight*)( photonLights.at(0));
+        
         Color lightColor = pL->GetPhotonIntensity();
         Ray rayFromL = pL->RandomPhoton();
         HitInfo hitInfo;
@@ -617,6 +636,74 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
         }
         
     }
+     Color idr_Color(0,0,0);//indirect color
+        //indirect light
+        //Path Tracing
+        if(bounceCount == BOUNCE){
+            Point3 newz = hInfo.N;
+            Point3 v1(1,0,0),v2(0,0,1);
+            //Point3 newx(newz.z,0,-newz.x);
+            Point3 newx;
+    
+            if(newz.Dot(v1)<0.4)
+                newx =newz^v1;
+            else
+                newx = newz^v2;
+    
+            newx.Normalize();
+            Point3 newy = newz ^ newx;
+            int Nofsample= HEMISPHERE_SAMPLE;
+    
+            for(int i=0;i<Nofsample;i++){
+                float phi = 2*M_PI*(rand()/ (float) RAND_MAX);
+                float cosphi = cosf(phi);
+                float ysquare = (rand()/ (float) RAND_MAX);
+                float sintheta = sqrt(ysquare);
+                float costheta = sqrt(1-ysquare);
+    
+                Point3 hemis_dir = sintheta * cosphi * newx + sintheta * sinf(phi) * newy + costheta * newz;
+                hemis_dir.Normalize();
+    
+                float dotN_wi = hemis_dir.Dot(newz);
+                Color idrColor(0,0,0);
+                if(dotN_wi<0.0) dotN_wi = 0.0;
+                else{
+                Ray Ray_idr = Ray(p, hemis_dir );
+                Ray_idr.dir.Normalize();
+                HitInfo hitinfo_idr;
+                hitinfo_idr.Init();
+    
+                Color idrColor;
+                if(TraceNode(rootNode,Ray_idr,hitinfo_idr)){
+                    idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, bounceCount-1,1);
+                }
+                else{
+                    idrColor = environment.SampleEnvironment(Ray_idr.dir);
+                }
+                }
+                //
+                idrColor = idrColor* dotN_wi * kd;
+    
+                //idrColor.r = max(0.0f,min(1.0f,idrColor.r));
+                //idrColor.g = max(0.0f,min(1.0f,idrColor.g));
+                //idrColor.b = max(0.0f,min(1.0f,idrColor.b));
+    
+                idr_Color+= 1.0 * idrColor/(float)Nofsample;
+            }
+        }
+        else{
+            Color photonrad;
+            Point3 dir;
+            float radius = 1;
+            //Point3 N = hInfo.N;
+            photonmap.EstimateIrradiance<400>(photonrad,dir,radius,hInfo.p, &N ,1.f,cy::PhotonMap::FilterType::FILTER_TYPE_CONSTANT);
+            
+            float theta = N.Dot(-dir);
+            theta = (theta>0.0?theta:0.0);
+            
+            idr_Color += kd * photonrad * theta;
+        }
+    color+=idr_Color;
     return color;
     
 //    Color ra_color(0.0);
