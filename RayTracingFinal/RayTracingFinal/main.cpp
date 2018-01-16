@@ -986,7 +986,7 @@ void BeginRender()
 	pIt.clearFlag();
     unsigned num_thread = thread::hardware_concurrency()*2;
     //unsigned num_thread = 1;
-    //renderImage.SaveImage("prj13boxinput.png");
+    renderImage.SaveImage("prj14input.png");
     generatePhotonMap();
     cout<<"number of threads: "<<num_thread<<"\n";
     vector<thread> thr;
