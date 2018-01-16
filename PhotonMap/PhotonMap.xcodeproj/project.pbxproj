@@ -1,0 +1,272 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F27E20391FD4CD2900AF9924 /* PhotonMapViz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F27E20381FD4CD2900AF9924 /* PhotonMapViz.cpp */; };
+		F27E203C1FD4CD6B00AF9924 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27E203B1FD4CD6B00AF9924 /* GLUT.framework */; };
+		F27E203E1FD4CD7100AF9924 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27E203D1FD4CD7100AF9924 /* OpenGL.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F27E202C1FD4CCC900AF9924 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F27E202E1FD4CCC900AF9924 /* PhotonMap */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PhotonMap; sourceTree = BUILT_PRODUCTS_DIR; };
+		F27E20381FD4CD2900AF9924 /* PhotonMapViz.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhotonMapViz.cpp; sourceTree = "<group>"; };
+		F27E203B1FD4CD6B00AF9924 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		F27E203D1FD4CD7100AF9924 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F27E202B1FD4CCC900AF9924 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F27E203E1FD4CD7100AF9924 /* OpenGL.framework in Frameworks */,
+				F27E203C1FD4CD6B00AF9924 /* GLUT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F27E20251FD4CCC900AF9924 = {
+			isa = PBXGroup;
+			children = (
+				F27E20301FD4CCC900AF9924 /* PhotonMap */,
+				F27E202F1FD4CCC900AF9924 /* Products */,
+				F27E203A1FD4CD6B00AF9924 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F27E202F1FD4CCC900AF9924 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F27E202E1FD4CCC900AF9924 /* PhotonMap */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F27E20301FD4CCC900AF9924 /* PhotonMap */ = {
+			isa = PBXGroup;
+			children = (
+				F27E20381FD4CD2900AF9924 /* PhotonMapViz.cpp */,
+			);
+			path = PhotonMap;
+			sourceTree = "<group>";
+		};
+		F27E203A1FD4CD6B00AF9924 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F27E203D1FD4CD7100AF9924 /* OpenGL.framework */,
+				F27E203B1FD4CD6B00AF9924 /* GLUT.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F27E202D1FD4CCC900AF9924 /* PhotonMap */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F27E20351FD4CCC900AF9924 /* Build configuration list for PBXNativeTarget "PhotonMap" */;
+			buildPhases = (
+				F27E202A1FD4CCC900AF9924 /* Sources */,
+				F27E202B1FD4CCC900AF9924 /* Frameworks */,
+				F27E202C1FD4CCC900AF9924 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PhotonMap;
+			productName = PhotonMap;
+			productReference = F27E202E1FD4CCC900AF9924 /* PhotonMap */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F27E20261FD4CCC900AF9924 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Hsuan Lee";
+				TargetAttributes = {
+					F27E202D1FD4CCC900AF9924 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 57HFA229TN;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F27E20291FD4CCC900AF9924 /* Build configuration list for PBXProject "PhotonMap" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F27E20251FD4CCC900AF9924;
+			productRefGroup = F27E202F1FD4CCC900AF9924 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F27E202D1FD4CCC900AF9924 /* PhotonMap */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F27E202A1FD4CCC900AF9924 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F27E20391FD4CD2900AF9924 /* PhotonMapViz.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F27E20331FD4CCC900AF9924 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F27E20341FD4CCC900AF9924 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F27E20361FD4CCC900AF9924 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 57HFA229TN;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F27E20371FD4CCC900AF9924 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 57HFA229TN;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F27E20291FD4CCC900AF9924 /* Build configuration list for PBXProject "PhotonMap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F27E20331FD4CCC900AF9924 /* Debug */,
+				F27E20341FD4CCC900AF9924 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F27E20351FD4CCC900AF9924 /* Build configuration list for PBXNativeTarget "PhotonMap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F27E20361FD4CCC900AF9924 /* Debug */,
+				F27E20371FD4CCC900AF9924 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F27E20261FD4CCC900AF9924 /* Project object */;
+}

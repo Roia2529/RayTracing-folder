@@ -64,6 +64,7 @@
 		F24E56701F67406400FF2D97 /* xmlload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmlload.cpp; sourceTree = "<group>"; };
 		F24E567C1F6740BB00FF2D97 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		F24E567E1F6740C400FF2D97 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		F27A4A6C1FDBA59E00EC11E0 /* box.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = box.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +100,7 @@
 		F24E55F01F67401D00FF2D97 /* RayTracingProj4 */ = {
 			isa = PBXGroup;
 			children = (
+				F27A4A6C1FDBA59E00EC11E0 /* box.xml */,
 				F24E55F11F67401D00FF2D97 /* main.cpp */,
 				F24E55F81F67406400FF2D97 /* include */,
 				F24E56081F67406400FF2D97 /* tinyxml */,
@@ -359,6 +361,7 @@
 				F24E55F71F67401D00FF2D97 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

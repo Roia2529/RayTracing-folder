@@ -1,0 +1,281 @@
+<xml>
+	<scene>
+        <!-- Objects -->
+        <object type="plane" name="WallBottom" material="wall">
+            <scale value="30"/>
+            <translate x="0.041829" y="-1.47655" z="0.015305"/>
+        </object>
+        <object type="plane" name="Wallback" material="wallback">
+            <scale value="20"/>
+            <rotate angle="90" x="1" />
+            <translate x="-5.46323" y="5.81463" z="2.37967"/>
+        </object>
+        <object type="plane" name="Wallleft" material="wallside">
+            <scale value="20"/>
+            <rotate angle="90" y="1" />
+            <translate x="-8.4938" y="-1.78153" z="7.21942"/>
+        </object>
+        <object type="plane" name="Wallright" material="wallside">
+            <scale value="20"/>
+            <rotate angle="90" y="1" />
+            <translate x="8.9643" y="-1.78153" z="7.21942"/>
+        </object>
+        <object type="plane" name="WallTop" material="wall">
+            <scale value="30"/>
+            <translate x="0.041829" y="-1.47655" z="12.015305"/>
+        </object>
+        <!--
+        <object type="obj" name="data/teapotTop.obj" material="mtl3">
+            <scale value="1"/>
+            <rotate angle="-179" x="1" />
+            <rotate angle="-179" y="1" />
+            <rotate angle="25.3" z="1"/>
+            <translate x="0.30155" y="-0.987564" z="3.18487"/>
+        </object>
+         -->
+        <object type="obj" name="data/teapotOpen.obj" material="mtl3">
+            <scale value="1"/>
+            <rotate angle="90" x="1" />
+            <translate x="0" y="0" z="0"/>
+        </object>
+        <object type="obj" name="data/disco.obj" material="mtl3">
+            <scale value="1"/>
+            <rotate angle="90" x="1" />
+            <translate x="-0.03" y="0" z="0"/>
+        </object>
+        <!--
+        <object type="obj" name="data/solid_teapot.obj" material="mtl3">
+			<scale value="0.098"/>
+			<rotate angle="-179" x="1" />
+			<rotate angle="-179" y="1" />
+			<rotate angle="25.3" z="1"/>
+			<translate x="0.30155" y="-0.987564" z="3.18487"/>
+		</object>
+         -->
+        <object type="obj" name="data/tableall3.obj" material="wood">
+            <scale value="1"/>
+            <rotate angle="90" x="1" />
+            <rotate angle="0" y="1" />
+            <rotate angle="0" z="1"/>
+            <translate x="0" y="0" z="0"/>
+        </object>
+        <object type="obj" name="data/root.obj" material="root">
+            <scale value="1"/>
+            <rotate angle="90" x="1" />
+            <rotate angle="0" y="1" />
+            <rotate angle="0" z="1"/>
+            <translate x="0.2" y="0" z="0"/>
+        </object>
+        <object type="obj" name="data/cerimic.obj" material="ceramic">
+            <scale value="1"/>
+            <rotate angle="90" x="1" />
+            <rotate angle="0" y="1" />
+            <rotate angle="0" z="1"/>
+            <translate x="0.2" y="0" z="0"/>
+        </object>
+        
+        <object type="sphere" name="sphere1" material="redc">
+            <scale value="0.2"/>
+            <translate x="1.91992" y="-1" z="6.18572"/>
+        </object>
+        <object type="sphere" name="sphere2" material="redc">
+            <scale value="0.13"/>
+            <translate x="-0.394897" y="-0.124649" z="4.94273"/>
+        </object>
+        <object type="sphere" name="sphere3" material="redc">
+            <scale value="0.13"/>
+            <translate x="0" y="-1.8" z="7.18572"/>
+        </object>
+        <object type="sphere" name="sphere4" material="greenc">
+            <scale value="0.1"/>
+            <translate x="1.37839" y="-0.328108" z="5.38572"/>
+        </object>
+        <object type="sphere" name="sphere5" material="bluec">
+            <scale value="0.11"/>
+            <translate x="0.9" y="0.417412" z="5.9"/>
+        </object>
+        <object type="sphere" name="sphere6" material="redc">
+            <scale value="0.11"/>
+            <translate x="1.7" y="-1" z="6.9"/>
+        </object>
+        <object type="sphere" name="sphere7" material="bluec">
+            <scale value="0.2"/>
+            <translate x="1.01066" y="0.7" z="4.6"/>
+        </object>
+        <object type="sphere" name="sphere8" material="redc">
+            <scale value="0.13"/>
+            <translate x="-1.91992" y="-0.64998" z="5.5"/>
+        </object>
+        <object type="sphere" name="sphere9" material="redc">
+            <scale value="0.13"/>
+            <translate x="0.3" y="-2.2" z="5.5"/>
+        </object>
+        <object type="sphere" name="sphere10" material="redc">
+            <scale value="0.3"/>
+            <translate x="1.21992" y="2.57657" z="7.38572"/>
+        </object>
+        <object type="sphere" name="sphere11" material="bluec">
+            <scale value="0.2"/>
+            <translate x="-1.24318" y="-1.99514" z="7.04331"/>
+        </object>
+        <object type="sphere" name="sphere12" material="bluec">
+            <scale value="0.2"/>
+            <translate x="-0.285408" y="0.83" z="9.18169"/>
+        </object>
+        <object type="sphere" name="sphere13" material="greenc">
+            <scale value="0.14"/>
+            <translate x="-0.5" y="-3.0" z="6.8"/>
+        </object>
+        <object type="sphere" name="sphere14" material="greenc">
+            <scale value="0.2"/>
+            <translate x="-0.8" y="0.217831" z="6.10047"/>
+        </object>
+        <object type="sphere" name="sphere15" material="bluec">
+            <scale value="0.2"/>
+            <translate x="1.54448" y="-2.03037" z="7.43011"/>
+        </object>
+        <!-- in teapot -->
+        <object type="sphere" name="ss1" material="binpot">
+            <scale value="0.15"/>
+            <translate x="0.274378" y="-0.633089" z="3.55048"/>
+        </object>
+        <object type="sphere" name="ss2" material="binpot">
+            <scale value="0.15"/>
+            <translate x="0.075355" y="-1.13217" z="3.55639"/>
+        </object>
+        <object type="sphere" name="ss3" material="ginpot">
+            <scale value="0.15"/>
+            <translate x="0.052398" y="-0.855361" z="3.56523"/>
+        </object>
+        <object type="sphere" name="ss4" material="rinpot">
+            <scale value="0.15"/>
+            <translate x="0.334587" y="-0.935701" z="3.54111"/>
+        </object>
+        <object type="sphere" name="s16" material="ginpot">
+            <scale value="0.15"/>
+            <translate x="0.575778" y="-1.14579" z="3.54908"/>
+        </object>
+        <!-- in teapot -->
+        <!--
+        <object type="sphere" name="sphere16" material="bluec">
+            <scale value="0.2"/>
+            <translate x="0.318495" y="-0.867363" z="3.72368"/>
+        </object>
+        <!--
+        <object type="obj" name="newtwand.obj" >
+            <scale value="0.3"/>
+            <rotate angle="167" x="1" />
+            <rotate angle="30" y="1" />
+            <rotate angle="175" z="1"/>
+            <translate x="4.2036" y="-4.72926" z="4.50124"/>
+        </object>
+        -->
+        
+        <!-- Materials -->
+        <material type="blinn" name="wood">
+            <diffuse texture="data/wood.png">
+            </diffuse>
+            <specular value="0.4"/>
+            <glossiness value="10"/>
+        </material>
+        <material type="blinn" name="root">
+            <diffuse texture="data/005_wood_001_color.png">
+            </diffuse>
+            <specular value="0.4"/>
+            <glossiness value="10"/>
+        </material>
+		<material type="blinn" name="wall">
+			<diffuse  r="1" g="1" b="1"/>
+			<specular value="0"/>
+		</material>
+        <material type="blinn" name="wallback">
+            <diffuse  r="0.876" g="0.852" b="0.425"/>
+            <specular value="0.4"/>
+        </material>
+        <material type="blinn" name="wallside">
+			<diffuse  r="0.5" g="0.5" b="0.5"/>
+			<specular value="0"/>
+		</material>
+		<material type="blinn" name="ceramic">
+			<diffuse  r="1.0" g="1.0" b="1.0"/>
+			<specular value="0.5"/>
+		</material>
+        <material type="blinn" name="redc">
+            <diffuse  value="0"/>
+            <specular vakye="1.0"/>
+            <glossiness value="80"/>
+            <refraction value="1.0" index="1.52"/>
+            <absorption r="0.000001" g="1" b="1"/>
+            <emission r="0.1" g="0" b="0"/>
+        </material>
+        <material type="blinn" name="bluec">
+            <diffuse  value="0"/>
+            <specular vakye="1.0"/>
+            <glossiness value="80"/>
+            <refraction value="1.0" index="1.52"/>
+            <absorption r="1" g="1" b="0.000001"/>
+            <emission r="0" g="0" b="0.1"/>
+        </material>
+        <material type="blinn" name="greenc">
+            <diffuse  value="0"/>
+            <specular vakye="1.0"/>
+            <glossiness value="80"/>
+            <refraction value="1.0" index="1.52"/>
+            <absorption r="1" g="0.000001" b="1"/>
+            <emission r="0" g="0.1" b="0"/>
+        </material>
+        <material type="blinn" name="binpot">
+			<diffuse  r="0.3" g="0.3" b="1.0"/>
+			<specular r="1.0" g="1.0" b="1.0" value="0.7"/>
+			<glossiness value="20"/>
+		</material>
+        <material type="blinn" name="ginpot">
+            <diffuse  r="0.3" g="1.0" b="0.3"/>
+            <specular r="1.0" g="1.0" b="1.0" value="0.7"/>
+            <glossiness value="20"/>
+        </material>
+        <material type="blinn" name="rinpot">
+            <diffuse  r="1.0" g="0.3" b="0.3"/>
+            <specular r="1.0" g="1.0" b="1.0" value="0.7"/>
+            <glossiness value="20"/>
+        </material><material type="blinn" name="reds">
+			<diffuse  value="0"/>
+			<specular vakye="1.0"/>
+			<glossiness value="80"/>
+			<reflection value="1.0"/>
+		</material>
+		<material type="blinn" name="mtl3">
+			<diffuse  value="0"/>
+			<specular vakye="1.0"/>
+			<glossiness value="80"/>
+			<refraction value="1.0" index="1.52"/>
+      <absorption r="0.1" g="0.001" b="0.1"/>
+    </material>
+
+		<!-- Lights -->
+        <!--
+		<light type="ambient" name="ambientLight">
+      		<intensity value="0.3"/>
+    	</light>
+         -->
+		<light type="point" name="pointLight1">
+			<intensity value="50.5"/>
+			<position x="-4.85505" y="-6.03972" z="5.8"/>
+		</light>
+        
+        <light type="point" name="pointLight2">
+            <intensity value="50.5"/>
+            <position x="0.33062" y="-1.08561" z="4.22"/>
+        </light>
+        
+    </scene>
+
+	<camera>
+		<position x="0.160607" y="-13.4691" z="5.54447"/>
+		<target x="0" y="0" z="5.6447"/>
+		<up x="0" y="0" z="1"/>
+		<fov value="30"/>
+		<width value="800"/>
+		<height value="600"/>
+	</camera>
+</xml>

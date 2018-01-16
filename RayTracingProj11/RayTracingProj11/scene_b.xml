@@ -1,0 +1,63 @@
+<xml>
+	<scene>
+		<!-- Objects -->
+
+		<object type="obj" name="solid_teapot.obj" material="mtl1">
+			<scale value="0.152"/>
+			<rotate angle="173" x="1" />
+			<rotate angle="-174" y="1" />
+			<rotate angle="36.9" z="1"/>
+			<translate x="-0.17506" y="-0.31921" z="2.246"/>
+		</object>
+
+		<!-- Materials -->
+		<material type="blinn" name="wall">
+			<diffuse  r="1" g="1" b="1"/>
+			<specular value="0"/>
+		</material>
+		<material type="blinn" name="wallRed">
+			<diffuse  r="1.0" g="0.5" b="0.5"/>
+			<specular value="0"/>
+		</material>
+		<material type="blinn" name="wallBlue">
+			<diffuse  r="0.5" g="0.5" b="1.0"/>
+			<specular value="0"/>
+		</material>
+		<material type="blinn" name="mtl1">
+			<diffuse  r="1.0" g="0.3" b="0.3"/>
+			<specular r="1.0" g="1.0" b="1.0" value="0.7"/>
+			<glossiness value="20"/>
+		</material>
+		<material type="blinn" name="mtl2">
+			<diffuse  value="0"/>
+			<specular vakye="1.0"/>
+			<glossiness value="80"/>
+			<reflection value="1.0"/>
+		</material>
+		<material type="blinn" name="mtl3">
+			<diffuse  value="0"/>
+			<specular vakye="1.0"/>
+			<glossiness value="80"/>
+			<refraction value="1.0" index="1.52"/>
+      <absorption r="0.1" g="0.001" b="0.1"/>
+    </material>
+
+		<!-- Lights -->
+		<light type="ambient" name="ambientLight">
+      		<intensity value="0.1"/>
+    	</light>
+		<light type="point" name="pointLight">
+			<intensity value="0.5"/>
+			<position x="0" y="2.14" z="7.7"/>
+		</light>
+	</scene>
+
+	<camera>
+		<position x="0" y="-16.265" z="8.079"/>
+		<target x="0" y="0" z="0"/>
+		<up x="0" y="0" z="1"/>
+		<fov value="30"/>
+		<width value="1200"/>
+		<height value="600"/>
+	</camera>
+</xml>

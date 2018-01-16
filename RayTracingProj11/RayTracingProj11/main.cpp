@@ -21,12 +21,16 @@
 #define HALTON_BASE_1 2
 #define HALTON_BASE_2 3
 #define THRESHOLD 1e-3f
-#define BOUNCE 2
+#define BOUNCE 8
 #define HEMISPHERE_SAMPLE 20
 
-#define gamma 3.2
+#define gamma 2.2
 
 using namespace std;
+
+const float total_reflection_threshold = 1.001f;
+const float refraction_color_threshold = 0.001f;
+const float reflection_color_threshold = 0.001f;
 
 Node rootNode;
 Camera camera;
@@ -88,7 +92,7 @@ bool TraceNode(const Node &node,const Ray &ray, HitInfo &hitinfo){
     bool hit = false;
     
     if(obj){
-        if(obj->IntersectRay(r,hitinfo)){
+        if(obj->IntersectRay(r,hitinfo,HIT_FRONT_AND_BACK)){
             hit = true;
             hitinfo.node = &node;
             node.FromNodeCoords(hitinfo);
@@ -203,8 +207,9 @@ void RenderPixel(pixelIterator &it){
     
     while(it.GetPixel(x,y)){
         //debug
-        //if (x!=431 || y!=227) continue;
-        if (x==391 && y == 254) {
+        //if (x!=334 || y!=360) continue;
+        if (y<290) continue;
+        if (x==447 && y == 339) {
             std::cout << "xx" << std::endl;
         }
         
@@ -335,6 +340,14 @@ float GenLight::Shadow(Ray ray, float t_max){
     return 1.0;
 }
 
+inline Color Attenuation(const Color &absorption, float l)
+{
+    const auto R = exp(-absorption.r * l);
+    const auto G = exp(-absorption.g * l);
+    const auto B = exp(-absorption.b * l);
+    return Color(R, G, B); // attenuation
+}
+
 Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lights, int bounceCount) const{
     Color ra_color(0.0);
     Color re_color(0.0);
@@ -359,6 +372,7 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
 
     for(int i=0; i<lights.size(); i++){
         //ambient light
+        if(!hInfo.front) break;
         if(lights[i]->IsAmbient()){
            ambient_color += lights[i]->Illuminate(P,N)*Kd;
         }
@@ -373,214 +387,306 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
             
             //
             //float theta = N.Dot(L);
-            //diffuse_color += I_i*(theta>0.0?theta:0.0);
+            float cosNH = N.Dot(H)>0.0?N.Dot(H):0.0;
             
-            Color kse = Ks*pow(N.Dot(H),alpha)+Kd;
+            Color kse = Ks*pow(cosNH,alpha)+Kd;
             
             float theta = N.Dot(L);
             diffuse_color += I_i*(theta>0.0?theta:0.0)*kse;
             // */
         }
     }
+    
     Color idr_Color(0,0,0);
-    ///*
     //indirect color
-    //if(bounceCount > 0
-    if(bounceCount==BOUNCE //bounceCount > 0
-       ){
-        Point3 newz = hInfo.N;
-        Point3 v1(1,0,0),v2(0,0,1);
-        //Point3 newx(newz.z,0,-newz.x);
-        Point3 newx;
+    
+    // if(bounceCount==BOUNCE //bounceCount > 0
+    //    ){
+    //     Point3 newz = hInfo.N;
+    //     Point3 v1(1,0,0),v2(0,0,1);
+    //     //Point3 newx(newz.z,0,-newz.x);
+    //     Point3 newx;
         
-        if(newz.Dot(v1)<0.4)
-            newx =newz^v1;
-        else
-            newx = newz^v2;
+    //     if(newz.Dot(v1)<0.4)
+    //         newx =newz^v1;
+    //     else
+    //         newx = newz^v2;
         
-        newx.Normalize();
-        Point3 newy = newz ^ newx;
-        int Nofsample;
-        if(bounceCount==BOUNCE)
-            Nofsample = HEMISPHERE_SAMPLE;
-        else
-            Nofsample = 1;
+    //     newx.Normalize();
+    //     Point3 newy = newz ^ newx;
+    //     int Nofsample;
+    //     if(bounceCount==BOUNCE)
+    //         Nofsample = HEMISPHERE_SAMPLE;
+    //     else
+    //         Nofsample = 1;
         
-        for(int i=0;i<Nofsample;i++){
-            float r_x = 2 * (rand()/ (float) RAND_MAX)-1;
-            float r_y = 2 * (rand()/ (float) RAND_MAX)-1;
-            float r_z = rand()/ (float) RAND_MAX;
-            Point3 hemis_dir = r_x*newx + r_y * newy + r_z * newz;
-            hemis_dir.Normalize();
-            //cout << newz.Length() << endl;
+    //     for(int i=0;i<Nofsample;i++){
+    //         float r_x = 2 * (rand()/ (float) RAND_MAX)-1;
+    //         float r_y = 2 * (rand()/ (float) RAND_MAX)-1;
+    //         float r_z = rand()/ (float) RAND_MAX;
+    //         Point3 hemis_dir = r_x*newx + r_y * newy + r_z * newz;
+    //         hemis_dir.Normalize();
+    //         //cout << newz.Length() << endl;
             
-            float dotN_wi = hemis_dir.Dot(newz);
-            Ray Ray_idr = Ray(P, hemis_dir );
-            Ray_idr.dir.Normalize();
-            HitInfo hitinfo_idr;
-            hitinfo_idr.Init();
+    //         float dotN_wi = hemis_dir.Dot(newz);
+    //         Ray Ray_idr = Ray(P, hemis_dir );
+    //         Ray_idr.dir.Normalize();
+    //         HitInfo hitinfo_idr;
+    //         hitinfo_idr.Init();
             
-            Color idrColor;
-            if(TraceNode(rootNode,Ray_idr,hitinfo_idr)){
-                //idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, bounceCount - 1);
-                idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, 1);
-            }
-            else{
-                idrColor = environment.SampleEnvironment(Ray_idr.dir);
-            }
+    //         Color idrColor;
+    //         if(TraceNode(rootNode,Ray_idr,hitinfo_idr)){
+    //             idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, bounceCount - 1);
+    //             //idrColor = hitinfo_idr.node->GetMaterial()->Shade(Ray_idr, hitinfo_idr, lights, 1);
+    //         }
+    //         else{
+    //             idrColor = environment.SampleEnvironment(Ray_idr.dir);
+    //         }
 
-            //
-            idrColor = idrColor* dotN_wi;
+    //         //
+    //         idrColor = idrColor* dotN_wi;
             
-            //idrColor.r = max(0.0f,min(1.0f,idrColor.r));
-            //idrColor.g = max(0.0f,min(1.0f,idrColor.g));
-            //idrColor.b = max(0.0f,min(1.0f,idrColor.b));
+    //         //idrColor.r = max(0.0f,min(1.0f,idrColor.r));
+    //         //idrColor.g = max(0.0f,min(1.0f,idrColor.g));
+    //         //idrColor.b = max(0.0f,min(1.0f,idrColor.b));
             
-            idr_Color+= 2.0 * idrColor /(float)Nofsample;
+    //         idr_Color+= 2.0 * idrColor /(float)Nofsample;
             
-            //diffuse_color += I_i*(theta>0.0?theta:0.0)*kse;
-            //  */
-            //idr_Color+= light /(float)Nofsample;
+    //         //diffuse_color += I_i*(theta>0.0?theta:0.0)*kse;
+     
+    //         //idr_Color+= light /(float)Nofsample;
+    //     }
+    // }
+    
+    //all = ambient_color + ((diffuse_color/M_PI)+idr_Color)*Kd;
+    //all = ambient_color + (diffuse_color+idr_Color)*Kd;
+    
+    all = ambient_color+diffuse_color;
+
+    const Point3 p = hInfo.p;
+    Color reflection = mtlb -> reflection.GetColor();
+    Color refraction = mtlb -> refraction.GetColor();
+    Point3 direction = -ray.dir;
+    direction.Normalize();
+    //add on 12/10
+    Point3 tDir; //refraction Dir
+    Point3 rDir; //reflection Dir
+
+    float ein = 1; float eout = ior; // index
+    if(!hInfo.front){
+        ein = ior; eout = 1;
+    }
+    float eta = ein / eout;
+
+    Point3 Y = N.Dot(direction) > 0.f ? N : -N;
+    const Point3 Z = direction.Cross(Y);
+    Point3 X = Y.Cross(Z);
+    X.Normalize();
+
+    float cosI = N.Dot(direction);
+    float sinI = sqrtf(1 - cosI * cosI);
+    float sinO = max(0.f, min(1.f, sinI * eta));
+    float cosO = sqrtf(1.f - sinO * sinO);
+
+    tDir = -X * sinO - Y * cosO;
+    rDir = 2.f * N * (N.Dot(direction)) - direction;
+    // reflection and transmission coefficients
+    const float C0 = (eta - 1.f) * (eta - 1.f) / ((eta + 1.f) * (eta + 1.f));
+    float rC = C0 + (1.f - C0) * pow(1.f - fabsf(cosI), 5.f);
+    //if(sinO >= 1) rC = 1;
+    const float tC = 1.f - rC;
+
+    const bool totReflection = (eta * sinI) > total_reflection_threshold;
+    //bool totReflection = false;
+    const Color sampleRefraction = refraction;
+    const Color sampleReflection = reflection;
+    const Color tK = totReflection ? Color(0.f) : sampleRefraction * tC;
+    const Color rK = totReflection ? (sampleReflection + sampleRefraction) : (sampleReflection + sampleRefraction * rC);
+
+    // reflection
+    if(bounceCount > 0 && (rK.r > reflection_color_threshold || rK.g > reflection_color_threshold || rK.b > reflection_color_threshold)){
+        Ray r(p, rDir);
+        r.Normalize();
+        HitInfo h;
+        h.z = BIGFLOAT;
+        if(Trace(r, h)){
+            const auto *rMtl = h.node->GetMaterial();
+            const auto K = rK * (h.front ? Color(1.f) : Attenuation(absorption, h.z));
+            all += K * rMtl -> Shade(r, h, lights, bounceCount - 1); // reflection
         }
     }
-    //*/
-    all = ambient_color + ((diffuse_color/M_PI)+idr_Color)*Kd;
-    
-    //all = ambient_color+diffuse_color+idr_Color*Kd*M_PI*2;
+    // refraction
+    if(bounceCount > 0 && (tK.r > refraction_color_threshold || tK.g > refraction_color_threshold || tK.b > refraction_color_threshold)){
+        Ray tRay(p, tDir);
+        tRay.Normalize();
+        HitInfo tHit;
+        tHit.z = BIGFLOAT;
+        if(Trace(tRay, tHit)){
+            const auto *tMtl = tHit.node->GetMaterial();
+            const auto K = tK * (tHit.front ? Color(1.f) : Attenuation(absorption, tHit.z));
+            all += K * tMtl -> Shade(tRay, tHit, lights, bounceCount - 1);
+        }else{
+            all += tK * environment.SampleEnvironment(tRay.dir);
+        }
 
+    }
     /**
      ** reflection calculation
     **/
-    Point3 V = -ray.dir.GetNormalized();
-    if(/*re.Gray()>0 &&*/ bounceCount >0){
-        Point3 newN=N;
-        if(reflectionGlossiness){
-            Point3 newx(1,0,0);
-            newx = newN ^ newx;
-            Point3 newy = newN ^ newx;
-            float r = rand()/ (float) RAND_MAX;
-            r = sqrtf(r)*reflectionGlossiness;
-            float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
-            float dx =  r * cosf(theta);
-            float dy =  r * sinf(theta);
-            newN += dx*newx+dy*newy;
+    // Point3 V = -ray.dir.GetNormalized();
+    // if(/*re.Gray()>0 &&*/ bounceCount >0){
+    //     Point3 newN=N;
+    //     if(reflectionGlossiness){
+    //         Point3 newx(1,0,0);
+    //         newx = newN ^ newx;
+    //         Point3 newy = newN ^ newx;
+    //         float r = rand()/ (float) RAND_MAX;
+    //         r = sqrtf(r)*reflectionGlossiness;
+    //         float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
+    //         float dx =  r * cosf(theta);
+    //         float dy =  r * sinf(theta);
+    //         newN += dx*newx+dy*newy;
              
-            newN.Normalize();
-        }
-        N = newN;
-        float costheta = clamp(N.Dot(V),-1.0,1.0);
-        Point3 R = 2*costheta*N - V; //reflection vector
-        //R.Normalize();
-        Ray Ray_rf = Ray(P+bias*R, R);
-        Ray_rf.dir.Normalize();
-        HitInfo hitinfo_rf;
-        hitinfo_rf.Init();
-        if(TraceNode(rootNode,Ray_rf,hitinfo_rf))
-        {
-            re_color = hitinfo_rf.node->GetMaterial()->Shade(Ray_rf, hitinfo_rf, lights, bounceCount - 1);
-        }
-        else{
-            re_color = environment.SampleEnvironment(Ray_rf.dir);
-        }
-    }
+    //         newN.Normalize();
+    //     }
+    //     N = newN;
+    //     float costheta = clamp(N.Dot(V),-1.0,1.0);
+    //     Point3 R = 2*costheta*N - V; //reflection vector
+    //     //R.Normalize();
+    //     Ray Ray_rf = Ray(P+bias*R, R);
+    //     Ray_rf.dir.Normalize();
+    //     HitInfo hitinfo_rf;
+    //     hitinfo_rf.Init();
+    //     if(TraceNode(rootNode,Ray_rf,hitinfo_rf))
+    //     {
+    //         re_color = hitinfo_rf.node->GetMaterial()->Shade(Ray_rf, hitinfo_rf, lights, bounceCount - 1);
+    //     }
+    //     else{
+    //         re_color = environment.SampleEnvironment(Ray_rf.dir);
+    //     }
+    // }
 
-    all+=re_color*reflection.GetColor();
+    // all+=re_color*reflection.GetColor();
     
-    /**
-     ** refraction calculation
-    **/
+    // /**
+    //  ** refraction calculation
+    // **/
     
-     if(  bounceCount>0){
-         Point3 newN = hInfo.N;;
-         if(refractionGlossiness){
-             /*
-             float r = rand()/ (float) RAND_MAX;
-             r = sqrtf(r)*refractionGlossiness;
-             float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
-             float gamma = M_PI * rand()/ (float) RAND_MAX;
-             float dx =  r * sinf(gamma) * cosf(theta);
-             float dy =  r * sinf(gamma) * sinf(theta);
-             float dz =  r * cosf(gamma);
-             Point3 dn(dx,dy,dz);
-             newN += dn;
-             newN.Normalize();
-              */
-             Point3 newx(1,0,0);
-             newx = newN ^ newx;
-             Point3 newy = newN ^ newx;
-             float r = rand()/ (float) RAND_MAX;
-             r = sqrtf(r)*refractionGlossiness;
-             float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
-             float dx =  r * cosf(theta);
-             float dy =  r * sinf(theta);
-             newN += dx*newx+dy*newy;
+    //  if(  bounceCount>0){
+    //      Point3 newN = hInfo.N;;
+    //      if(refractionGlossiness){
+    //          /*
+    //          float r = rand()/ (float) RAND_MAX;
+    //          r = sqrtf(r)*refractionGlossiness;
+    //          float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
+    //          float gamma = M_PI * rand()/ (float) RAND_MAX;
+    //          float dx =  r * sinf(gamma) * cosf(theta);
+    //          float dy =  r * sinf(gamma) * sinf(theta);
+    //          float dz =  r * cosf(gamma);
+    //          Point3 dn(dx,dy,dz);
+    //          newN += dn;
+    //          newN.Normalize();
+    //           */
+    //          Point3 newx(1,0,0);
+    //          newx = newN ^ newx;
+    //          Point3 newy = newN ^ newx;
+    //          float r = rand()/ (float) RAND_MAX;
+    //          r = sqrtf(r)*refractionGlossiness;
+    //          float theta = M_PI * 2.0 * rand()/ (float) RAND_MAX;
+    //          float dx =  r * cosf(theta);
+    //          float dy =  r * sinf(theta);
+    //          newN += dx*newx+dy*newy;
              
-             newN.Normalize();
-         }
-         N = newN;
+    //          newN.Normalize();
+    //      }
+    //      N = newN;
         
-        float R0 = 0.0f, re_ratio = 0.0f, ra_ratio = 0.0f;
+    //     float R0 = 0.0f, re_ratio = 0.0f, ra_ratio = 0.0f;
         
-        V.Normalize();//unit vector
+    //     V.Normalize();//unit vector
         
-         //costheta1 may be negative
-        float costheta1 = fabsf(V.Dot(N));
-        float sintheta1 = sqrtf(max(0.0f,1 - (costheta1 * costheta1)));
-        
-        float n1 = 1.0, n2 = 1.0;
-        if(hInfo.front){ // out -> in
-            n2 = ior;
-        }
-        else if(!hInfo.front){ //in->out
-            n1 = ior;
-            N = -N;
-        }
-        float ratio_n = n1 / n2;
-        float sintheta2 = ratio_n*sintheta1;
-         
-         HitInfo hitinfo_ra;
-         hitinfo_ra.Init();
-         
-         float absorb = 0.0;
-        if(sintheta2 <= 1.0){
+    //     //add on 12/10
+    //     Point3 X = N^V^N;
+    //     Point3 Y = N*(N.Dot(V));
+    //      X.Normalize();
+    //      Y.Normalize();
+    //     float cosI = N.Dot(V);
+    //     float sinI = sqrtf(1 - (cosI * cosI));
 
-            float costheta2 = sqrtf(max(0.0f,1 - (sintheta2 * sintheta2)));
-            Point3 S = N ^ (N ^ V);
-            N.Normalize();
-            S.Normalize();
-            Point3 T = -N * costheta2 + S * sintheta2;
-
-            Ray Ray_rfa = Ray(P+bias*T, T);
-
-            if(TraceNode(rootNode,Ray_rfa,hitinfo_ra)){
-                ra_color  =  hitinfo_ra.node->GetMaterial()->Shade(Ray_rfa,hitinfo_ra,lights,bounceCount-1);
-            }
-            else{
-                ra_color = environment.SampleEnvironment(Ray_rfa.dir);
-            }
-            absorb = exp(-absorption.r * hitinfo_ra.z);
-            //
-            //Shlick's approximation
-            R0 = (n1 - n2)/(n1 + n2);
-            R0 = R0*R0;
-            double  tmp = 1.0 - costheta1;
-            re_ratio = R0 + (1.0 - R0) * pow(tmp,5.0);
-            ra_ratio = 1.0 - re_ratio;
-        }
-        else {
-            // complete reflection
-            re_ratio = 1.0f;
-        }
         
-        /*** 
-        **   Reflection because of refraction
-        ***/
-        //already calculated
-        re_ra_color = re_color;
+
+    //      //costheta1 may be negative
+    //     float costheta1 = fabsf(V.Dot(N));
+    //     float sintheta1 = sqrtf(max(0.0f,1 - (costheta1 * costheta1)));
+        
+    //     float n1 = 1.0, n2 = 1.0;
+    //     if(hInfo.front){ // out -> in
+    //         n2 = ior;
+    //     }
+    //     else if(!hInfo.front){ //in->out
+    //         n1 = ior;
+    //         N = -N;
+    //         if(n1>1){
+    //            //cout<<"in to out\n";
+    //         }
+            
+    //     }
+    //     float ratio_n = n1 / n2;
+    //     float sintheta2 = ratio_n*sintheta1;
          
-        all += refraction.GetColor() * (ra_ratio * absorb * ra_color + re_ratio * re_ra_color);
+    //      //add on 12/10
+    //     const float sinO = max(0.f, min(1.f, sinI * ratio_n));
+    //     const float cosO = sqrtf(1.f - sinO * sinO);
+
+    //      HitInfo hitinfo_ra;
+    //      hitinfo_ra.Init();
+         
+    //      //float absorb = 0.0;
+    //     if(sintheta2 <= 1.0){
+
+    //         float costheta2 = sqrtf(max(0.0f,1 - (sintheta2 * sintheta2)));
+    //         Point3 S = N ^ (N ^ V);
+    //         //N.Normalize();
+    //         S.Normalize();
+    //         Point3 T = -N * costheta2 + S * sintheta2;
+    //         T.Normalize();
+    //         Ray Ray_rfa = Ray(P+bias*T, T);
+
+    //         if(TraceNode(rootNode,Ray_rfa,hitinfo_ra)){
+    //             ra_color  =  hitinfo_ra.node->GetMaterial()->Shade(Ray_rfa,hitinfo_ra,lights,bounceCount-1);
+    //         }
+    //         else{
+    //             ra_color = environment.SampleEnvironment(Ray_rfa.dir);
+    //         }
+    //         //absorb = exp(-absorption.r * hitinfo_ra.z);
+    //         if(!hitinfo_ra.front){
+    //         ra_color.r *= exp(-absorption.r * hitinfo_ra.z);
+    //         ra_color.g *= exp(-absorption.g * hitinfo_ra.z);
+    //         ra_color.b *= exp(-absorption.b * hitinfo_ra.z);
+    //         }
+
+    //         //
+    //         //Shlick's approximation
+    //         R0 = (n1 - n2)/(n1 + n2);
+    //         R0 = R0*R0;
+    //         double  tmp = 1.0 - costheta1;
+    //         re_ratio = R0 + (1.0 - R0) * pow(tmp,5.0);
+    //         ra_ratio = 1.0 - re_ratio;
+    //     }
+    //     else {
+    //         // complete reflection
+    //         re_ratio = 1.0f;
+    //     }
         
-    }
+    //     /*** 
+    //     **   Reflection because of refraction
+    //     ***/
+    //     //already calculated
+    //     re_ra_color = re_color;
+         
+    //     all += refraction.GetColor() * (ra_ratio * ra_color + re_ratio * re_ra_color);
+        
+    // }
 
      
     return all;
@@ -589,8 +695,8 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
 void BeginRender()
 {
 	
-    unsigned num_thread = thread::hardware_concurrency()*2;
-    //unsigned num_thread = 1;
+    //unsigned num_thread = thread::hardware_concurrency()*2;
+    unsigned num_thread = 1;
     //renderImage.SaveImage("prj11boxinput.png");
     
     cout<<"number of threads: "<<num_thread<<"\n";
@@ -628,7 +734,9 @@ void StopRender(){
 
 int main(int argc, const char * argv[]) {
     pIt.Init();
-    const char *file = "scene-2.xml";
+    const char *file = "scene_b.xml";
+    //const char *file = "scene_nt.xml";
+    //const char *file = "scene-2.xml";
     //const char *file = "scene_simple.xml";
     LoadScene(file);
     ShowViewport();
